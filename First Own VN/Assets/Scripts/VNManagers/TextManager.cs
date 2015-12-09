@@ -12,7 +12,6 @@ public class TextManager : MonoBehaviour {
 	void Start () 
     {
         TextComponent = GetComponent<Text>(); //Получаем компонент
-        PushText("Кусок говна пывавпвап ваыпвыапывапыва ывапывапывапывапыва ывапывапавыпывап ывапвыапыавпваып ыавпывпапавы вапывап");
 	}
 	
 	void Update () 
@@ -28,24 +27,33 @@ public class TextManager : MonoBehaviour {
 
     public void AddText(string s) //Функция добавления текста в форму
     {
-        TextComponent.text = MainText + TransparentText(s); //Помещение прозрачного текста в компонент
-        MainText += s; //Добавление текста в специальную переменную
+        TextComponent.text = MainText + " " + TransparentText(s); //Помещение прозрачного текста в компонент
+        MainText += " " + s; //Добавление текста в специальную переменную
         WorkingWithText = StartCoroutine(addText()); //Старт корутины
     }
 
     IEnumerator addText() //Корутина, осуществляющая побуквенное появление текста
     {
+        ScenarioManager.LockCoroutine(); //Приостанавливаем основную сценарную корутину
         float tm = 0; //Счётчик времени
         while (MainText != TextComponent.text) //Пока текст в компоненте не станет желаемым
         {
+            if (ControlManager.Next()) //Если нажата клавиша продолжения
+            {
+                TextComponent.text = MainText; //То сразу показываем весь текст
+                break; //Прерываем цикл
+            }
             tm += Time.deltaTime; //Увеличиваем счётчик времени на количество прошедшего времени
             if (tm > Settings.SymbolInterval) //Если счётчик времени больше, чем фиксированное значение
             {
                 tm = 0; //Обнуляем счётчик времени
                 TextComponent.text = ShowSymbol(TextComponent.text); //Делаем следующий символ видимым
             }
-            yield return null;
+            yield return null; //Смена кадра
         }
+        while (!ControlManager.Next()) //Ожидание нажатия клавиши продолжения
+            yield return null; //Смена кадра
+        ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
     }
 
     string TransparentText(string s) //Получение прозрачного текста
