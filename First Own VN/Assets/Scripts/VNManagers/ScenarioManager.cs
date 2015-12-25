@@ -7,12 +7,15 @@ public class ScenarioManager : MonoBehaviour {
     string[] Instructions; //Команды для выполнения
     int CurrentInstruction = 0; //Текущая команда
     static bool CanDoNext = true; //Сверяемая булева переменная для приостановки/возобновления основной сценарной корутины 
+    int finalCode = 13; //Код конечного символа
     TextManager TManager; //Компонент для управления текстовой формой
     AuthorManager AManager; //Компонень для управления формой автора
+    BackgroundManager BManager; //Компонент для управления задним фоном
 	void Start () 
     {
         TManager = GameObject.Find("MAINTEXT").GetComponent<TextManager>(); //Находим компонент на сцене
         AManager = GameObject.Find("MAINAUTHOR").GetComponent<AuthorManager>(); //Находим компонент на сцене
+        BManager = GameObject.Find("BACKGROUND").GetComponent<BackgroundManager>(); //Находим компонент на сцене
         ReadInstructions(StartText); //Считываем команды из файла
         StartCoroutine(MainScenarioCoroutine()); //Старт основной сценарной корутины
 	}
@@ -25,6 +28,8 @@ public class ScenarioManager : MonoBehaviour {
     void ReadInstructions(TextAsset ta) //Считывание команд из файла
     {
         Instructions = ta.text.Split('\n'); //Создаём массив команд, разделённых по символу переноса строки
+        for (int i = 0; i < Instructions.Length; i++) //Для всех строк команд
+            Instructions[i] = DeleteSpacesAtTheEnd(Instructions[i]); //Удаляем конечный символ в конце строки
     }
 
     IEnumerator MainScenarioCoroutine() //Основная сценарная корутина
@@ -46,6 +51,12 @@ public class ScenarioManager : MonoBehaviour {
                     case "add": //Если это добавление текста
                         TManager.AddText(operation[operation.Length - 1]); //Добавляем указанный текст
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
+                        break;
+                    case "cback": //Если это смена фона
+                        if (operation.Length > 2) //Если присутствуют дополнительные параметры
+                            BManager.ChangeBackground(operation[1], float.Parse(operation[2])); //То передаём эти параметры в метод
+                        else //Иначе
+                            BManager.ChangeBackground(operation[1]); //Сменяем фон со стандартными параметрами
                         break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
                         AManager.UpdateAuthor(operation[0]); //Обновляем автора в форме
@@ -72,5 +83,15 @@ public class ScenarioManager : MonoBehaviour {
     static public void UnlockCoroutine() //Функция возобновлени основной сценарной корутины
     {
         CanDoNext = true; //Сверяемая булева переменная равна true
+    }
+
+    string DeleteSpacesAtTheEnd(string source) //Функция удаления конечного символа в конце строки
+    {
+        string res = source; //Создаём промежуточную переменную
+        while ((int)res[res.Length - 1] == finalCode) //До тех пор, пока в конце есть пробелы
+        {
+            res = res.Remove(res.Length - 1); //Удаляем последний символ
+        }
+        return res; //Возвращаем результат
     }
 }
