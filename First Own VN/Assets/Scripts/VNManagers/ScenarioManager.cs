@@ -57,6 +57,7 @@ public class ScenarioManager : MonoBehaviour {
                             BManager.ChangeBackground(operation[1], float.Parse(operation[2])); //То передаём эти параметры в метод
                         else //Иначе
                             BManager.ChangeBackground(operation[1]); //Сменяем фон со стандартными параметрами
+                        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
                         AManager.UpdateAuthor(operation[0]); //Обновляем автора в форме
