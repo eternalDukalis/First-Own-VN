@@ -9,12 +9,10 @@ public class ScenarioManager : MonoBehaviour {
     static bool CanDoNext = true; //Сверяемая булева переменная для приостановки/возобновления основной сценарной корутины 
     int finalCode = 13; //Код конечного символа
     TextManager TManager; //Компонент для управления текстовой формой
-    AuthorManager AManager; //Компонень для управления формой автора
     BackgroundManager BManager; //Компонент для управления задним фоном
 	void Start () 
     {
-        TManager = GameObject.Find("MAINTEXT").GetComponent<TextManager>(); //Находим компонент на сцене
-        AManager = GameObject.Find("MAINAUTHOR").GetComponent<AuthorManager>(); //Находим компонент на сцене
+        TManager = GameObject.Find("TEXTMANAGER").GetComponent<TextManager>(); //Находим компонент на сцене
         BManager = GameObject.Find("BACKGROUND").GetComponent<BackgroundManager>(); //Находим компонент на сцене
         ReadInstructions(StartText); //Считываем команды из файла
         StartCoroutine(MainScenarioCoroutine()); //Старт основной сценарной корутины
@@ -40,7 +38,6 @@ public class ScenarioManager : MonoBehaviour {
             CurrentInstruction++; //Увеличиваем счётчик инструкций
             if (operation.Length == 1) //Если получилась одна часть команды
             {
-                AManager.DeleteAuthor(); //Удаляем автора
                 TManager.PushText(operation[0]); //Сменяем текст в форме
                 yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
             }
@@ -60,8 +57,7 @@ public class ScenarioManager : MonoBehaviour {
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
-                        AManager.UpdateAuthor(operation[0]); //Обновляем автора в форме
-                        TManager.PushText(operation[1]); //Сменяем текст в форме
+                        TManager.PushText(operation[1], operation[0]); //Сменяем текст в форме с автором
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
                 }

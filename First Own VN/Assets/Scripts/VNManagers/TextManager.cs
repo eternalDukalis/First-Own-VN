@@ -4,14 +4,17 @@ using UnityEngine.UI;
 
 public class TextManager : MonoBehaviour {
 
-    Text TextComponent; //Компонент Text этого объекта
+    public Text TextComponent; //Компонент Text нижней текстовой формы
     Coroutine WorkingWithText; //Переменная для управления корутиной
     string ColorOpenTag = "<color=#00000000>"; //Открывающий тег прозрачного текста
     string ColorCloseTag = "</color>"; //Закрывающий тег прозрачного текста
+    AuthorManager AManager; //Компонень для управления формой автора
+    Text TextBottom; //Текст нижней формы
     static string MainText = "\t"; //Статическая переменная, хранящая текущий текст
+    static bool TextModeBottom = true; //Статическая переменная, хранящая режим текста
 	void Start () 
     {
-        TextComponent = GetComponent<Text>(); //Получаем компонент
+        AManager = GameObject.Find("MAINAUTHOR").GetComponent<AuthorManager>(); //Находим компонент на сцене
 	}
 	
 	void Update () 
@@ -19,17 +22,22 @@ public class TextManager : MonoBehaviour {
 	
 	}
 
+    public void PushText(string s, string a) //Функция смены текста в форме с автором
+    {
+        if (TextModeBottom) //Если режим нижней формы
+            pTextBottom(s, a); //То вызываем соответствующий метод
+    }
+
     public void PushText(string s) //Функция смены текста в форме
     {
-        MainText = "\t"; //Очистка текста
-        AddText(s); //Добавление текста
+        if (TextModeBottom) //Если режим нижней формы
+            pTextBottom(s); //То вызываем соответствующий метод
     }
 
     public void AddText(string s) //Функция добавления текста в форму
     {
-        TextComponent.text = MainText + " " + TransparentText(s); //Помещение прозрачного текста в компонент
-        MainText += " " + s; //Добавление текста в специальную переменную
-        WorkingWithText = StartCoroutine(addText()); //Старт корутины
+        if (TextModeBottom) //Если режим нижней формы
+            aTextBottom(s); //То вызываем соответствующий метод
     }
 
     IEnumerator addText() //Корутина, осуществляющая побуквенное появление текста
@@ -54,6 +62,25 @@ public class TextManager : MonoBehaviour {
         while (!ControlManager.Next()) //Ожидание нажатия клавиши продолжения
             yield return null; //Смена кадра
         ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
+    }
+
+    void pTextBottom(string s, string a) //Функция смены текста в форме с автором в нижней форме
+    {
+        AManager.UpdateAuthor(a); //Обновляем автора
+        MainText = "\t"; //Очистка текста
+        AddText(s); //Добавление текста
+    }
+    void pTextBottom(string s) //Функция смены текста в форме в нижней форме
+    {
+        AManager.DeleteAuthor(); //Удаляем автора
+        MainText = "\t"; //Очистка текста
+        AddText(s); //Добавление текста
+    }
+    void aTextBottom(string s) //Функция добавления текста в нижнюю форму
+    {
+        TextComponent.text = MainText + " " + TransparentText(s); //Помещение прозрачного текста в компонент
+        MainText += " " + s; //Добавление текста в специальную переменную
+        WorkingWithText = StartCoroutine(addText()); //Старт корутины
     }
 
     string TransparentText(string s) //Получение прозрачного текста
