@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class TextManager : MonoBehaviour {
 
     public Text TextComponent; //Компонент Text нижней текстовой формы
+    public Image BottomMask; //Маска нижней формы
+    public float FormTime; //Время скрытия/открытия формы
     Coroutine WorkingWithText; //Переменная для управления корутиной
     string ColorOpenTag = "<color=#00000000>"; //Открывающий тег прозрачного текста
     string ColorCloseTag = "</color>"; //Закрывающий тег прозрачного текста
@@ -40,6 +42,17 @@ public class TextManager : MonoBehaviour {
             aTextBottom(s); //То вызываем соответствующий метод
     }
 
+    public void TakeOffTextForm() //Функция скрытия текстовой формы
+    {
+        if (TextModeBottom) //Если режим нижней формы
+            StartCoroutine(takeOffTextForm(BottomMask)); //То запускаем соответствующую корутину
+    }
+    public void ShowTextForm() //Функция открытия текстовой формы
+    {
+        if (TextModeBottom) //Если режим нижней формы
+            StartCoroutine(showTextForm(BottomMask)); //То запускаем соответствующую корутину
+    }
+
     IEnumerator addText() //Корутина, осуществляющая побуквенное появление текста
     {
         ScenarioManager.LockCoroutine(); //Приостанавливаем основную сценарную корутину
@@ -61,6 +74,32 @@ public class TextManager : MonoBehaviour {
         }
         while (!ControlManager.Next()) //Ожидание нажатия клавиши продолжения
             yield return null; //Смена кадра
+        ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
+    }
+
+    IEnumerator takeOffTextForm(Image mask) //Корутина, убирающая текстовую форму
+    {
+        ScenarioManager.LockCoroutine(); //Приостанавливем основную сценарную корутину
+        while (mask.fillAmount > 0) //Пока заполненность больше 0
+        {
+            mask.fillAmount -= Time.deltaTime / FormTime; //Уменьшаем заполненность
+            yield return null; //Смена кадра
+        }
+        if (TextModeBottom) //Если режим нижней формы
+        {
+            AManager.DeleteAuthor(); //Удаляем автора
+            TextComponent.text = "\t"; //Обнуляем текст
+        }
+        ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
+    }
+    IEnumerator showTextForm(Image mask) //Корутина, показывающая текстовую форму
+    {
+        ScenarioManager.LockCoroutine(); //Приостанавливем основную сценарную корутину
+        while (mask.fillAmount < 1) //Пока заполненность больше 0
+        {
+            mask.fillAmount += Time.deltaTime / FormTime; //Уменьшаем заполненность
+            yield return null; //Смена кадра
+        }
         ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
     }
 

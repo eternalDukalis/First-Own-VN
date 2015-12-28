@@ -56,6 +56,14 @@ public class ScenarioManager : MonoBehaviour {
                             BManager.ChangeBackground(operation[1]); //Сменяем фон со стандартными параметрами
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
+                    case "hidetf": //Если нужно скрыть текстовую форму
+                        TManager.TakeOffTextForm(); //Вызываем нужный метод в менеджере текста
+                        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
+                        break;
+                    case "showtf": //Если нужно открыть текстовую форму
+                        TManager.ShowTextForm(); //Вызываем нужный метод в менеджере текста
+                        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
+                        break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
                         TManager.PushText(operation[1], operation[0]); //Сменяем текст в форме с автором
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
