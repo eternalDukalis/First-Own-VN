@@ -64,6 +64,16 @@ public class ScenarioManager : MonoBehaviour {
                         TManager.ShowTextForm(); //Вызываем нужный метод в менеджере текста
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
+                    case "switchtextform": //Если нужно сменить режим текста
+                        TManager.TakeOffTextForm(); //Скрываем старую форму
+                        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
+                        TManager.SwitchTextMode(); //Сменяем режим текста
+                        TManager.ShowTextForm(); //Показываем новую форму
+                        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
+                        break;
+                    case "clearform": //Если нужно очистить полную текстовую форму
+                        TManager.ClearText(); //Очищаем форму
+                        break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
                         TManager.PushText(operation[1], operation[0]); //Сменяем текст в форме с автором
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
