@@ -100,10 +100,19 @@ public class TextManager : MonoBehaviour {
 
     IEnumerator takeOffTextForm(Image mask) //Корутина, убирающая текстовую форму
     {
+        Image[] imgs = mask.gameObject.transform.GetComponentsInChildren<Image>(); //Дочерние объекты Image
+        Text[] txts = mask.gameObject.transform.GetComponentsInChildren<Text>(); //Дочерние объекты Text
         ScenarioManager.LockCoroutine(); //Приостанавливем основную сценарную корутину
-        while (mask.fillAmount > 0) //Пока заполненность больше 0
+        while (mask.color.a > 0) //Пока альфа объекта больше 0
         {
-            mask.fillAmount -= Time.deltaTime / FormTime; //Уменьшаем заполненность
+            for (int i = 0; i < imgs.Length; i++)
+            {
+                imgs[i].color -= new Color(0, 0, 0, Time.deltaTime / FormTime);
+            }
+            for (int i = 0; i < txts.Length; i++)
+            {
+                txts[i].color -= new Color(0, 0, 0, Time.deltaTime / FormTime);
+            } //Уменьшаем альфу дочерних объектов
             yield return null; //Смена кадра
         }
         if (TextModeBottom) //Если режим нижней формы
@@ -117,14 +126,25 @@ public class TextManager : MonoBehaviour {
             FullTextComponent.text = "\t"; //Обнуляем текст
             MainText = "\t"; //Обнуляем текст
         }
+        mask.gameObject.SetActive(false); //Делаем объект неактивным
         ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
     }
     IEnumerator showTextForm(Image mask) //Корутина, показывающая текстовую форму
     {
+        mask.gameObject.SetActive(true); //Делаем объект активным
+        Image[] imgs = mask.gameObject.transform.GetComponentsInChildren<Image>(); //Дочерние объекты Image
+        Text[] txts = mask.gameObject.transform.GetComponentsInChildren<Text>(); //Дочерние объекты Text
         ScenarioManager.LockCoroutine(); //Приостанавливем основную сценарную корутину
-        while (mask.fillAmount < 1) //Пока заполненность больше 0
+        while (mask.color.a < 1) //Пока альфа меньше 1
         {
-            mask.fillAmount += Time.deltaTime / FormTime; //Уменьшаем заполненность
+            for (int i = 0; i < imgs.Length; i++)
+            {
+                imgs[i].color += new Color(0, 0, 0, Time.deltaTime / FormTime);
+            }
+            for (int i = 0; i < txts.Length; i++)
+            {
+                txts[i].color += new Color(0, 0, 0, Time.deltaTime / FormTime);
+            } //Увеличиваем альфу дочерних объектов
             yield return null; //Смена кадра
         }
         ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
