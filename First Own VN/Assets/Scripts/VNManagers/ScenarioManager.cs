@@ -10,12 +10,16 @@ public class ScenarioManager : MonoBehaviour {
     int finalCode = 13; //Код конечного символа
     TextManager TManager; //Компонент для управления текстовой формой
     BackgroundManager BManager; //Компонент для управления задним фоном
+
+    static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
+    static IEnumerator staticCoroutine; //Статическая ссылка на основную сценарную корутину
 	void Start () 
     {
         TManager = GameObject.Find("TEXTMANAGER").GetComponent<TextManager>(); //Находим компонент на сцене
         BManager = GameObject.Find("BACKGROUND").GetComponent<BackgroundManager>(); //Находим компонент на сцене
         ReadInstructions(StartText); //Считываем команды из файла
-        StartCoroutine(MainScenarioCoroutine()); //Старт основной сценарной корутины
+        staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
+        CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
 	}
 	
 	void Update () 
@@ -35,7 +39,6 @@ public class ScenarioManager : MonoBehaviour {
         while (CurrentInstruction < Instructions.Length) //Пока не кончились команды
         {
             string[] operation = Instructions[CurrentInstruction].Split('|'); //Разделяем команду по символу "|"
-            CurrentInstruction++; //Увеличиваем счётчик инструкций
             if (operation.Length == 1) //Если получилась одна часть команды
             {
                 TManager.PushText(operation[0]); //Сменяем текст в форме
@@ -81,6 +84,7 @@ public class ScenarioManager : MonoBehaviour {
                 }
             }
             yield return null; //Смена кадра
+            CurrentInstruction++; //Увеличиваем счётчик инструкций
         }
     }
 
@@ -98,6 +102,21 @@ public class ScenarioManager : MonoBehaviour {
     static public void UnlockCoroutine() //Функция возобновлени основной сценарной корутины
     {
         CanDoNext = true; //Сверяемая булева переменная равна true
+    }
+
+    static public bool GetCanDoNext() //Функция, возвращающая значение сверяемой булевой переменной
+    {
+        return CanDoNext; //Возвращаем результат
+    }
+
+    static public void StopScenario() //Функция для приостановки проигрывания сценария
+    {
+        GameObject.FindObjectOfType<ScenarioManager>().StopCoroutine(CoroutineManager); //Останавливаем корутину
+    }
+
+    static public void StartScenario() //Функция для проигрывания сценария
+    {
+        CoroutineManager = GameObject.FindObjectOfType<ScenarioManager>().StartCoroutine(staticCoroutine); //Стартуем корутину
     }
 
     string DeleteSpacesAtTheEnd(string source) //Функция удаления конечного символа в конце строки

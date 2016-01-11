@@ -27,9 +27,9 @@ public class TextManager : MonoBehaviour {
 	
 	}
 
-    public void SwitchTextMode()
+    public void SwitchTextMode() //Функция переключения текстового режима
     {
-        TextModeBottom = !TextModeBottom;
+        TextModeBottom = !TextModeBottom; //Меняем значение переменной
     }
 
     public void PushText(string s, string a) //Функция смены текста в форме с автором
