@@ -111,7 +111,8 @@ public class ScenarioManager : MonoBehaviour {
 
     static public void StopScenario() //Функция для приостановки проигрывания сценария
     {
-        GameObject.FindObjectOfType<ScenarioManager>().StopCoroutine(CoroutineManager); //Останавливаем корутину
+        if (CoroutineManager != null) 
+            GameObject.FindObjectOfType<ScenarioManager>().StopCoroutine(CoroutineManager); //Останавливаем корутину
     }
 
     static public void StartScenario() //Функция для проигрывания сценария

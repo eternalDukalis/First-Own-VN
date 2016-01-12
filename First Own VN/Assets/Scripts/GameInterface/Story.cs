@@ -6,7 +6,9 @@ public class Story : MonoBehaviour {
 
     public GameObject StoryForm; //Форма
     public float FadeTime; //Время работы с прозрачностью объектов
+    public Text StoryContent; //Компонент Text, отображающий историю
     TextManager TManager; //Компонент для управления текстовой формой
+    int TextLimit = 10000; //Предел текста
 	void Start () 
     {
         TManager = GameObject.Find("TEXTMANAGER").GetComponent<TextManager>(); //Находим компонент на сцене
@@ -14,8 +16,19 @@ public class Story : MonoBehaviour {
 	
 	void Update () 
     {
-	
+        if (StoryContent.text.Length > TextLimit) //Если текст слишком большой
+            DeleteTop(); //Удаляем верхний абзац
 	}
+
+    public void AddText(string s)
+    {
+        StoryContent.text += s;
+    }
+
+    void DeleteTop() //Функция удаления верхнего абзаца
+    {
+        StoryContent.text = StoryContent.text.Remove(0, StoryContent.text.IndexOf('\n') + 1); //Удаляем до первого символа перевода строки
+    }
 
     public virtual void OpenStory() //Фунция открытия истории
     {

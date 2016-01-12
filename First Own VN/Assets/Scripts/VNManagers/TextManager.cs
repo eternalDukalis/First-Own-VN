@@ -14,12 +14,14 @@ public class TextManager : MonoBehaviour {
     string BoldOpenTag = "<b>"; //Открывающий тег жирного текста
     string BoldCloseTag = "</b>"; //Закрывающий тег жирного текста
     AuthorManager AManager; //Компонень для управления формой автора
+    Story SManager; //Компонент для истории
     Text TextBottom; //Текст нижней формы
     static string MainText = "\t"; //Статическая переменная, хранящая текущий текст
     static bool TextModeBottom = true; //Статическая переменная, хранящая режим текста
 	void Start () 
     {
         AManager = GameObject.Find("MAINAUTHOR").GetComponent<AuthorManager>(); //Находим компонент на сцене
+        SManager = GameObject.Find("STORYMANAGER").GetComponent<Story>(); //Находим компонент на сцене
 	}
 	
 	void Update () 
@@ -29,6 +31,7 @@ public class TextManager : MonoBehaviour {
 
     public void SwitchTextMode() //Функция переключения текстового режима
     {
+        ClearText(); //Очистка текстовой формы
         TextModeBottom = !TextModeBottom; //Меняем значение переменной
     }
 
@@ -38,6 +41,7 @@ public class TextManager : MonoBehaviour {
             pTextBottom(s, a); //То вызываем соответствующий метод
         else //Если режим полной формы
             pTextFull(s, a); //То вызываем соответствующий метод
+        SManager.AddText("\n\n\t" + BoldOpenTag + a + ": " + BoldCloseTag + s); //Переносим строку в истории и добавляем туда текси
     }
     public void PushText(string s) //Функция смены текста в форме
     {
@@ -45,6 +49,7 @@ public class TextManager : MonoBehaviour {
             pTextBottom(s); //То вызываем соответствующий метод
         else //Если режим полной формы
             pTextFull(s); //То вызываем соответствующий метод
+        SManager.AddText("\n\n\t" + s); //Переносим строку в истории и добавляем туда текст
     }
     public void AddText(string s) //Функция добавления текста в форму
     {
@@ -52,6 +57,7 @@ public class TextManager : MonoBehaviour {
             aTextBottom(s); //То вызываем соответствующий метод
         else //Если режим полной формы
             aTextFull(s); //То вызываем соответствующий метод
+        SManager.AddText(s); //Добавляем текст в историю
     }
     public void ClearText() //Функция очистки полного текстового поля
     {
@@ -117,14 +123,14 @@ public class TextManager : MonoBehaviour {
         }
         if (TextModeBottom) //Если режим нижней формы
         {
-            AManager.DeleteAuthor(); //Удаляем автора
+            //AManager.DeleteAuthor(); //Удаляем автора
             TextComponent.text = "\t"; //Обнуляем текст
-            MainText = "\t"; //Обнуляем текст
+            //MainText = "\t"; //Обнуляем текст
         }
         else
         {
             FullTextComponent.text = "\t"; //Обнуляем текст
-            MainText = "\t"; //Обнуляем текст
+            //MainText = "\t"; //Обнуляем текст
         }
         mask.gameObject.SetActive(false); //Делаем объект неактивным
         ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
