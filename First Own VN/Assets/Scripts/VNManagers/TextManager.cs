@@ -86,7 +86,7 @@ public class TextManager : MonoBehaviour {
         float tm = 0; //Счётчик времени
         while (MainText != txt.text) //Пока текст в компоненте не станет желаемым
         {
-            if (ControlManager.Next()) //Если нажата клавиша продолжения
+            if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата клавиша продолжения или режим пропуска
             {
                 txt.text = MainText; //То сразу показываем весь текст
                 break; //Прерываем цикл
@@ -99,7 +99,7 @@ public class TextManager : MonoBehaviour {
             }
             yield return null; //Смена кадра
         }
-        while (!ControlManager.Next()) //Ожидание нажатия клавиши продолжения
+        while ((!ControlManager.Next()) && (!Skip.isSkipping)) //Ожидание нажатия клавиши продолжения или пока не будет режим пропуска
             yield return null; //Смена кадра
         ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
     }
@@ -111,6 +111,18 @@ public class TextManager : MonoBehaviour {
         ScenarioManager.LockCoroutine(); //Приостанавливем основную сценарную корутину
         while (mask.color.a > 0) //Пока альфа объекта больше 0
         {
+            if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата клавиша продолжения или режим пропуска
+            {
+                for (int i = 0; i < imgs.Length; i++)
+                {
+                    imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 0);
+                }
+                for (int i = 0; i < txts.Length; i++)
+                {
+                    txts[i].color = new Color(txts[i].color.r, txts[i].color.g, txts[i].color.b, 0);
+                } //Применяем альфу дочерних объектов
+                break; //Выходим из цикла
+            }
             for (int i = 0; i < imgs.Length; i++)
             {
                 imgs[i].color -= new Color(0, 0, 0, Time.deltaTime / FormTime);
@@ -143,6 +155,18 @@ public class TextManager : MonoBehaviour {
         ScenarioManager.LockCoroutine(); //Приостанавливем основную сценарную корутину
         while (mask.color.a < 1) //Пока альфа меньше 1
         {
+            if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата клавиша продолжения или режим пропуска
+            {
+                for (int i = 0; i < imgs.Length; i++)
+                {
+                    imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1);
+                }
+                for (int i = 0; i < txts.Length; i++)
+                {
+                    txts[i].color = new Color(txts[i].color.r, txts[i].color.g, txts[i].color.b, 1);
+                } //Применяем альфу дочерних объектов
+                break; //Выходим из цикла
+            }
             for (int i = 0; i < imgs.Length; i++)
             {
                 imgs[i].color += new Color(0, 0, 0, Time.deltaTime / FormTime);

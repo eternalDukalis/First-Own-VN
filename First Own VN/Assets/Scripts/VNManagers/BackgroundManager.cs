@@ -37,7 +37,7 @@ public class BackgroundManager : MonoBehaviour {
         img.sprite = Sprite.Create(newtext, new Rect(0, 0, newtext.width, newtext.height), new Vector2(0, 0)); //Сменяем спрайт на новый
         while (oldimg.color.a > 0) //Пока старый фон не станет прозрачным
         {
-            if (ControlManager.Next()) //Если нажата кнопка продолжения
+            if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата кнопка продолжения
             {
                 DeleteObject(OldBackground); //Удаляем старый фон
                 break; //Прерываем цикл

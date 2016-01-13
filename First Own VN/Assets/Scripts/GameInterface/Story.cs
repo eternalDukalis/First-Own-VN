@@ -32,6 +32,7 @@ public class Story : MonoBehaviour {
 
     public virtual void OpenStory() //Фунция открытия истории
     {
+        Skip.isSkipping = false;
         StartCoroutine(opening()); //стартуем соответствуюшую корутину
     }
 
