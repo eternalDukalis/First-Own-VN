@@ -14,6 +14,7 @@ public class TextManager : MonoBehaviour {
     string BoldOpenTag = "<b>"; //Открывающий тег жирного текста
     string BoldCloseTag = "</b>"; //Закрывающий тег жирного текста
     AuthorManager AManager; //Компонень для управления формой автора
+    Auto AutoGoing; //Компонент для автоматического проигрывания
     Story SManager; //Компонент для истории
     Text TextBottom; //Текст нижней формы
     static string MainText = "\t"; //Статическая переменная, хранящая текущий текст
@@ -22,6 +23,7 @@ public class TextManager : MonoBehaviour {
     {
         AManager = GameObject.Find("MAINAUTHOR").GetComponent<AuthorManager>(); //Находим компонент на сцене
         SManager = GameObject.Find("STORYMANAGER").GetComponent<Story>(); //Находим компонент на сцене
+        AutoGoing = GameObject.Find("CommonObject").GetComponent<Auto>(); //Находим компонент на сцене
 	}
 	
 	void Update () 
@@ -99,7 +101,7 @@ public class TextManager : MonoBehaviour {
             }
             yield return null; //Смена кадра
         }
-        while ((!ControlManager.Next()) && (!Skip.isSkipping)) //Ожидание нажатия клавиши продолжения или пока не будет режим пропуска
+        while (((!ControlManager.Next()) && (!Skip.isSkipping)) && (!AutoGoing.Continue())) //Ожидание нажатия клавиши продолжения или пока не будет режим пропуска
             yield return null; //Смена кадра
         ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
     }
@@ -194,6 +196,7 @@ public class TextManager : MonoBehaviour {
     }
     void aTextBottom(string s) //Функция добавления текста в нижнюю форму
     {
+        AutoGoing.RefreshTime(s.Length); //Обновляем время автоматического проигрывания
         TextComponent.text = MainText + " " + TransparentText(s); //Помещение прозрачного текста в компонент
         MainText += " " + s; //Добавление текста в специальную переменную
         StartCoroutine(addText(TextComponent)); //Старт корутины
@@ -212,6 +215,7 @@ public class TextManager : MonoBehaviour {
     }
     void aTextFull(string s) //Функция добалвения текста в полную форму
     {
+        AutoGoing.RefreshTime(s.Length); //Обновляем время автоматического проигрывания
         FullTextComponent.text = FullTextComponent.text + " " + TransparentText(s); //Помещение прозрачного текста в компонент
         MainText += " " + s; //Добавление текста в специальную переменную
         StartCoroutine(addText(FullTextComponent)); //Старт корутины
