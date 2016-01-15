@@ -10,6 +10,7 @@ public class ScenarioManager : MonoBehaviour {
     int finalCode = 13; //Код конечного символа
     TextManager TManager; //Компонент для управления текстовой формой
     BackgroundManager BManager; //Компонент для управления задним фоном
+    string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
 
     static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
     static IEnumerator staticCoroutine; //Статическая ссылка на основную сценарную корутину
@@ -77,6 +78,9 @@ public class ScenarioManager : MonoBehaviour {
                     case "clearform": //Если нужно очистить полную текстовую форму
                         TManager.ClearText(); //Очищаем форму
                         break;
+                    case "goto": //Если нужно перейти на другой источник инструкций
+                        ChangeSource(operation[1]); //Пользуем соответствующим методом
+                        break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
                         TManager.PushText(operation[1], operation[0]); //Сменяем текст в форме с автором
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
@@ -86,6 +90,14 @@ public class ScenarioManager : MonoBehaviour {
             yield return null; //Смена кадра
             CurrentInstruction++; //Увеличиваем счётчик инструкций
         }
+    }
+
+    void ChangeSource(string name) //Функция перехода на другой источник инструкций
+    {
+        TextAsset newtext = Resources.Load<TextAsset>(ScenarioPath + name); //Загружаем файл
+        CurrentInstruction = -1; //Обнуляем счётчик инструкций
+        ReadInstructions(newtext); //Считываем инструкции из файла
+        Resources.UnloadUnusedAssets(); //Выгружаем неиспользуемые ресурсы
     }
 
     IEnumerator WaitNext() //Корутина ожидания возобновления основной сценарной корутины
