@@ -10,6 +10,7 @@ public class ScenarioManager : MonoBehaviour {
     int finalCode = 13; //Код конечного символа
     TextManager TManager; //Компонент для управления текстовой формой
     BackgroundManager BManager; //Компонент для управления задним фоном
+    SelectionManager SManager; //Компонент для управления выбором
     string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
 
     static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
@@ -18,6 +19,7 @@ public class ScenarioManager : MonoBehaviour {
     {
         TManager = GameObject.Find("TEXTMANAGER").GetComponent<TextManager>(); //Находим компонент на сцене
         BManager = GameObject.Find("BACKGROUND").GetComponent<BackgroundManager>(); //Находим компонент на сцене
+        SManager = GameObject.Find("CommonObject").GetComponent<SelectionManager>(); //Находим компонент на сцене
         ReadInstructions(StartText); //Считываем команды из файла
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
@@ -80,6 +82,17 @@ public class ScenarioManager : MonoBehaviour {
                         break;
                     case "goto": //Если нужно перейти на другой источник инструкций
                         ChangeSource(operation[1]); //Пользуем соответствующим методом
+                        break;
+                    case "select": //Если нужно выбрать из нескольких вариантов
+                        string[] texts = new string[(operation.Length - 1) / 2]; //Инициализируем массив вариантов выбора
+                        string[] targets = new string[(operation.Length - 1) / 2]; //Инициализируем массив возможных переходов
+                        for (int i = 1; i < operation.Length; i += 2)
+                            texts[(i - 1) / 2] = operation[i]; //Заполняем массив вариантов выбора
+                        for (int i = 2; i < operation.Length; i += 2)
+                            targets[i / 2 - 1] = operation[i]; //Заполняем массив возможных переходов
+                        SManager.SetSelection(texts, targets); //Выводм выборы
+                        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
+                        ChangeSource(SelectionManager.NextTargert); //Осуществляем переход
                         break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
                         TManager.PushText(operation[1], operation[0]); //Сменяем текст в форме с автором
