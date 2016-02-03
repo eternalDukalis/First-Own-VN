@@ -143,7 +143,7 @@ public class TextManager : MonoBehaviour {
         }
         else
         {
-            FullTextComponent.text = "\t"; //Обнуляем текст
+            //FullTextComponent.text = "\t"; //Обнуляем текст
             //MainText = "\t"; //Обнуляем текст
         }
         mask.gameObject.SetActive(false); //Делаем объект неактивным
