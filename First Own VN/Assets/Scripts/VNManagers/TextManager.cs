@@ -90,6 +90,7 @@ public class TextManager : MonoBehaviour {
         {
             if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата клавиша продолжения или режим пропуска
             {
+                yield return new WaitForSeconds(Settings.SkipInterval); //Новый кадр
                 txt.text = MainText; //То сразу показываем весь текст
                 break; //Прерываем цикл
             }

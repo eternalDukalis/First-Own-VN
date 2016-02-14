@@ -39,6 +39,7 @@ public class BackgroundManager : MonoBehaviour {
         {
             if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата кнопка продолжения
             {
+                yield return new WaitForSeconds(Settings.SkipInterval); //Новый кадр
                 DeleteObject(OldBackground); //Удаляем старый фон
                 break; //Прерываем цикл
             }
