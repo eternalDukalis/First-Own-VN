@@ -11,8 +11,8 @@ public class TextManager : MonoBehaviour {
     public float FormTime; //Время скрытия/открытия формы
     string ColorOpenTag = "<color=#00000000>"; //Открывающий тег прозрачного текста
     string ColorCloseTag = "</color>"; //Закрывающий тег прозрачного текста
-    string BoldOpenTag = "<b>"; //Открывающий тег жирного текста
-    string BoldCloseTag = "</b>"; //Закрывающий тег жирного текста
+    string BoldOpenTag = "<b><i>"; //Открывающий тег жирного текста
+    string BoldCloseTag = "</i></b>"; //Закрывающий тег жирного текста
     AuthorManager AManager; //Компонень для управления формой автора
     Auto AutoGoing; //Компонент для автоматического проигрывания
     Story SManager; //Компонент для истории
