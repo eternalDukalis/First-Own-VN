@@ -19,6 +19,7 @@ public class BackgroundManager : MonoBehaviour {
 
     public void ChangeBackground(string title) //Стандартная функция смены заднего фона
     {
+        State.CurrentState.Background = title; //Записываем текущий фон
         ChangeBackground(title, BackgroundChangeTime); //Смена фона с передачей стандартных параметров
     }
 

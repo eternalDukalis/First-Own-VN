@@ -6,7 +6,6 @@ public class AuthorManager : MonoBehaviour {
 
     Image tForm; //Задний фон текстовой формы
     Text mText; //Сам текст
-    static string Author = ""; //Статическая переменная для хранения автора
 	void Start () 
     {
         tForm = transform.parent.gameObject.GetComponent<Image>(); //Получем задний фон
@@ -21,15 +20,15 @@ public class AuthorManager : MonoBehaviour {
 
     public void DeleteAuthor() //Метод для удаления автора
     {
-        Author = ""; //Обнуляем статическую переменную
+        State.CurrentState.Author = ""; //Обнуляем статическую переменную
         TurnOff(); //Убираем текстовую форму
     }
 
     public void UpdateAuthor(string author) //Метод для создания или обновления автора
     {
         TurnOn(); //Открываем текстовую форму
-        Author = author; //Обновляем статическую переменную
-        mText.text = Author; //Меняем текст на сцене
+        State.CurrentState.Author = author; //Обновляем статическую переменную
+        mText.text = State.CurrentState.Author; //Меняем текст на сцене
     }
 
     void TurnOff() //Скрытие формы автора

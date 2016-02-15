@@ -17,7 +17,17 @@ public class TextManager : MonoBehaviour {
     Auto AutoGoing; //Компонент для автоматического проигрывания
     Story SManager; //Компонент для истории
     Text TextBottom; //Текст нижней формы
-    static string MainText = "\t"; //Статическая переменная, хранящая текущий текст
+    static string MainText //Статическая переменная, хранящая текущий текст (привязана к State.MainText)
+    {
+        get
+        {
+            return State.CurrentState.MainText;
+        }
+        set
+        {
+            State.CurrentState.MainText = value;
+        }
+    }
     static bool TextModeBottom = true; //Статическая переменная, хранящая режим текста
 	void Start () 
     {
@@ -35,6 +45,7 @@ public class TextManager : MonoBehaviour {
     {
         ClearText(); //Очистка текстовой формы
         TextModeBottom = !TextModeBottom; //Меняем значение переменной
+        State.CurrentState.TextFormIsBottom = TextModeBottom; //Записываем состояние
     }
 
     public void PushText(string s, string a) //Функция смены текста в форме с автором
@@ -73,6 +84,7 @@ public class TextManager : MonoBehaviour {
             StartCoroutine(takeOffTextForm(BottomMask)); //То запускаем соответствующую корутину
         else //Если режим полной формы
             StartCoroutine(takeOffTextForm(FullMask)); //То запускаем соответствующую корутину
+        State.CurrentState.TextFormIsOn = false; //Записываем состояние
     }
     public void ShowTextForm() //Функция открытия текстовой формы
     {
@@ -80,6 +92,7 @@ public class TextManager : MonoBehaviour {
             StartCoroutine(showTextForm(BottomMask)); //То запускаем соответствующую корутину
         else //Если режим полной формы
             StartCoroutine(showTextForm(FullMask)); //То запускаем соответствующую корутину
+        State.CurrentState.TextFormIsOn = true; //Записываем состояние
     }
 
     IEnumerator addText(Text txt) //Корутина, осуществляющая побуквенное появление текста

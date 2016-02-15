@@ -3,9 +3,19 @@ using System.Collections;
 
 public class ScenarioManager : MonoBehaviour {
 
-    public TextAsset StartText; //Стартовый текст со сценарием
+    public string StartText; //Стартовый текст со сценарием
     string[] Instructions; //Команды для выполнения
-    int CurrentInstruction = 0; //Текущая команда
+    int CurrentInstruction //Текущая команда (привязана в State.CurrentInstruction) 
+    {
+        get
+        {
+            return State.CurrentState.CurrentInstruction;
+        }
+        set
+        {
+            State.CurrentState.CurrentInstruction = value;
+        }
+    }
     static bool CanDoNext = true; //Сверяемая булева переменная для приостановки/возобновления основной сценарной корутины 
     int finalCode = 13; //Код конечного символа
     TextManager TManager; //Компонент для управления текстовой формой
@@ -20,7 +30,7 @@ public class ScenarioManager : MonoBehaviour {
         TManager = GameObject.Find("TEXTMANAGER").GetComponent<TextManager>(); //Находим компонент на сцене
         BManager = GameObject.Find("BACKGROUND").GetComponent<BackgroundManager>(); //Находим компонент на сцене
         SManager = GameObject.Find("CommonObject").GetComponent<SelectionManager>(); //Находим компонент на сцене
-        ReadInstructions(StartText); //Считываем команды из файла
+        ChangeSource(StartText); //Считываем команды из файла
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
 	}
@@ -41,6 +51,9 @@ public class ScenarioManager : MonoBehaviour {
     {
         while (CurrentInstruction < Instructions.Length) //Пока не кончились команды
         {
+            CurrentInstruction++; //Увеличиваем счётчик инструкций
+            if (CurrentInstruction >= Instructions.Length) //Если инструкции закончились
+                break; //То выход из цикла
             string[] operation = Instructions[CurrentInstruction].Split('|'); //Разделяем команду по символу "|"
             if (operation.Length == 1) //Если получилась одна часть команды
             {
@@ -101,12 +114,12 @@ public class ScenarioManager : MonoBehaviour {
                 }
             }
             yield return null; //Смена кадра
-            CurrentInstruction++; //Увеличиваем счётчик инструкций
         }
     }
 
     void ChangeSource(string name) //Функция перехода на другой источник инструкций
     {
+        State.CurrentState.CurrentSource = name; //Записываем состояние
         TextAsset newtext = Resources.Load<TextAsset>(ScenarioPath + name); //Загружаем файл
         CurrentInstruction = -1; //Обнуляем счётчик инструкций
         ReadInstructions(newtext); //Считываем инструкции из файла
