@@ -5,7 +5,13 @@ using UnityEngine.UI;
 public class EffectsManager : MonoBehaviour {
 
     public GameObject PlainObject; //Объект с эффектами
+    public RectTransform InterfaceObject; //Родительский объект для интерфейса
     public float TimeToFade = 1; //Время появления/исчезновения одноцветного экрана
+    public float JoltAmplitude = 0.1f; //Амплитуда тряски
+    public int ImpulseSteps = 8; //Время одного толчка
+    public float ImpulseCount = 8; //Количество толчков
+    Vector2 TargetDeviation; //Целевое отклонение
+    Vector2 Deviation; //Текущее отклонение
 	void Start () 
     {
 	
@@ -23,10 +29,15 @@ public class EffectsManager : MonoBehaviour {
         StartCoroutine(WorkingWithPlainScreen(true)); //Запускаем корутину появления
     }
 
-    public void PlainScreenOff()
+    public void PlainScreenOff() //Функция выключения одноцветного экрана
     {
         State.CurrentState.PlainScreenOn = false; //Записываем состояние
         StartCoroutine(WorkingWithPlainScreen(false)); //Запускаем корутину исчезания
+    }
+
+    public void Jolt() //Функция тряски
+    {
+        StartCoroutine(Jolting()); //Запускаем корутину
     }
 
     IEnumerator WorkingWithPlainScreen(bool inc) //Корутина работы с одноцветным экраном
@@ -55,6 +66,37 @@ public class EffectsManager : MonoBehaviour {
         if (!inc) //Если экран убирался
             PlainObject.SetActive(false); //То делаем объект неактивным
         ScenarioManager.UnlockCoroutine(); //Возобновляем сценарий
+    }
+
+    IEnumerator Jolting() //Корутина тряски
+    {
+        for (int i = 0; i < ImpulseCount; i++) //Выполняем определённое количество толчков
+        {
+            TargetDeviation = CalcaulateDeviation(); //Рассчитываем целевое отклонение
+            Vector2 dist = TargetDeviation - Deviation; //Разница между целевым отклонением и текущим
+            for (int j = 0; j < ImpulseSteps; j++) //Выполняем определённое количество шагов
+            {
+                if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата кнопка продолжения
+                {
+                    j = ImpulseSteps; //Прерываем цикл
+                    break; //Прерываем цикл
+                }
+                Deviation += dist / ImpulseSteps; //Изменяем текущее отклонение
+                InterfaceObject.anchorMin = Deviation; //Изменяем расположение интерфейса
+                InterfaceObject.anchorMax = new Vector2(1, 1) + Deviation;
+                yield return null; //Новый кадр
+            }
+        }
+        Deviation = new Vector2(0, 0); //Обнуляем отклонение
+        InterfaceObject.anchorMin = Deviation; //Ставим интерфейс на место
+        InterfaceObject.anchorMax = new Vector2(1, 1) + Deviation;
+    }
+
+    Vector2 CalcaulateDeviation() //Расчёт отклонения
+    {
+        float x = Random.Range(-JoltAmplitude, JoltAmplitude); //Координата x
+        float y = Random.Range(-JoltAmplitude, JoltAmplitude); //Координата y
+        return new Vector2(x, y); //Возвращаем результат
     }
 
     Color StringToColor(string source) //Функция преобразования строки в цвет

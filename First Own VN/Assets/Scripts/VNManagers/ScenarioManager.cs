@@ -103,6 +103,9 @@ public class ScenarioManager : MonoBehaviour {
                         EManager.PlainScreenOff(); //Вызываем функцию скрытия экрана
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
+                    case "jolt": //Если требуется тряска
+                        EManager.Jolt(); //Тряска
+                        break;
                     case "goto": //Если нужно перейти на другой источник инструкций
                         ChangeSource(operation[1]); //Пользуем соответствующим методом
                         break;
