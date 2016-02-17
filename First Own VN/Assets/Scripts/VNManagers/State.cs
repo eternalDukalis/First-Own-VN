@@ -11,6 +11,8 @@ public class State {
     public bool TextFormIsBottom; //Какая из текстовых форм включена
     public string CurrentSource; //Текущий файл с инструкциями
     public int CurrentInstruction; //Текущий номер инструкции
+    public bool PlainScreenOn = false; //Включён ли одноцветный экран
+    public string PlainScreenColor = ""; //Цвет одноцветного экрана
     static State()
     {
         CurrentState = new State(); //Инициализация текущего состояния

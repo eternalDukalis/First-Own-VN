@@ -21,6 +21,7 @@ public class ScenarioManager : MonoBehaviour {
     TextManager TManager; //Компонент для управления текстовой формой
     BackgroundManager BManager; //Компонент для управления задним фоном
     SelectionManager SManager; //Компонент для управления выбором
+    EffectsManager EManager; //Компонент для управления эффектами
     string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
 
     static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
@@ -30,6 +31,7 @@ public class ScenarioManager : MonoBehaviour {
         TManager = GameObject.Find("TEXTMANAGER").GetComponent<TextManager>(); //Находим компонент на сцене
         BManager = GameObject.Find("BACKGROUND").GetComponent<BackgroundManager>(); //Находим компонент на сцене
         SManager = GameObject.Find("CommonObject").GetComponent<SelectionManager>(); //Находим компонент на сцене
+        EManager = GameObject.Find("CommonObject").GetComponent<EffectsManager>(); //Находим компонент на сцене
         ChangeSource(StartText); //Считываем команды из файла
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
@@ -92,6 +94,14 @@ public class ScenarioManager : MonoBehaviour {
                         break;
                     case "clearform": //Если нужно очистить полную текстовую форму
                         TManager.ClearText(); //Очищаем форму
+                        break;
+                    case "showscr": //Если нужно показать одноцветный экран
+                        EManager.PlainScreenOn(operation[1]); //Вызываем функцию показывания экрана
+                        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
+                        break;
+                    case "hidescr": //Если нужно убрать одноцветный экран
+                        EManager.PlainScreenOff(); //Вызываем функцию скрытия экрана
+                        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
                     case "goto": //Если нужно перейти на другой источник инструкций
                         ChangeSource(operation[1]); //Пользуем соответствующим методом
