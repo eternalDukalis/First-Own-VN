@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class BackgroundManager : MonoBehaviour {
 
-    static string BackPath = "Graphics/Backgrounds/"; //Директория с задними фонами
+    static public string BackPath = "Graphics/Backgrounds/"; //Директория с задними фонами
     static public float BackgroundChangeTime = 1; //Стандартное время смены заднего фона
     Image img; //Компонент Image текущего объекта
 	void Start () 

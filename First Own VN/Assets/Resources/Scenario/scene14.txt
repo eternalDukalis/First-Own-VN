@@ -1,0 +1,7 @@
+Но продолжим.
+hidetf|
+showscr|
+newday|village_streets_evening
+showtf|
+hidescr|
+Итак новый день наступил

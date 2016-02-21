@@ -22,6 +22,7 @@ public class ScenarioManager : MonoBehaviour {
     BackgroundManager BManager; //Компонент для управления задним фоном
     SelectionManager SManager; //Компонент для управления выбором
     EffectsManager EManager; //Компонент для управления эффектами
+    ScreensManager ScrManager; //Компонент для управления вставками
     string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
 
     static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
@@ -32,6 +33,7 @@ public class ScenarioManager : MonoBehaviour {
         BManager = GameObject.Find("BACKGROUND").GetComponent<BackgroundManager>(); //Находим компонент на сцене
         SManager = GameObject.Find("CommonObject").GetComponent<SelectionManager>(); //Находим компонент на сцене
         EManager = GameObject.Find("CommonObject").GetComponent<EffectsManager>(); //Находим компонент на сцене
+        ScrManager = GameObject.Find("CommonObject").GetComponent<ScreensManager>(); //Находим компонент на сцене
         ChangeSource(StartText); //Считываем команды из файла
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
@@ -105,6 +107,10 @@ public class ScenarioManager : MonoBehaviour {
                         break;
                     case "jolt": //Если требуется тряска
                         EManager.Jolt(); //Тряска
+                        break;
+                    case "newday": //Если вставка "новый день"
+                        ScrManager.NewDay(operation[1]); //Запускаем соответствующую вставку
+                        yield return StartCoroutine(WaitNext()); //Ждём продолжения
                         break;
                     case "goto": //Если нужно перейти на другой источник инструкций
                         ChangeSource(operation[1]); //Пользуем соответствующим методом
