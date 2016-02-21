@@ -3,6 +3,7 @@ add|Точнее начнём.
 hidetf|
 showscr|
 opening|
+episode|1
 hidescr|
 showtf|
 Отлично.

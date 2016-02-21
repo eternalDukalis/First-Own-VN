@@ -116,6 +116,10 @@ public class ScenarioManager : MonoBehaviour {
                         ScrManager.Opening(); //Запускаем соответствующую вставку
                         yield return StartCoroutine(WaitNext()); //Ждём продолжения
                         break;
+                    case "episode": //Если стартовая заставка эпизода
+                        ScrManager.NewEpisode(int.Parse(operation[1])); //Запускаем соответствующую вставку
+                        yield return StartCoroutine(WaitNext()); //Ждём продолжения
+                        break;
                     case "goto": //Если нужно перейти на другой источник инструкций
                         ChangeSource(operation[1]); //Пользуем соответствующим методом
                         break;
