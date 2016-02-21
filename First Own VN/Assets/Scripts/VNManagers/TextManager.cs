@@ -70,7 +70,7 @@ public class TextManager : MonoBehaviour {
             aTextBottom(s); //То вызываем соответствующий метод
         else //Если режим полной формы
             aTextFull(s); //То вызываем соответствующий метод
-        SManager.AddText(s); //Добавляем текст в историю
+        SManager.AddText(" " + s); //Добавляем текст в историю
     }
     public void ClearText() //Функция очистки полного текстового поля
     {

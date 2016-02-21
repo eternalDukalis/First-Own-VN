@@ -112,6 +112,10 @@ public class ScenarioManager : MonoBehaviour {
                         ScrManager.NewDay(operation[1]); //Запускаем соответствующую вставку
                         yield return StartCoroutine(WaitNext()); //Ждём продолжения
                         break;
+                    case "opening": //Если замена опенинга
+                        ScrManager.Opening(); //Запускаем соответствующую вставку
+                        yield return StartCoroutine(WaitNext()); //Ждём продолжения
+                        break;
                     case "goto": //Если нужно перейти на другой источник инструкций
                         ChangeSource(operation[1]); //Пользуем соответствующим методом
                         break;
@@ -180,7 +184,7 @@ public class ScenarioManager : MonoBehaviour {
     string DeleteSpacesAtTheEnd(string source) //Функция удаления конечного символа в конце строки
     {
         string res = source; //Создаём промежуточную переменную
-        while ((int)res[res.Length - 1] == finalCode) //До тех пор, пока в конце есть пробелы
+        while (((int)res[res.Length - 1] == finalCode) || (res[res.Length - 1] == ' ')) //До тех пор, пока в конце есть пробелы
         {
             res = res.Remove(res.Length - 1); //Удаляем последний символ
         }

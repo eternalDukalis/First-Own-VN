@@ -6,6 +6,7 @@ public class ScreensManager : MonoBehaviour {
 
     public GameObject ScreensObject; //Родительский объект для экранов
     public Image NewDayObject; //Компонент Image вставки "новый день"
+    public Image OpeningObject; //Компонент Image псевдоопенинга
     public float FadeTime = 1; //Время появления/исчезновения
     public float FillingTime = 2; //Время выезда
     public float PauseTime = 1; //Время паузы
@@ -26,6 +27,39 @@ public class ScreensManager : MonoBehaviour {
         ScreensObject.SetActive(true); //Делаем родительский объект активным
         NewDayObject.sprite = Sprite.Create(bck, new Rect(0, 0, bck.width, bck.height), new Vector2(0, 0)); //Вставляем текстуру в компонент
         StartCoroutine(newDay()); //Начинаем корутину
+    }
+
+    public void Opening()
+    {
+        ScreensObject.SetActive(true);
+        StartCoroutine(opening());
+    }
+
+    IEnumerator opening()
+    {
+        ScenarioManager.LockCoroutine();
+        //StartCoroutine(FadeObject(OpeningObject, true));
+        //yield return StartCoroutine(WaitNext());
+        Image logo = OpeningObject.transform.GetChild(0).GetComponent<Image>();
+        Text title = OpeningObject.transform.GetChild(1).GetComponent<Text>();
+        StartCoroutine(FadeObject(logo, true));
+        yield return StartCoroutine(WaitNext());
+        StartCoroutine(FadeObject(title, true));
+        yield return StartCoroutine(WaitNext());
+        float tm = 0;
+        while (tm < PauseTime)
+        {
+            tm += Time.deltaTime;
+            yield return null;
+        }
+        StartCoroutine(FadeObject(logo, false));
+        yield return StartCoroutine(WaitNext());
+        StartCoroutine(FadeObject(title, false));
+        yield return StartCoroutine(WaitNext());
+        //StartCoroutine(FadeObject(OpeningObject, false));
+        //yield return StartCoroutine(WaitNext());
+        ScenarioManager.UnlockCoroutine();
+        ScreensObject.SetActive(false);
     }
 
     IEnumerator newDay() //Корутина вставки "новый день"
@@ -64,6 +98,17 @@ public class ScreensManager : MonoBehaviour {
         while (((img.color.a < 1) && (inc)) || ((img.color.a > 0) && (!inc))) //Пока объект полностью не появится или полностью не исчезнет
         {
             img.color += new Color(0, 0, 0, (2 * inc.GetHashCode() - 1) * Time.deltaTime / FadeTime); //Увеличиваем или уменьшаем альфу
+            yield return null; //Новый кадр
+        }
+        cdn = true; //Возобновляем локальную корутину
+    }
+
+    IEnumerator FadeObject(Text txt, bool inc) //Корутина работы с альфой компоненов Text
+    {
+        cdn = false; //Приостанавливаем локальную корутину
+        while (((txt.color.a < 1) && (inc)) || ((txt.color.a > 0) && (!inc))) //Пока текст полностью не появится или полностью не исчезнет
+        {
+            txt.color += new Color(0, 0, 0, (2 * inc.GetHashCode() - 1) * Time.deltaTime / FadeTime); //Увеличиваем или уменьшаем альфу
             yield return null; //Новый кадр
         }
         cdn = true; //Возобновляем локальную корутину

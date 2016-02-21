@@ -1,7 +1,15 @@
 Но продолжим.
+add|Точнее начнём.
+hidetf|
+showscr|
+opening|
+hidescr|
+showtf|
+Отлично.
+Теперь представим, что должен наступить новый день.
 hidetf|
 showscr|
 newday|village_streets_evening
-showtf|
 hidescr|
-Итак новый день наступил
+showtf|
+Итак новый день наступил.
