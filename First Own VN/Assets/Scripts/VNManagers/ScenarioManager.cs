@@ -120,6 +120,10 @@ public class ScenarioManager : MonoBehaviour {
                         ScrManager.NewEpisode(int.Parse(operation[1])); //Запускаем соответствующую вставку
                         yield return StartCoroutine(WaitNext()); //Ждём продолжения
                         break;
+                    case "end": //Если конечная заставка
+                        ScrManager.End(operation[1], operation[2]); //Запускаем соответствующую вставку
+                        yield return StartCoroutine(WaitNext()); //Ждём продолжения
+                        break;
                     case "goto": //Если нужно перейти на другой источник инструкций
                         ChangeSource(operation[1]); //Пользуем соответствующим методом
                         break;
@@ -157,6 +161,11 @@ public class ScenarioManager : MonoBehaviour {
     {
         while (!CanDoNext) //Пока сверяемая булева переменная равна false
             yield return null; //Ждём
+    }
+
+    static public void GoToMainMenu() //Функция перехода к главному меню
+    {
+        //Здесь должен быть переход к главному меню
     }
 
     static public void LockCoroutine() //Функция приостановки основной сценарной корутины
