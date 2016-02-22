@@ -9,6 +9,7 @@ public class ScreensManager : MonoBehaviour {
     public Image OpeningObject; //Компонент Image псевдоопенинга
     public GameObject EpisodesObject; //Родительский объект для вставок начала эпизода
     public Image EndObject; //Компонент Image конечной вставки
+    public Image InscriptionObject; //Компонент Image для надписи
     public float FadeTime = 1; //Время появления/исчезновения
     public float MiniFadeTime = 0.5f; //Уменьшенное время появления/исчезновения
     public float FillingTime = 2; //Время выезда
@@ -49,6 +50,43 @@ public class ScreensManager : MonoBehaviour {
     {
         ScreensObject.SetActive(true); //Делаем родительский объект активным
         StartCoroutine(end(title, text)); //Запускаем корутину
+    }
+
+    public void Inscription(string text) //Вставка надписи
+    {
+        ScreensObject.SetActive(true); //Делаем родительский объект активным
+        StartCoroutine(inscription(null, text)); //Запускаем корутину
+    }
+
+    public void Inscription(string back, string text) //Вставка надписи с фоном
+    {
+        ScreensObject.SetActive(true); //Делаем родительский объект активным
+        Texture2D pic = Resources.Load<Texture2D>(BackgroundManager.BackPath + back); //Загружаем фон
+        StartCoroutine(inscription(Sprite.Create(pic, new Rect(0, 0, pic.width, pic.height), new Vector2(0, 0)), text)); //Запускаем фон
+    }
+
+    IEnumerator inscription(Sprite back, string text) //Корутина надписи
+    {
+        ScenarioManager.LockCoroutine(); //Приостанавливаем сценарий
+        InscriptionObject.sprite = back; //Вставляем фон
+        StartCoroutine(FadeObject(InscriptionObject, true, FadeTime)); //Показываем фон
+        yield return StartCoroutine(WaitNext()); //Ждём
+        Text ins = InscriptionObject.GetComponentInChildren<Text>(); //Находим компонент Text
+        ins.text = text; //Вставляем текст
+        StartCoroutine(FadeObject(ins, true, FadeTime)); //Показываем текст
+        yield return StartCoroutine(WaitNext()); //Ждём
+        float tm = 0; //Счётчик паузы
+        while (tm < PauseTime) //Пока пауза не закончилась
+        {
+            tm += Time.deltaTime; //Увеличиваем счётчик паузы
+            yield return null; //Новый кадр
+        }
+        StartCoroutine(FadeObject(ins, false, FadeTime)); //Убираем текст
+        yield return StartCoroutine(WaitNext()); //Ждём
+        StartCoroutine(FadeObject(InscriptionObject, false, FadeTime)); //Убираем фон
+        yield return StartCoroutine(WaitNext()); //Ждём
+        ScenarioManager.UnlockCoroutine(); //Возобновляем сценарий
+        ScreensObject.SetActive(false); //Делаем родительский объект неактивным
     }
 
     IEnumerator end(string title, string text)
