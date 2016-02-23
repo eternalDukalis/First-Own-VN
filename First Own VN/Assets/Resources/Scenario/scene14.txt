@@ -1,16 +1,11 @@
 hidetf|
 showscr|
-epilogue|staircase|ЭПИЛОГ
 hidescr|
 showtf|
-Но продолжим.
-add|Точнее закончим.
-hidetf|
-showscr|
-inscription|20 лет спустя
-hidescr|
-showtf|
-Ну вот теперь точно всё
-hidetf|
-showscr|
-end|КОНЕЦ ПЕРВОГО ЭПИЗОДА|	Поздравляем, вы успешно закончили первый эпизод! Основая версия игры в данный момент находится в разработке и, возможно, выйдет в скором будущем. Надеемся, что вы ещё вернётесь!
+Настало время спрайтов персонажей
+changeclothes|Ksenia|Usual
+setactor|Ksenia|left|right|2dreaminess
+Интересно, получилось ли.
+А удалится сможет?
+delactor|Ksenia|right
+Ну что, норм?

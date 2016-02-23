@@ -23,6 +23,7 @@ public class ScenarioManager : MonoBehaviour {
     SelectionManager SManager; //Компонент для управления выбором
     EffectsManager EManager; //Компонент для управления эффектами
     ScreensManager ScrManager; //Компонент для управления вставками
+    CharacterManager CManager; //Компонент для управления спрайтами персонажей
     string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
 
     static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
@@ -34,6 +35,7 @@ public class ScenarioManager : MonoBehaviour {
         SManager = GameObject.Find("CommonObject").GetComponent<SelectionManager>(); //Находим компонент на сцене
         EManager = GameObject.Find("CommonObject").GetComponent<EffectsManager>(); //Находим компонент на сцене
         ScrManager = GameObject.Find("CommonObject").GetComponent<ScreensManager>(); //Находим компонент на сцене
+        CManager = GameObject.Find("CommonObject").GetComponent<CharacterManager>(); //Находим компонент на сцене
         ChangeSource(StartText); //Считываем команды из файла
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
@@ -96,6 +98,34 @@ public class ScenarioManager : MonoBehaviour {
                         break;
                     case "clearform": //Если нужно очистить полную текстовую форму
                         TManager.ClearText(); //Очищаем форму
+                        break;
+                    case "changeclothes": //Если нужно сменить одежду персонажа
+                        CManager.ChangeClothes(operation[1], operation[2]); //Меняем одежду
+                        break;
+                    case "setactor": //Если нужно вставить персонажа
+                        switch (operation.Length) //В зависимости от количества параметров
+                        {
+                            case 3: //Если 2 параметра
+                                CManager.SetActor(operation[1], "center", operation[2]); //То показываем персонажа в центре
+                                break;
+                            case 4: //Если 3 параметра
+                                CManager.SetActor(operation[1], operation[2], operation[3]); //То показываем персонажа в нужном месте
+                                break;
+                            case 5: //Если 4 параметра
+                                CManager.SetActor(operation[1], operation[2], operation[3], operation[4]); //То персонаж выезжает с одной из сторон в нужно место
+                                break;
+                        }
+                        break;
+                    case "delactor": //Если нужно удалить персонажа
+                        switch (operation.Length) //в зависимости от количества параметров
+                        {
+                            case 2: //Если 1 параметр
+                                CManager.DeleteActor(operation[1]); //Удаляем персонажа
+                                break;
+                            case 3: //Если 2 параметра
+                                CManager.DeleteActor(operation[1], operation[2]); //Удаляем персонажа в нужную сторону
+                                break;
+                        }
                         break;
                     case "showscr": //Если нужно показать одноцветный экран
                         EManager.PlainScreenOn(operation[1]); //Вызываем функцию показывания экрана
