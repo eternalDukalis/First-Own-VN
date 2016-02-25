@@ -10,6 +10,10 @@ attribute|Ksenia|catears
 highlight|Ksenia
 Вот такой вот спрайтик.
 unhighlight|Ksenia
+Нужно попробовать поперемещать
+moveactor|Ksenia|right
+Нужно попробовать сменить эмоцию.
+changeemo|Ksenia|2dreaminess
 Нужно убрать ушки.
 delattribute|Ksenia|catears
 А удалится сможет?

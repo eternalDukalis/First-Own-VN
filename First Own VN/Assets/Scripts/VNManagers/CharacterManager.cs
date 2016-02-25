@@ -76,6 +76,16 @@ public class CharacterManager : MonoBehaviour {
         Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().RemoveAttribute(attribute); //Удаляем атрибут
     }
 
+    public void MoveActor(string name, string position) //Функия перемещения персонажа
+    {
+        Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().MoveActor(StringToPosition(position)); //Запускаем перемещение персонажа
+    }
+
+    public void ChangeEmotion(string name, string emotion) //Функция смены эмоции персонажа
+    {
+        Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().ChangeEmotion(emotion); //Меняем эмоцию
+    }
+
     CharacterBehavior.Position StringToPosition(string pos) //Функция перевода строки в перечислимый типа Position
     {
         switch (pos) //В зависимости от содержимого строки

@@ -95,9 +95,13 @@ public class CharacterBehavior : MonoBehaviour {
         StartCoroutine(moving(GetPosition(to, false), true)); //Начинаем корутину перемещения
     }
 
-    public void ChangeEmotion(string emotion)
+    public void ChangeEmotion(string emotion) //Смена эмоции персонажа
     {
- 
+        CurrentEmotion = emotion; //Эмоция
+        State.CurrentState.UpdateCharacterEmotion(Name, CurrentEmotion); //Обновляем состояние
+        SetEmotion(); //Загружаем тело
+        SetClothes(); //Загружаем одежду
+        Resources.UnloadUnusedAssets(); //Выгружаем неиспользуемые ресурсы
     }
 
     public void Highlight() //Выделение персонажа
@@ -138,9 +142,11 @@ public class CharacterBehavior : MonoBehaviour {
         Resources.UnloadUnusedAssets(); //Выгружаем неиспользуемые ресурсы
     }
 
-    public void MoveActor(Position to)
+    public void MoveActor(Position to) //Перемещение персонажа
     {
- 
+        SpritePosition = to; //Позиция персонажа
+        State.CurrentState.UpdateCharacterPosition(Name, to); //Обновляем состояние
+        StartCoroutine(moving(GetPosition(SpritePosition, true), false)); //Начинаем перемещение персонажа
     }
 
     IEnumerator placing(bool inc) //Корутина помещения/скрытия

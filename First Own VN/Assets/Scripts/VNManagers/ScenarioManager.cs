@@ -139,6 +139,12 @@ public class ScenarioManager : MonoBehaviour {
                     case "delattribute": //Если нужно убрать атрибут
                         CManager.DeleteAttribute(operation[1], operation[2]); //Удаляем атрибут
                         break;
+                    case "moveactor": //Если нужно переместить персонажа
+                        CManager.MoveActor(operation[1], operation[2]); //Перемещаем персонажа
+                        break;
+                    case "changeemo": //Если нужно сменить эмоцию персонажа
+                        CManager.ChangeEmotion(operation[1], operation[2]); //Меняет эмоцию
+                        break;
                     case "showscr": //Если нужно показать одноцветный экран
                         EManager.PlainScreenOn(operation[1]); //Вызываем функцию показывания экрана
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
