@@ -56,6 +56,16 @@ public class CharacterManager : MonoBehaviour {
         State.CurrentState.Clothes.Add(name, clothes); //Добавляем одежду для персонажа
     }
 
+    public void Highlight(string name) //Функция выделения персонажа 
+    {
+        Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().Highlight(); //Находим персонажа и запускаем выделение
+    }
+
+    public void Unhighlight(string name) //функция снятия выделения персонажа
+    {
+        Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().Unhighlight(); //Находим персонажа и снимаем выделение
+    }
+
     CharacterBehavior.Position StringToPosition(string pos) //Функция перевода строки в перечислимый типа Position
     {
         switch (pos) //В зависимости от содержимого строки

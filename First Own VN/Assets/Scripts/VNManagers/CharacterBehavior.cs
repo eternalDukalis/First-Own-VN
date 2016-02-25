@@ -15,6 +15,10 @@ public class CharacterBehavior : MonoBehaviour {
     static float PlacingTime = 1; //Время заполнения спрайта
     static float SpriteWidth = 0.5f; //Стандартная ширина спрайта
     static float MovingStep = 0.015f; //Длина шага при перемещении спрайта
+    static RectTransform GraphicsTransform; //Родительский объект для элементов графики
+    static Dictionary<Position, Vector2> XHighlightVectors; //Векторы выделения по х
+    static Vector2 YHighlightVector; //Вектор выделения по y
+    static int ScalingStepsNum = 30; //Количество шагов при выделении
 
     public Image BodySprite; //Тело персонажа
     public Image ClothesSprite; //Одежда персонажа
@@ -34,6 +38,12 @@ public class CharacterBehavior : MonoBehaviour {
         AttributeSprite = new List<Image>(); //Инициализация списка атрибутов
         CurrentAttributes = new List<string>(); //Инициализация списка названий атрибутов
         ParentImage = GetComponent<Image>(); //Поиск компонента Image
+        GraphicsTransform = GameObject.Find("Graphics").GetComponent<RectTransform>(); //Находим компонент на сцене
+        XHighlightVectors = new Dictionary<Position, Vector2>(); //Инициализируем словарь
+        XHighlightVectors.Add(Position.Right, new Vector2(-1, 1)); //Добавляем вектор для правой части
+        XHighlightVectors.Add(Position.Center, new Vector2(-0.5f, 1.5f)); //Добавляем вектор для центральной части
+        XHighlightVectors.Add(Position.Left, new Vector2(0, 2)); //Добавляем вектор для левой части
+        YHighlightVector = new Vector2(-0.5f, 1.5f); //Y вектор выделения
 	}
 	
 	void Update () 
@@ -50,10 +60,8 @@ public class CharacterBehavior : MonoBehaviour {
         SpritePosition = position; //Записываем позицию
         CurrentClothes = clothes; //Записываем одежду
         CurrentEmotion = emotion; //Записываем эмоцию
-        Texture2D body = Resources.Load<Texture2D>(SpritesPath + Name + BodiesPath + CurrentEmotion); //Загружаем тело
-        Texture2D sclothes = Resources.Load<Texture2D>(SpritesPath + Name + ClothesPath + CurrentClothes + "/" + CurrentEmotion[0]); //Загружаем одежду
-        BodySprite.sprite = Sprite.Create(body, new Rect(0, 0, body.width, body.height), new Vector2(0, 0)); //Применяем тело
-        ClothesSprite.sprite = Sprite.Create(sclothes, new Rect(0, 0, sclothes.width, sclothes.height), new Vector2(0, 0)); //Применяем одежду
+        SetEmotion(); //Ставим эмоцию
+        SetClothes(); //Ставим одежду
         CurrentPosition = GetPosition(position, true); //Вычисляем позицию спрайта
         ApplyPosition(); //Применяем позицию спрайта
         StartCoroutine(placing(true)); //Начинаем корутину помещения
@@ -68,10 +76,8 @@ public class CharacterBehavior : MonoBehaviour {
         SpritePosition = to; //Записываем позицию
         CurrentClothes = clothes; //Записываем одежду
         CurrentEmotion = emotion; //Записываем эмоцию
-        Texture2D body = Resources.Load<Texture2D>(SpritesPath + Name + BodiesPath + CurrentEmotion);//Загружаем тело
-        Texture2D sclothes = Resources.Load<Texture2D>(SpritesPath + Name + ClothesPath + CurrentClothes + "/" + CurrentEmotion[0]); //Загружаем одежду
-        BodySprite.sprite = Sprite.Create(body, new Rect(0, 0, body.width, body.height), new Vector2(0, 0)); //Применяем тело
-        ClothesSprite.sprite = Sprite.Create(sclothes, new Rect(0, 0, sclothes.width, sclothes.height), new Vector2(0, 0)); //Применяем одежду
+        SetEmotion(); //Ставим эмоцию
+        SetClothes(); //Ставим одежду
         CurrentPosition = GetPosition(from, false); //Вычисляем позицию спрайта
         ParentImage.fillAmount = 1; //Применяем позицию спрайта
         StartCoroutine(moving(GetPosition(to, true), false)); //Начинаем корутину перемещения
@@ -94,14 +100,14 @@ public class CharacterBehavior : MonoBehaviour {
  
     }
 
-    public void Highlight()
+    public void Highlight() //Выделение персонажа
     {
- 
+        StartCoroutine(graphicsScaling(new Vector2(XHighlightVectors[SpritePosition].x, YHighlightVector.x), new Vector2(XHighlightVectors[SpritePosition].y, YHighlightVector.y))); //Запускаем скалирование объекта с графикой
     }
 
-    public void Unhighlight()
+    public void Unhighlight() //Снятие выделения персонажа
     {
- 
+        StartCoroutine(graphicsScaling(new Vector2(0, 0), new Vector2(1, 1))); //Запуск скалирования объекта с графикой
     }
 
     public void SetAttribute(string attribute)
@@ -154,6 +160,25 @@ public class CharacterBehavior : MonoBehaviour {
         Resources.UnloadUnusedAssets(); //Выгружаем неиспользуемые ресурсы
     }
 
+    IEnumerator graphicsScaling(Vector2 targetMin, Vector2 targetMax) //Скалирования объекта с графикой
+    {
+        Vector2 beginMin = GraphicsTransform.anchorMin; //Запоминаем изначальный anchorMin
+        Vector2 beginMax = GraphicsTransform.anchorMax; //Запоминаем изначальный anchorMax
+        for (int i = 0; i < ScalingStepsNum; i++) //Выполняем определённое количество шагов
+        {
+            if (Skip.isSkipping) //Если пропуск
+            {
+                yield return new WaitForSeconds(Settings.SkipInterval); //Новый кадр
+                break; //Прерываение цикла
+            }
+            GraphicsTransform.anchorMin += (targetMin - beginMin) / ScalingStepsNum; //изменяеи anchorMin
+            GraphicsTransform.anchorMax += (targetMax - beginMax) / ScalingStepsNum; //Изменяем anchorMax
+            yield return null; //Новый кадр
+        }
+        GraphicsTransform.anchorMin = targetMin; //Ставим конечный anchorMin
+        GraphicsTransform.anchorMax = targetMax; //Ставим конечный anchorMax
+    }
+
     float GetPosition(Position pos, bool inside) //Получение числа из типа позиции
     {
         switch (pos) //В зависимости от значения
@@ -170,5 +195,17 @@ public class CharacterBehavior : MonoBehaviour {
     {
         ParentImage.rectTransform.anchorMin = new Vector2(CurrentPosition - SpriteWidth / 2, ParentImage.rectTransform.anchorMin.y); //Расчитываем и применяем левую границу
         ParentImage.rectTransform.anchorMax = new Vector2(CurrentPosition + SpriteWidth / 2, ParentImage.rectTransform.anchorMax.y); //Рассчитываем и применяем правую границу
+    }
+
+    void SetEmotion() //Установка эмоции
+    {
+        Texture2D body = Resources.Load<Texture2D>(SpritesPath + Name + BodiesPath + CurrentEmotion);//Загружаем тело
+        BodySprite.sprite = Sprite.Create(body, new Rect(0, 0, body.width, body.height), new Vector2(0, 0)); //Применяем тело
+    }
+
+    void SetClothes() //Установка одежды
+    {
+        Texture2D sclothes = Resources.Load<Texture2D>(SpritesPath + Name + ClothesPath + CurrentClothes + "/" + CurrentEmotion[0]); //Загружаем одежду
+        ClothesSprite.sprite = Sprite.Create(sclothes, new Rect(0, 0, sclothes.width, sclothes.height), new Vector2(0, 0)); //Применяем одежду
     }
 }

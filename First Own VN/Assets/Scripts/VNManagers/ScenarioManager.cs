@@ -127,6 +127,12 @@ public class ScenarioManager : MonoBehaviour {
                                 break;
                         }
                         break;
+                    case "highlight": //Если нужно выделить персонажа
+                        CManager.Highlight(operation[1]); //Выделяем персонажа
+                        break;
+                    case "unhighlight": //Если нужно снять выделение персонажа
+                        CManager.Unhighlight(operation[1]); //Снимаем выделение персонажа
+                        break;
                     case "showscr": //Если нужно показать одноцветный экран
                         EManager.PlainScreenOn(operation[1]); //Вызываем функцию показывания экрана
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать

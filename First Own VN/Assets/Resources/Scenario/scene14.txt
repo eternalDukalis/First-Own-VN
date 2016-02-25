@@ -3,9 +3,12 @@ showscr|
 hidescr|
 showtf|
 Настало время спрайтов персонажей
-changeclothes|Ksenia|Usual
-setactor|Ksenia|left|right|2dreaminess
+changeclothes|Ksenia|Work
+setactor|Ksenia|left|right|1normal
 Интересно, получилось ли.
+highlight|Ksenia
+Вот такой вот спрайтик.
+unhighlight|Ksenia
 А удалится сможет?
 delactor|Ksenia|right
 Ну что, норм?
