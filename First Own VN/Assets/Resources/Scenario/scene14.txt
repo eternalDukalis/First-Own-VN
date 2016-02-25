@@ -4,11 +4,14 @@ hidescr|
 showtf|
 Настало время спрайтов персонажей
 changeclothes|Ksenia|Work
-setactor|Ksenia|left|right|1normal
+setactor|Ksenia|1normal
+attribute|Ksenia|catears
 Интересно, получилось ли.
 highlight|Ksenia
 Вот такой вот спрайтик.
 unhighlight|Ksenia
+Нужно убрать ушки.
+delattribute|Ksenia|catears
 А удалится сможет?
 delactor|Ksenia|right
 Ну что, норм?

@@ -66,6 +66,16 @@ public class CharacterManager : MonoBehaviour {
         Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().Unhighlight(); //Находим персонажа и снимаем выделение
     }
 
+    public void SetAttribute(string name, string attribute) //Функция установка атрибута
+    {
+        Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().SetAttribute(attribute); //Устанавливаем атрибут
+    }
+
+    public void DeleteAttribute(string name, string attribute) //Функция удаления атрибута
+    {
+        Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().RemoveAttribute(attribute); //Удаляем атрибут
+    }
+
     CharacterBehavior.Position StringToPosition(string pos) //Функция перевода строки в перечислимый типа Position
     {
         switch (pos) //В зависимости от содержимого строки

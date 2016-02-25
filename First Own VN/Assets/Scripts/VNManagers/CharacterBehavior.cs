@@ -22,7 +22,7 @@ public class CharacterBehavior : MonoBehaviour {
 
     public Image BodySprite; //Тело персонажа
     public Image ClothesSprite; //Одежда персонажа
-    List<Image> AttributeSprite; //Список атрибутов персонажа
+    Dictionary<string, GameObject> AttributeSprite; //Список атрибутов персонажа
     Image ParentImage; //Родительский объект персонажа
 
     public string Name = ""; //Имя персонажа
@@ -35,7 +35,7 @@ public class CharacterBehavior : MonoBehaviour {
     float CurrentPosition; //Позиция спрайта
 	void Start () 
     {
-        AttributeSprite = new List<Image>(); //Инициализация списка атрибутов
+        AttributeSprite = new Dictionary<string,GameObject>(); //Инициализация списка атрибутов
         CurrentAttributes = new List<string>(); //Инициализация списка названий атрибутов
         ParentImage = GetComponent<Image>(); //Поиск компонента Image
         GraphicsTransform = GameObject.Find("Graphics").GetComponent<RectTransform>(); //Находим компонент на сцене
@@ -102,17 +102,40 @@ public class CharacterBehavior : MonoBehaviour {
 
     public void Highlight() //Выделение персонажа
     {
+        Highlighted = true; //Персонаж выделен
+        State.CurrentState.UpdateCharacterHighlighted(Name, Highlighted); //Обновляем состояние
         StartCoroutine(graphicsScaling(new Vector2(XHighlightVectors[SpritePosition].x, YHighlightVector.x), new Vector2(XHighlightVectors[SpritePosition].y, YHighlightVector.y))); //Запускаем скалирование объекта с графикой
     }
 
     public void Unhighlight() //Снятие выделения персонажа
     {
+        Highlighted = false; //Персонаж не выделен
+        State.CurrentState.UpdateCharacterHighlighted(Name, Highlighted); //Обновляем состояние
         StartCoroutine(graphicsScaling(new Vector2(0, 0), new Vector2(1, 1))); //Запуск скалирования объекта с графикой
     }
 
-    public void SetAttribute(string attribute)
+    public void SetAttribute(string attribute) //Установка атрибута
     {
- 
+        CurrentAttributes.Add(attribute); //Записываем атрибут в список атрибутов
+        State.CurrentState.UpdateCharacterAttributes(Name, CurrentAttributes); //Обновляем состояние
+
+        GameObject attr = Instantiate(ClothesSprite.gameObject); //Создаём объект
+        attr.transform.SetParent(ParentImage.transform, false); //Помещяем его в родительский
+        attr.transform.SetAsLastSibling(); //Выводим его на передний план
+        Texture2D textattr = Resources.Load<Texture2D>(SpritesPath + Name + AttributesPath + attribute); //Загружаем текстуру атрибута
+        attr.GetComponent<Image>().sprite = Sprite.Create(textattr, new Rect(0, 0, textattr.width, textattr.height), new Vector2(0, 0)); //Вставляем спрайт
+        AttributeSprite.Add(attribute, attr); //Добавляем объект в словарь атрибутов
+    }
+
+    public void RemoveAttribute(string attribute) //Удаление атрибута
+    {
+        CurrentAttributes.Remove(attribute); //Удаляем атрибут из списка атрибутов
+        State.CurrentState.UpdateCharacterAttributes(Name, CurrentAttributes); //Обновляем состояние
+
+        GameObject attr = AttributeSprite[attribute]; //Получаем объект с атрибутом
+        AttributeSprite.Remove(attribute); //Удаляем объект из словаря атрибутов
+        Destroy(attr); //Удаляем объект
+        Resources.UnloadUnusedAssets(); //Выгружаем неиспользуемые ресурсы
     }
 
     public void MoveActor(Position to)
