@@ -18,7 +18,7 @@ public class CharacterBehavior : MonoBehaviour {
     static RectTransform GraphicsTransform; //Родительский объект для элементов графики
     static Dictionary<Position, Vector2> XHighlightVectors; //Векторы выделения по х
     static Vector2 YHighlightVector; //Вектор выделения по y
-    static int ScalingStepsNum = 30; //Количество шагов при выделении
+    static int ScalingStepsNum = 20; //Количество шагов при выделении
 
     public Image BodySprite; //Тело персонажа
     public Image ClothesSprite; //Одежда персонажа
