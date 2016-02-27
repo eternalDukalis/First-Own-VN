@@ -13,6 +13,7 @@ public class AutoButton : MonoBehaviour {
         isOn = Auto.isAuto; //Получаем значение из скрипта Skip 
         button = GetComponent<Button>(); //Ищем компонент
         ImageOff = button.image.color; //сохраняем стандартный цвет
+        SetIndicator(); //Изменяем цвет кнопки
 	}
 	
 	void Update () 

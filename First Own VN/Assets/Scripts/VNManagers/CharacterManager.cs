@@ -39,12 +39,16 @@ public class CharacterManager : MonoBehaviour {
 
     public void DeleteActor(string name) //Функция удаление персонажа без движения
     {
-        Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().DeleteFromScene(); //Запускаем функцию удаления
+        CharacterBehavior actor = Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>(); //Находим персонажа
+        Actors.Remove(actor.gameObject); //Удаляем персонажа из списка
+        actor.DeleteFromScene(); //Запускаем функцию удаления
     }
 
     public void DeleteActor(string name, string to) //Функция удаления персонажа с движением
     {
-        Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>().DeleteFromScene(StringToPosition(to)); //Запускаем функцию удаления
+        CharacterBehavior actor = Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>(); //Находим персонажа
+        Actors.Remove(actor.gameObject); //Удаляем персонажа из списка
+        actor.DeleteFromScene(StringToPosition(to)); //Запускаем функцию удаления
     }
 
     public void ChangeClothes(string name, string clothes) //Функция смены одежды
