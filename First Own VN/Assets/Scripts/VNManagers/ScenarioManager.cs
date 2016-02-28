@@ -17,6 +17,7 @@ public class ScenarioManager : MonoBehaviour {
         }
     }
     static bool CanDoNext = true; //Сверяемая булева переменная для приостановки/возобновления основной сценарной корутины 
+    static public bool PlayingMode = true; //Находимся в режиме проигрывания
     int finalCode = 13; //Код конечного символа
     TextManager TManager; //Компонент для управления текстовой формой
     BackgroundManager BManager; //Компонент для управления задним фоном
@@ -215,7 +216,7 @@ public class ScenarioManager : MonoBehaviour {
 
     IEnumerator WaitNext() //Корутина ожидания возобновления основной сценарной корутины
     {
-        while (!CanDoNext) //Пока сверяемая булева переменная равна false
+        while ((!CanDoNext) || (!PlayingMode)) //Пока сверяемая булева переменная равна false
             yield return null; //Ждём
     }
 

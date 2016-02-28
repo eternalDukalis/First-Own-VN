@@ -101,7 +101,7 @@ public class TextManager : MonoBehaviour {
         float tm = 0; //Счётчик времени
         while (MainText != txt.text) //Пока текст в компоненте не станет желаемым
         {
-            if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата клавиша продолжения или режим пропуска
+            if ((ScenarioManager.PlayingMode) && ((ControlManager.Next()) || (Skip.isSkipping))) //Если нажата клавиша продолжения или режим пропуска
             {
                 yield return new WaitForSeconds(Settings.SkipInterval); //Новый кадр
                 txt.text = MainText; //То сразу показываем весь текст
@@ -115,7 +115,7 @@ public class TextManager : MonoBehaviour {
             }
             yield return null; //Смена кадра
         }
-        while (((!ControlManager.Next()) && (!Skip.isSkipping)) && (!AutoGoing.Continue())) //Ожидание нажатия клавиши продолжения или пока не будет режим пропуска
+        while ((!ScenarioManager.PlayingMode) || (((!ControlManager.Next()) && (!Skip.isSkipping)) && (!AutoGoing.Continue()))) //Ожидание нажатия клавиши продолжения или пока не будет режим пропуска
             yield return null; //Смена кадра
         ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
     }
