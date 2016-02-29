@@ -25,6 +25,7 @@ public class ScenarioManager : MonoBehaviour {
     EffectsManager EManager; //Компонент для управления эффектами
     ScreensManager ScrManager; //Компонент для управления вставками
     CharacterManager CManager; //Компонент для управления спрайтами персонажей
+    AudioManager AManager; //Компонент для управления звуком
     string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
 
     static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
@@ -37,6 +38,7 @@ public class ScenarioManager : MonoBehaviour {
         EManager = GameObject.Find("CommonObject").GetComponent<EffectsManager>(); //Находим компонент на сцене
         ScrManager = GameObject.Find("CommonObject").GetComponent<ScreensManager>(); //Находим компонент на сцене
         CManager = GameObject.Find("CommonObject").GetComponent<CharacterManager>(); //Находим компонент на сцене
+        AManager = GameObject.Find("Audio").GetComponent<AudioManager>(); //Находим компонент на сцене
         ChangeSource(StartText); //Считываем команды из файла
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
@@ -145,6 +147,35 @@ public class ScenarioManager : MonoBehaviour {
                         break;
                     case "changeemo": //Если нужно сменить эмоцию персонажа
                         CManager.ChangeEmotion(operation[1], operation[2]); //Меняет эмоцию
+                        break;
+                    case "music": //Если нужно включить музыку
+                        AManager.Play("Music", operation[1]); //Включаем музыку
+                        State.CurrentState.Music = operation[1]; //Обновляем состояние
+                        break;
+                    case "musicoff": //Если нужно выключить музыку
+                        AManager.Stop("Music"); //Выключаем музыку
+                        State.CurrentState.Music = ""; //Обновляем состояние
+                        break;
+                    case "env": //Если нужно включить звуки окружения
+                        AManager.Play("Environment", operation[1]); //Включаем звуки окружения
+                        State.CurrentState.Environment = operation[1]; //Обновляем состояние
+                        break;
+                    case "envoff": //Если нужно выключить звуки окружения
+                        AManager.Stop("Environment"); //Выключаем звуки окружения
+                        State.CurrentState.Environment = ""; //Обновляем состояние
+                        break;
+                    case "sound": //Если нужно включить звуковые эффекты
+                        AManager.Play("Sound", operation[1]); //Включаем звуковые эффекты
+                        State.CurrentState.Sound = operation[1]; //Обновляем состояние
+                        State.CurrentState.SoundLoop = false; //Обновляем состояние
+                        break;
+                    case "soundoff": //Если нужно выключить звуковые эффекты
+                        AManager.Stop("Sound"); //Выключаем звуковые эффекты
+                        State.CurrentState.Sound = ""; //Обновляем состояние
+                        break;
+                    case "soundloop": //Если нужно зациклить проигрывание звуковых эффектов
+                        AManager.SetLoop("Sound", true); //Зацикливаем
+                        State.CurrentState.SoundLoop = true; //Обновляем состояние
                         break;
                     case "showscr": //Если нужно показать одноцветный экран
                         EManager.PlainScreenOn(operation[1]); //Вызываем функцию показывания экрана

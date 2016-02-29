@@ -42,6 +42,10 @@ public class State {
     public string PlainScreenColor = ""; //Цвет одноцветного экрана
     List<CharacterInfo> Chars; //Информация об актёрах на сцене
     public Dictionary<string, string> Clothes; //Одёжки персонажей
+    public string Music = ""; //Текущая музыка
+    public string Environment = ""; //Текущие звуки окружения
+    public string Sound = ""; //Текущие звуковые эффекты
+    public bool SoundLoop = false; //Зациклены ли звуковые эффекты
     static State()
     {
         CurrentState = new State(); //Инициализация текущего состояния
