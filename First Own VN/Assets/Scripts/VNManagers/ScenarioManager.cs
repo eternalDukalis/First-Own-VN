@@ -215,6 +215,13 @@ public class ScenarioManager : MonoBehaviour {
                     case "goto": //Если нужно перейти на другой источник инструкций
                         ChangeSource(operation[1]); //Пользуем соответствующим методом
                         break;
+                    case "incvar": //Если нужно увеличить значение переменной
+                        State.CurrentState.IncreaseVariable(operation[1]); //Увеличиваем значение переменной
+                        break;
+                    case "ifgoto": //Если нужно сделать условный переход
+                        if (State.CurrentState.VariableGetsValue(operation[1], int.Parse(operation[2]))) //Если переменная достигла значения
+                            ChangeSource(operation[3]); //Переходим на другой файл
+                        break;
                     case "select": //Если нужно выбрать из нескольких вариантов
                         string[] texts = new string[(operation.Length - 1) / 2]; //Инициализируем массив вариантов выбора
                         string[] targets = new string[(operation.Length - 1) / 2]; //Инициализируем массив возможных переходов

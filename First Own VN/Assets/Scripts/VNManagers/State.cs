@@ -46,6 +46,7 @@ public class State {
     public string Environment = ""; //Текущие звуки окружения
     public string Sound = ""; //Текущие звуковые эффекты
     public bool SoundLoop = false; //Зациклены ли звуковые эффекты
+    Dictionary<string, int> Variables; //Словарь переменных
     static State()
     {
         CurrentState = new State(); //Инициализация текущего состояния
@@ -54,6 +55,7 @@ public class State {
     {
         Chars = new List<CharacterInfo>(); //Инициализация списка актёров
         Clothes = new Dictionary<string, string>(); //Инициализация словара одёжок персонажей
+        Variables = new Dictionary<string, int>(); //Инициализация словаря переменных
     }
 
     public void AddCharacter(string name, string currentEmotion, string currentClothes, List<string> currentAttributes, CharacterBehavior.Position spritePosition, bool highlighted) //Функция добавления информации о персонаже
@@ -91,5 +93,19 @@ public class State {
     public void DeleteCharacter(string name) //Удаление информации о персонаже
     {
         Chars.RemoveAll(x => x.Name == name); //Удаляем информацию
+    }
+
+    public void IncreaseVariable(string var) //Функция увеличения переменной
+    {
+        if (!Variables.ContainsKey(var)) //Если переменной нет в словаре
+            Variables.Add(var, 0); //То она создаётся
+        Variables[var]++; //Значение переменной увеличивается на 1
+    }
+
+    public bool VariableGetsValue(string var, int value) //Достигла ли переменная значения
+    {
+        if ((Variables.ContainsKey(var)) && (Variables[var] >= value)) //Если переменная есть в словаре и её значение больше либо равно запрашиваемого
+            return true; //То истина
+        return false; //Иначе ложь
     }
 }
