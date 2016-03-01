@@ -14,7 +14,10 @@ public class EffectsManager : MonoBehaviour {
     Vector2 Deviation; //Текущее отклонение
 	void Start () 
     {
-	
+        if (State.CurrentState.PlainScreenOn) //Если включён одноцветный экран
+        {
+            QuickShow(PlainObject.GetComponent<Image>(), State.CurrentState.PlainScreenColor); //Показываем одноцветный экран
+        }
 	}
 	
 	void Update () 
@@ -125,5 +128,11 @@ public class EffectsManager : MonoBehaviour {
                 return Color.yellow;
         }
         return Color.black;
+    }
+
+    void QuickShow(Image img, string color) //Функция быстрого показа одноцветного экрана
+    {
+        img.gameObject.SetActive(true); //Делаем объект активным
+        img.color = StringToColor(color); //Применяем цвет
     }
 }

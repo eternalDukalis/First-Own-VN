@@ -10,7 +10,7 @@ public class BackgroundManager : MonoBehaviour {
 	void Start () 
     {
         img = GetComponent<Image>(); //Поиск компонента
-	}
+    }
 	
 	void Update () 
     {

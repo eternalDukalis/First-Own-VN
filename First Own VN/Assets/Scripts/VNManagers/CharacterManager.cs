@@ -10,6 +10,16 @@ public class CharacterManager : MonoBehaviour {
 	void Start () 
     {
         Actors = new List<GameObject>(); //Инициализируем список
+        State.CharacterInfo[] cinf = State.CurrentState.Chars.ToArray(); //Сохраняем данные
+        State.CurrentState.Chars = new List<State.CharacterInfo>(); //Очищаем список
+        foreach (State.CharacterInfo cur in cinf) //Для каждой записи информации о персонаже
+        {
+            SetActor(cur.Name, PositionToString(cur.SpritePosition), cur.CurrentEmotion); //Добавляем объект
+            for (int i = 0; i < cur.CurrentAttributes.Count; i++)
+                SetAttribute(cur.Name, cur.CurrentAttributes.ToArray()[i]); //Добавляем все атрибуты
+            if (cur.Highlighted) //Если выделен
+                Highlight(cur.Name); //То выделяем
+        }
 	}
 	
 	void Update () 
@@ -100,5 +110,17 @@ public class CharacterManager : MonoBehaviour {
                 return CharacterBehavior.Position.Right; //То возвращаем Right
         }
         return CharacterBehavior.Position.Center; //Возвращаем Center
+    }
+
+    string PositionToString(CharacterBehavior.Position pos) //Функция перевода Position в строку
+    {
+        switch (pos)
+        {
+            case CharacterBehavior.Position.Right:
+                return "right";
+            case CharacterBehavior.Position.Left:
+                return "left";
+        }
+        return "center";
     }
 }

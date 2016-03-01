@@ -35,24 +35,17 @@ public class CharacterBehavior : MonoBehaviour {
     float CurrentPosition; //Позиция спрайта
 	void Start () 
     {
-        AttributeSprite = new Dictionary<string,GameObject>(); //Инициализация списка атрибутов
-        CurrentAttributes = new List<string>(); //Инициализация списка названий атрибутов
-        ParentImage = GetComponent<Image>(); //Поиск компонента Image
-        GraphicsTransform = GameObject.Find("Graphics").GetComponent<RectTransform>(); //Находим компонент на сцене
-        XHighlightVectors = new Dictionary<Position, Vector2>(); //Инициализируем словарь
-        XHighlightVectors.Add(Position.Right, new Vector2(-1, 1)); //Добавляем вектор для правой части
-        XHighlightVectors.Add(Position.Center, new Vector2(-0.5f, 1.5f)); //Добавляем вектор для центральной части
-        XHighlightVectors.Add(Position.Left, new Vector2(0, 2)); //Добавляем вектор для левой части
-        YHighlightVector = new Vector2(-0.5f, 1.5f); //Y вектор выделения
+        
 	}
 	
 	void Update () 
     {
-	
+        
 	}
 
     public void SetOnScene(string name, Position position, string emotion, string clothes) //Функция появления персонажа без движения
     {
+        Init(); //Производим инициализацию
         if (ParentImage == null) //Если компонент Image ещё не найден
             ParentImage = GetComponent<Image>(); //То находим его
         State.CurrentState.AddCharacter(name, emotion, clothes, CurrentAttributes, position, Highlighted); //Обновляем состояние
@@ -69,6 +62,7 @@ public class CharacterBehavior : MonoBehaviour {
 
     public void SetOnScene(string name, Position from, Position to, string emotion, string clothes) //Функция появления персонажа с движением
     {
+        Init(); //Производим инициализацию
         if (ParentImage == null)//Если компонент Image ещё не найден
             ParentImage = GetComponent<Image>(); //То находим его
         State.CurrentState.AddCharacter(name, emotion, clothes, CurrentAttributes, to, Highlighted); //Обновляем состояние
@@ -236,5 +230,18 @@ public class CharacterBehavior : MonoBehaviour {
     {
         Texture2D sclothes = Resources.Load<Texture2D>(SpritesPath + Name + ClothesPath + CurrentClothes + "/" + CurrentEmotion[0]); //Загружаем одежду
         ClothesSprite.sprite = Sprite.Create(sclothes, new Rect(0, 0, sclothes.width, sclothes.height), new Vector2(0, 0)); //Применяем одежду
+    }
+
+    void Init() //Инициализация параметров
+    {
+        AttributeSprite = new Dictionary<string, GameObject>(); //Инициализация списка атрибутов
+        CurrentAttributes = new List<string>(); //Инициализация списка названий атрибутов
+        ParentImage = GetComponent<Image>(); //Поиск компонента Image
+        GraphicsTransform = GameObject.Find("Graphics").GetComponent<RectTransform>(); //Находим компонент на сцене
+        XHighlightVectors = new Dictionary<Position, Vector2>(); //Инициализируем словарь
+        XHighlightVectors.Add(Position.Right, new Vector2(-1, 1)); //Добавляем вектор для правой части
+        XHighlightVectors.Add(Position.Center, new Vector2(-0.5f, 1.5f)); //Добавляем вектор для центральной части
+        XHighlightVectors.Add(Position.Left, new Vector2(0, 2)); //Добавляем вектор для левой части
+        YHighlightVector = new Vector2(-0.5f, 1.5f); //Y вектор выделения
     }
 }

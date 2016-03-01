@@ -34,6 +34,29 @@ public class TextManager : MonoBehaviour {
         AManager = GameObject.Find("MAINAUTHOR").GetComponent<AuthorManager>(); //Находим компонент на сцене
         SManager = GameObject.Find("STORYMANAGER").GetComponent<Story>(); //Находим компонент на сцене
         AutoGoing = GameObject.Find("CommonObject").GetComponent<Auto>(); //Находим компонент на сцене
+        TextModeBottom = State.CurrentState.TextFormIsBottom; //Нижняя ли форма
+        if (!State.CurrentState.TextFormIsOn) //Если текстовой формы изначально нет
+        {
+            QuickShowHide(BottomMask, false); //Убираем нижнюю форму
+            QuickShowHide(FullMask, false); //Убираем полную форму
+        }
+        else //Иначе
+        {
+            if (TextModeBottom) //Если нижня форма
+            {
+                QuickShowHide(BottomMask, true); //Показываем нижнюю форму
+                QuickShowHide(FullMask, false); //Убираем полную форму
+            }
+            else //Иначе
+            {
+                QuickShowHide(BottomMask, false); //Убираем нижнюю форму
+                QuickShowHide(FullMask, true); //Показываем полную форму
+            }
+        }
+        if (TextModeBottom) //Помещаем текст
+            TextComponent.text = MainText;
+        else
+            FullTextComponent.text = MainText;
 	}
 	
 	void Update () 
@@ -255,5 +278,23 @@ public class TextManager : MonoBehaviour {
         cur = cur.Remove(StartTag + ColorOpenTag.Length, 1); //Удаляем символ
         cur = cur.Insert(StartTag, ch.ToString()); //Вставляем его перед тегом
         return cur; //Возвращаем результат
+    }
+
+    void QuickShowHide(Image img, bool show) //Функция быстрого показа или скрытия текстовой формы
+    {
+        if (show) //Если нужно показать
+            img.gameObject.SetActive(true); //То делаем объект активным
+        Image[] imgs = img.GetComponentsInChildren<Image>(); //Все компоненты Image
+        Text[] txts = img.GetComponentsInChildren<Text>(); //Все компоненты Text
+        for (int i = 0; i < imgs.Length; i++) //Для всех компонентов Image
+        {
+            imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, show.GetHashCode()); //применяем цвет
+        }
+        for (int i = 0; i < txts.Length; i++) //Для всех компонентов Text
+        {
+            txts[i].color = new Color(txts[i].color.r, txts[i].color.g, txts[i].color.b, show.GetHashCode()); //Применяем цвет
+        }
+        if (!show) //Если нужно убрать
+            img.gameObject.SetActive(false); //То делаем объект неактивным
     }
 }

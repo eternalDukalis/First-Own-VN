@@ -39,7 +39,8 @@ public class ScenarioManager : MonoBehaviour {
         ScrManager = GameObject.Find("CommonObject").GetComponent<ScreensManager>(); //Находим компонент на сцене
         CManager = GameObject.Find("CommonObject").GetComponent<CharacterManager>(); //Находим компонент на сцене
         AManager = GameObject.Find("Audio").GetComponent<AudioManager>(); //Находим компонент на сцене
-        ChangeSource(StartText); //Считываем команды из файла
+        TextAsset newtext = Resources.Load<TextAsset>(ScenarioPath + State.CurrentState.CurrentSource); //Загружаем файл
+        ReadInstructions(newtext); //Загружаем инструкции
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
 	}
@@ -58,6 +59,8 @@ public class ScenarioManager : MonoBehaviour {
 
     IEnumerator MainScenarioCoroutine() //Основная сценарная корутина
     {
+        BManager.ChangeBackground(State.CurrentState.Background, 0); //Ставим стандартный фон
+        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет начать
         while (CurrentInstruction < Instructions.Length) //Пока не кончились команды
         {
             CurrentInstruction++; //Увеличиваем счётчик инструкций

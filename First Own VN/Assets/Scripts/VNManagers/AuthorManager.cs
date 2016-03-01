@@ -11,6 +11,8 @@ public class AuthorManager : MonoBehaviour {
         tForm = transform.parent.gameObject.GetComponent<Image>(); //Получем задний фон
         mText = GetComponent<Text>(); //Получаем текст
         TurnOff(); //Скрываем форму автора
+        if (State.CurrentState.Author != "") //Если есть автор
+            UpdateAuthor(State.CurrentState.Author); //То обновляем автора
 	}
 	
 	void Update () 

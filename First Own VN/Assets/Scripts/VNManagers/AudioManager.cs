@@ -18,6 +18,14 @@ public class AudioManager : MonoBehaviour {
 	void Start () 
     {
         SetVolumes(); //Применяем громкости
+        if (State.CurrentState.Music != "") //Если есть музыка
+            Play("Music", State.CurrentState.Music); //То включаем музыку
+        if (State.CurrentState.Environment != "") //Если есть звуки окружения
+            Play("Environment", State.CurrentState.Environment); //То включаем звуки окружения
+        if (State.CurrentState.Sound != "") //Если есть звуковые эффекты
+            Play("Sound", State.CurrentState.Sound); //То включаем звуковые эффекты
+        if (State.CurrentState.SoundLoop) //Если звуквоые эффекты нужно зациклить
+            SetLoop("Sound", true); //То зацикливаем
 	}
 	
 	void Update () 
