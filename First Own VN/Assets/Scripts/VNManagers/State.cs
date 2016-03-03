@@ -262,7 +262,6 @@ public class State {
     void Changes() //При каждом изменении состояния
     {
         PreviousState = new State(this); //Сохраняем предыдущее состояние
-        Debug.Log(PreviousState.ToString());
     }
 
     static public string GetField(string source, string field, string nextfield) //Получение значения поля из строки

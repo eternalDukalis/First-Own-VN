@@ -102,7 +102,7 @@ public class EffectsManager : MonoBehaviour {
         return new Vector2(x, y); //Возвращаем результат
     }
 
-    Color StringToColor(string source) //Функция преобразования строки в цвет
+    public static Color StringToColor(string source) //Функция преобразования строки в цвет
     {
         switch (source)
         {

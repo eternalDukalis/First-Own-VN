@@ -7,10 +7,10 @@ public class CharacterBehavior : MonoBehaviour {
 
     public enum Position { Left, Center, Right } //Перечислимый тип позиции
 
-    static string SpritesPath = "Graphics/Sprites/"; //Путь к спрайтами персонажей
-    static string BodiesPath = "/Bodies/"; //Путь к телам персонажа
-    static string ClothesPath = "/Clothes/"; //Путь к одежде персонажа
-    static string AttributesPath = "/Attributes/"; //Путь к атрибутам персонажа
+    static public string SpritesPath = "Graphics/Sprites/"; //Путь к спрайтами персонажей
+    static public string BodiesPath = "/Bodies/"; //Путь к телам персонажа
+    static public string ClothesPath = "/Clothes/"; //Путь к одежде персонажа
+    static public string AttributesPath = "/Attributes/"; //Путь к атрибутам персонажа
     static int FillOrigin = 1; //Стандартный метод заполнения спрайта
     static float PlacingTime = 1; //Время заполнения спрайта
     static float SpriteWidth = 0.5f; //Стандартная ширина спрайта
