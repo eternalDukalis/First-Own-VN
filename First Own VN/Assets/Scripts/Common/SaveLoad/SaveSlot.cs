@@ -9,11 +9,14 @@ public class SaveSlot : MonoBehaviour {
     public System.DateTime SaveTime; //Время сохранения
     public State SaveData; //Данные сохранения
     static public SaveSlot SelectedData; //Компонент выделенного слота
+    static public SaveSlot SelectedLoadData; //Компонент выделенного слота при загрузке
     public Image PreviewImage; //Превью сохранения
     public Image PlainScreenImage; //Одноцветный экран превью
     public Image[] Actors; //Спрайты персонажей превью
 	void Start () 
     {
+        SelectedData = null; //обнуляем
+        SelectedLoadData = null; //Обнуляем
         GettingData(); //Получаем данные
 	}
 	
@@ -30,7 +33,10 @@ public class SaveSlot : MonoBehaviour {
         SaveTime = Saves.GetTime(SaveSlotPosition); //Получаем время
         SaveData = Saves.GetData(SaveSlotPosition); //Получаем состояние
         if ((isLoading) && (SaveData == null)) //Если это экран загружки и состояние пустое
-            GetComponent<Toggle>().interactable = false; //То с компонентом нельзя взаимодействовать
+        {
+            GetComponent<Toggle>().isOn = false; //Toggle не выделен
+            GetComponent<Toggle>().interactable = false; //То с компонентом нельзя взаимодействова
+        }
         else //Иначе
             GetComponent<Toggle>().interactable = true; //С компонентом можно взаимодействовать
         MakePreview(); //Делаем превью
@@ -38,7 +44,10 @@ public class SaveSlot : MonoBehaviour {
 
     public virtual void ChangingValue() //Функция изменения значения
     {
-        SelectedData = this; //Перемещаем ссылку выделенного компонента на этот компонент
+        if (isLoading)
+            SelectedLoadData = this;
+        else
+            SelectedData = this; //Перемещаем ссылку выделенного компонента на этот компонент
     }
 
     void MakePreview() //Функция установки превью

@@ -43,6 +43,8 @@ public class ScenarioManager : MonoBehaviour {
         ReadInstructions(newtext); //Загружаем инструкции
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
+        PlayingMode = true; //Обнуляем переменную
+        CanDoNext = true; //Обнуляем переменную
 	}
 	
 	void Update () 
