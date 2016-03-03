@@ -17,7 +17,8 @@ public class Navigation : MonoBehaviour {
 	
 	void Update () 
     {
-	    
+        if ((Input.GetKeyDown(KeyCode.Escape)) || (Input.GetMouseButtonDown(1)))
+            GoBack();
 	}
 
     public virtual void GoTo(GameObject newObject) //Переход на другой экран
