@@ -46,6 +46,8 @@ public class SelectionManager : MonoBehaviour {
         for (int i = 0; i < btns.Length; i++)
             Destroy(btns[i]); //удаляем все кнопки
         SelectObject.SetActive(false); //Делаем родительский объект неактивным
+        if (Settings.StopSkipAfterChoice) //Если нужно останавливать пропуск после выбора
+            Skip.SetMode(false); //Останавилваем пропуск
         ScenarioManager.UnlockCoroutine(); //Возобновляем сценарий
     }
 }

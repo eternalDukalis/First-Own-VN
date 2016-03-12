@@ -16,6 +16,8 @@ public class Story : MonoBehaviour {
 	
 	void Update () 
     {
+        if ((StoryForm.activeSelf) && (Skip.isSkipping))
+            Skip.SetMode(false);
         if (StoryContent.text.Length > TextLimit) //Если текст слишком большой
             DeleteTop(); //Удаляем верхний абзац
 	}
@@ -32,7 +34,6 @@ public class Story : MonoBehaviour {
 
     public virtual void OpenStory() //Фунция открытия истории
     {
-        Skip.isSkipping = false;
         StartCoroutine(opening()); //стартуем соответствуюшую корутину
     }
 

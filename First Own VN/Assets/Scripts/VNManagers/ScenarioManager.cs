@@ -65,6 +65,7 @@ public class ScenarioManager : MonoBehaviour {
         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет начать
         while (CurrentInstruction < Instructions.Length) //Пока не кончились команды
         {
+            Skip.AddPassed(State.CurrentState.CurrentSource, State.CurrentState.CurrentInstruction); //Добавляем строку в списки
             CurrentInstruction++; //Увеличиваем счётчик инструкций
             if (CurrentInstruction >= Instructions.Length) //Если инструкции закончились
                 break; //То выход из цикла
@@ -250,6 +251,7 @@ public class ScenarioManager : MonoBehaviour {
 
     void ChangeSource(string name) //Функция перехода на другой источник инструкций
     {
+        Skip.AddPassed(State.CurrentState.CurrentSource, State.CurrentState.CurrentInstruction); //Добавляем строку в списки
         State.CurrentState.CurrentSource = name; //Записываем состояние
         TextAsset newtext = Resources.Load<TextAsset>(ScenarioPath + name); //Загружаем файл
         CurrentInstruction = -1; //Обнуляем счётчик инструкций
