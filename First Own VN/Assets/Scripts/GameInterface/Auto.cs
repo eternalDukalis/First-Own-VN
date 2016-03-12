@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Auto : MonoBehaviour {
 
-    public float BaseTime; //Базовое время
-    public float SymbolTime; //Время для одного символа
     float MainTime; //Текущее оставшееся время
     static public bool isAuto; //Включён ли автоматический режим
 	void Start () 
@@ -22,7 +20,7 @@ public class Auto : MonoBehaviour {
 
     public void RefreshTime(int symbols) //Функция обновления оставшегося времени
     {
-        MainTime = BaseTime + SymbolTime * symbols; //Рассчитываем время по формуле
+        MainTime = Settings.AutoBaseTime + Settings.AutoSymbolTime * symbols; //Рассчитываем время по формуле
     }
 
     public bool Continue() //Функция, возращающая, можно ли переходить дальше

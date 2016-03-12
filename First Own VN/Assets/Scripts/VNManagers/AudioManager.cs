@@ -30,7 +30,8 @@ public class AudioManager : MonoBehaviour {
 	
 	void Update () 
     {
-	
+        if (VolumesMismatch()) //Если громкости не совпадают
+            SetVolumes(); //Применяем громкости
 	}
 
     public virtual void Play(string channel, string source) //Функция проигрывания
@@ -93,5 +94,28 @@ public class AudioManager : MonoBehaviour {
                     break;
             }
         }
+    }
+
+    bool VolumesMismatch() //Функция проверки несовпадения громкостей
+    {
+        for (int i = 0; i < AudioChannels.Length; i++) //Для всех аудиопотоков
+        {
+            switch (AudioChannels[i].Name) //В зависимости от имени
+            {
+                case "Music": //Если поток музыки
+                    if (AudioChannels[i].StandartVolume != Settings.MusicVolume) //Если громкости не совпадают
+                        return true; //Возвращаем true
+                    break;
+                case "Environment": //Если поток звуков окружения
+                    if (AudioChannels[i].StandartVolume != Settings.EnvironmentVolume) //Если громкости не совпадают
+                        return true; //Возвращаем true
+                    break;
+                case "Sound": //Если поток звуковых эффектов
+                    if (AudioChannels[i].StandartVolume != Settings.SoundVolume) //Если громкости не совпадают
+                        return true; //Возвращаем true
+                    break;
+            }
+        }
+        return false; //Возваращем false
     }
 }
