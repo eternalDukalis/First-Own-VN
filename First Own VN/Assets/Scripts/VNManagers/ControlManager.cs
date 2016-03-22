@@ -34,7 +34,7 @@ public class ControlManager : MonoBehaviour {
                 NavObject.GoTo(LoadScreen); //Переходим на экран загрузки
             }
         }
-	}
+    }
 
     static public bool Next() //Функция для определения, была ли нажата клавиша продолжения
     {
@@ -48,6 +48,8 @@ public class ControlManager : MonoBehaviour {
 
     public virtual void PressAll() //Функция, запускаемая при нажатии кнопки на весь экран
     {
+        if (!Input.GetMouseButtonUp(0)) //Если не кликнута левая кнопка мыши
+            return; //То отмена
         next = true; //Клавиша продолжения нажата
     }
 }

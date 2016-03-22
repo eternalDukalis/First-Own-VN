@@ -68,6 +68,13 @@ public class CharacterManager : MonoBehaviour {
         actor.DeleteFromScene(StringToPosition(to)); //Запускаем функцию удаления
     }
 
+    public void ForceDeleteActor(string name)
+    {
+        CharacterBehavior actor = Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name).GetComponent<CharacterBehavior>(); //Находим персонажа
+        Actors.Remove(actor.gameObject); //Удаляем персонажа из списка
+        Destroy(actor.gameObject); //Удаляем объект со сцены
+    }
+
     public void ChangeClothes(string name, string clothes) //Функция смены одежды
     {
         if (State.CurrentState.Clothes.ContainsKey(name)) //Если для персонажа уже есть одежда

@@ -80,13 +80,13 @@ public class CharacterBehavior : MonoBehaviour {
     public void DeleteFromScene() //Удаление персонажа
     {
         State.CurrentState.DeleteCharacter(Name); //Обновляем состояние
-        StartCoroutine(placing(false)); //Начинаем корутину скрытия
+        Coroutine cor = StartCoroutine(placing(false)); //Начинаем корутину скрытия
     }
 
     public void DeleteFromScene(Position to) //Удаление персонажа
     {
         State.CurrentState.DeleteCharacter(Name); //Обновляем состояние
-        StartCoroutine(moving(GetPosition(to, false), true)); //Начинаем корутину перемещения
+        Coroutine cor = StartCoroutine(moving(GetPosition(to, false), true)); //Начинаем корутину перемещения
     }
 
     public void ChangeEmotion(string emotion) //Смена эмоции персонажа

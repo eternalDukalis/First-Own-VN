@@ -113,7 +113,7 @@ public class ScenarioManager : MonoBehaviour {
                         break;
                     case "setactor": //Если нужно вставить персонажа
                         if (CManager.HasActor(operation[1])) //Если уже есть этот персонаж
-                            continue; //Продолжаем
+                            CManager.ForceDeleteActor(operation[1]); //Продолжаем
                         switch (operation.Length) //В зависимости от количества параметров
                         {
                             case 3: //Если 2 параметра

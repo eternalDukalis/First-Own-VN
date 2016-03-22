@@ -7,9 +7,11 @@ public class Navigation : MonoBehaviour {
     public GameObject CurrentScreen; //Текущий экран
     public GameObject PreviousScreen; //Предыдущий экран
     public GameObject PlayingInterface; //Экран игрового режима
+    public GameObject MenuObject; //Объект меню
     public float FadeTime = 1; //Время появления/исчезновения
     bool cdn = true; //Сверяемая переменная
     bool fast = false; //Нужно ли быстро закончить
+    bool locked = false; //Корутина заблокирована
 	void Start () 
     {
 	
@@ -23,6 +25,8 @@ public class Navigation : MonoBehaviour {
 
     public virtual void GoTo(GameObject newObject) //Переход на другой экран
     {
+        if (locked) //Если корутина заблокирована
+            return; //То прерываем
         if (newObject == null) //Если нового объекта нет
             return; //То прерываем
         if (CurrentScreen == PlayingInterface) //Если текущий экран - игровой
@@ -33,11 +37,15 @@ public class Navigation : MonoBehaviour {
 
     public virtual void GoBack() //Переход на предыдущий экран
     {
-        GoTo(PreviousScreen); //Перехождим на предыдущий экран
+        if (CurrentScreen == PlayingInterface) //Если текущий экран - игровой
+            GoTo(MenuObject); //То переходим на меню
+        else //Иначе
+            GoTo(PreviousScreen); //Перехождим на предыдущий экран
     }
 
     IEnumerator goTo(GameObject newObj) //Корутина перехода
     {
+        locked = true; //Блокируем
         yield return null; //Новый кадр
         yield return null; //Новый кадр
         GameObject prs = CurrentScreen; //Сохраняем текущий экран
@@ -52,6 +60,7 @@ public class Navigation : MonoBehaviour {
         PreviousScreen = prs; //Обновляем предыдущий экран
         if (CurrentScreen == PlayingInterface) //Если текущий экран - игровой
             ScenarioManager.PlayingMode = true; //То переходим в режим проигрывания
+        locked = false; //Разблокируем
     }
 
     IEnumerator fade(GameObject obj, bool inc) //Корутина изменения прозрачности
