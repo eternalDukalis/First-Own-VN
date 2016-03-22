@@ -1,0 +1,20 @@
+changeemo|Sonya|1laugh
+Соня|Ни-хи-хи! 
+add|Я на это не подписывалась!
+Игорь|И правда, что-то Вы уже за нас всё расписали. 
+add|Ладно, я пошёл. 
+add|До встречи.
+changeemo|Yulia|1smile
+Юлия|До встречи!
+changeemo|Sonya|1smile
+Соня|До встречи!
+delactor|Yulia
+delactor|Sonya
+sound|door
+env|day
+cback|mylovarovy_forecourt_day
+Оказавшись на улице, я под смешной лай миленькой собачонки вышел со двора. 
+cback|village_streets_day
+Идти тут недалеко, так что вряд ли меня по дороге ждут какие-то приключения.
+envoff|
+goto|scene1306

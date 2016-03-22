@@ -24,7 +24,10 @@ public class Story : MonoBehaviour {
 
     public void AddText(string s) //Функция добавления текста
     {
-        StoryContent.text = StoryContent.text.Insert(StoryContent.text.LastIndexOf('\n'), s); //Добавление текста
+        int beg = 0;
+        if (StoryContent.text.Contains("\n"))
+            beg = StoryContent.text.LastIndexOf('\n');
+        StoryContent.text = StoryContent.text.Insert(beg, s); //Добавление текста
     }
 
     void DeleteTop() //Функция удаления верхнего абзаца

@@ -20,12 +20,19 @@ public class CharacterManager : MonoBehaviour {
             if (cur.Highlighted) //Если выделен
                 Highlight(cur.Name); //То выделяем
         }
-	}
+    }
 	
 	void Update () 
     {
-	
-	}
+
+    }
+
+    public bool HasActor(string name)
+    {
+        if (Actors.Find(x => x.GetComponent<CharacterBehavior>().Name == name) == null)
+            return false;
+        return true;
+    }
 
     public void SetActor(string name, string position, string emotion) //Функция появления персонажа без движения
     {

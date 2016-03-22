@@ -64,7 +64,7 @@ public class State {
     }
 
     static public State CurrentState; //Текущее состояние
-    static string NewGame = "source:scene11\nstring:0\ntext:\nauthor:\nbackground:potato_field\ntextform:1\nbottomform:1\nplainscreen:False\nplainscreencolor:\nmusic:\nsound:\nsoundloop:0\nenvironment:\n\nvariables\n\nclothes\n\nactors";
+    static string NewGame = "source:scene1101\nstring:0\ntext:\nauthor:\nbackground:potato_field\ntextform:1\nbottomform:1\nplainscreen:False\nplainscreencolor:\nmusic:\nsound:\nsoundloop:0\nenvironment:\n\nvariables\n\nclothes\n\nactors";
     public string MainText = "\n"; //Текущий текст
     public string Author; //Текущий автор
     public string Background; //Текущий фон

@@ -1,0 +1,50 @@
+changeemo|Sonya|1grin
+Соня|Вот ты постоянно рассказываешь про каких-то чудищ, а как избавиться от них, не говоришь. 
+add|В чём смысл?
+changeemo|Alexander|1smile2
+Александр|О, так есть универсальный способ всех победить.
+changeemo|Egor|1surprise
+Егор|А-а? 
+add|Правда?
+changeemo|Alexander|1teach
+Александр|Есть сила, которая способна совершить невозможное, сломать нерушимое, освободить от любых чар и оков, которая способна действовать сквозь время и пространство. 
+add|И это поистине великая сила называется…
+Место для барабанной дроби.
+changeemo|Alexander|1smile
+Александр|…любовь!
+changeemo|Sonya|1normal
+Соня|…
+changeemo|Egor|1normal
+Егор|…
+Игорь|…
+music|256 Shades Of Sonya
+changeemo|Sonya|1laugh
+changeemo|Egor|1laugh
+changeemo|Alexander|1laugh
+jolt|
+Все|Ха-ха-ха-ха-ха-ха-ха-ха!
+changeemo|Sonya|1smile2
+Соня|Мастер же ты, дед, на пафосные речи!
+changeemo|Alexander|1smile
+Александр|Вот тебе смешно, а доля-то правды в этом есть.
+changeemo|Sonya|1laugh
+Соня|Да ну тебя! 
+changeemo|Sonya|1normal
+add|О, чуть не забыла. 
+add|Я ж тебе посылку из пирожков принесла.
+changeemo|Egor|1ask
+Егор|А с чем пирожки?
+changeemo|Sonya|1grin
+Соня|С клубникой, братик.
+changeemo|Egor|1rage
+Егор|Угомонись!!!
+changeemo|Alexander|1normal
+Александр|Спасибо, Сонечка. 
+add|Я и ребят угощу.
+Он развернул пакет с тёплыми ароматными пирожками.
+changeemo|Egor|1normal
+Егор|Спасибо.
+Игорь|Спасибо… 
+add|Мм, очень вкусно, кстати!
+ifgoto|sonya|2|scene1206
+goto|scene1205

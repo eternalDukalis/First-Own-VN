@@ -1,0 +1,7 @@
+changeemo|Sonya|1laugh
+Соня|Конечно! Пекла же настоящая мастерица!
+changeemo|Egor|1normal2
+Егор|Где твоя скромность?
+changeemo|Sonya|1ask
+Соня|Что-то не так, братик?
+goto|scene1207

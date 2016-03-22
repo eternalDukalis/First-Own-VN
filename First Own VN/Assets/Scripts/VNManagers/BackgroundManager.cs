@@ -19,12 +19,12 @@ public class BackgroundManager : MonoBehaviour {
 
     public void ChangeBackground(string title) //Стандартная функция смены заднего фона
     {
-        State.CurrentState.Background = title; //Записываем текущий фон
         ChangeBackground(title, BackgroundChangeTime); //Смена фона с передачей стандартных параметров
     }
 
     public void ChangeBackground(string title, float time) //Функция смены заднего фона с дополнительным параметров времени
     {
+        State.CurrentState.Background = title; //Записываем текущий фон
         Texture2D target = Resources.Load<Texture2D>(BackPath + title); //Загружаем текстуру
         StartCoroutine(cBackground(target, time)); //Запускаем корутину смены фона
     }

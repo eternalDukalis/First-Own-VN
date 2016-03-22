@@ -112,6 +112,8 @@ public class ScenarioManager : MonoBehaviour {
                         CManager.ChangeClothes(operation[1], operation[2]); //Меняем одежду
                         break;
                     case "setactor": //Если нужно вставить персонажа
+                        if (CManager.HasActor(operation[1])) //Если уже есть этот персонаж
+                            continue; //Продолжаем
                         switch (operation.Length) //В зависимости от количества параметров
                         {
                             case 3: //Если 2 параметра
@@ -138,9 +140,11 @@ public class ScenarioManager : MonoBehaviour {
                         break;
                     case "highlight": //Если нужно выделить персонажа
                         CManager.Highlight(operation[1]); //Выделяем персонажа
+                        yield return StartCoroutine(WaitNext()); //Ждём
                         break;
                     case "unhighlight": //Если нужно снять выделение персонажа
                         CManager.Unhighlight(operation[1]); //Снимаем выделение персонажа
+                        yield return StartCoroutine(WaitNext()); //Ждём
                         break;
                     case "attribute": //Если нужно установить атрибут
                         CManager.SetAttribute(operation[1], operation[2]); //Устанавливаем атрибут

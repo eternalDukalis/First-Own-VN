@@ -187,6 +187,7 @@ public class CharacterBehavior : MonoBehaviour {
     {
         Vector2 beginMin = GraphicsTransform.anchorMin; //Запоминаем изначальный anchorMin
         Vector2 beginMax = GraphicsTransform.anchorMax; //Запоминаем изначальный anchorMax
+        ScenarioManager.LockCoroutine(); //Приостанавливаем сценарий
         for (int i = 0; i < ScalingStepsNum; i++) //Выполняем определённое количество шагов
         {
             if (Skip.isSkipping) //Если пропуск
@@ -200,6 +201,7 @@ public class CharacterBehavior : MonoBehaviour {
         }
         GraphicsTransform.anchorMin = targetMin; //Ставим конечный anchorMin
         GraphicsTransform.anchorMax = targetMax; //Ставим конечный anchorMax
+        ScenarioManager.UnlockCoroutine(); //Возобновляем сценарий
     }
 
     float GetPosition(Position pos, bool inside) //Получение числа из типа позиции

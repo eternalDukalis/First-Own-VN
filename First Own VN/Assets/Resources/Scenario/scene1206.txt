@@ -1,0 +1,14 @@
+changeemo|Sonya|1shy
+Соня|Эм… 
+add|ну… 
+add|спасибо… 
+add|в общем-то…
+changeemo|Egor|1normal2
+Егор|А ты чего покраснела-то? 
+add|Засмущалась?
+changeemo|Sonya|1shy3
+Соня|Ты там вообще молчи! 
+changeemo|Sonya|1grin
+add|Да и вообще, тебе ли про смущение говорить? 
+add|А, братик?
+goto|scene1207

@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour {
     public AudioStream[] AudioChannels; //Массив аудипотоков
     public float FadeTime = 1; //Время затухания звука
     string AudioPath = "Audio/"; //Папки с аудиофайлами
+    bool fading = false;
 	void Start () 
     {
         SetVolumes(); //Применяем громкости
@@ -22,8 +23,8 @@ public class AudioManager : MonoBehaviour {
             Play("Music", State.CurrentState.Music); //То включаем музыку
         if (State.CurrentState.Environment != "") //Если есть звуки окружения
             Play("Environment", State.CurrentState.Environment); //То включаем звуки окружения
-        if (State.CurrentState.Sound != "") //Если есть звуковые эффекты
-            Play("Sound", State.CurrentState.Sound); //То включаем звуковые эффекты
+        /*if (State.CurrentState.Sound != "") //Если есть звуковые эффекты
+            Play("Sound", State.CurrentState.Sound); //То включаем звуковые эффекты*/
         if (State.CurrentState.SoundLoop) //Если звуквоые эффекты нужно зациклить
             SetLoop("Sound", true); //То зацикливаем
 	}
@@ -58,6 +59,7 @@ public class AudioManager : MonoBehaviour {
 
     IEnumerator fadeOutAudio(AudioSource source) //Корутина затухания
     {
+        fading = true;
         float curVolume = source.volume; //Текущая громкость
         while (source.volume > 0) //Пока громкость больше нуля
         {
@@ -65,6 +67,7 @@ public class AudioManager : MonoBehaviour {
             yield return null; //Новый кадр
         }
         source.Pause(); //Ставим на паузу
+        fading = false;
     }
 
     AudioStream GetStream(string name) //Функция поиска нужного потока
@@ -98,20 +101,22 @@ public class AudioManager : MonoBehaviour {
 
     bool VolumesMismatch() //Функция проверки несовпадения громкостей
     {
+        if (fading)
+            return false;
         for (int i = 0; i < AudioChannels.Length; i++) //Для всех аудиопотоков
         {
             switch (AudioChannels[i].Name) //В зависимости от имени
             {
                 case "Music": //Если поток музыки
-                    if (AudioChannels[i].StandartVolume != Settings.MusicVolume) //Если громкости не совпадают
+                    if (AudioChannels[i].Source.volume != Settings.MusicVolume) //Если громкости не совпадают
                         return true; //Возвращаем true
                     break;
                 case "Environment": //Если поток звуков окружения
-                    if (AudioChannels[i].StandartVolume != Settings.EnvironmentVolume) //Если громкости не совпадают
+                    if (AudioChannels[i].Source.volume != Settings.EnvironmentVolume) //Если громкости не совпадают
                         return true; //Возвращаем true
                     break;
                 case "Sound": //Если поток звуковых эффектов
-                    if (AudioChannels[i].StandartVolume != Settings.SoundVolume) //Если громкости не совпадают
+                    if (AudioChannels[i].Source.volume != Settings.SoundVolume) //Если громкости не совпадают
                         return true; //Возвращаем true
                     break;
             }
