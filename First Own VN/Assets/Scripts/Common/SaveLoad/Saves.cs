@@ -28,9 +28,9 @@ public class Saves : MonoBehaviour {
         }
         SaveFiles.Add(position, System.DateTime.Now); //Добавляем ключ
         SaveFilesList(); //Сохраняем изменения
-        AllSaves.Add(position, State.CurrentState); //Добавляем сохранение
+        AllSaves.Add(position, new State(State.CurrentState)); //Добавляем сохранение
         PlayerPrefs.SetString(string.Format("{0} {1} {2}", position.x, position.y, position.z), AllSaves[position].ToString()); //Сохраняем сохранение
-        PlayerPrefs.SetString(string.Format("{0}-{1}-{2}", position.x, position.y, position.z), AllSaves[position].PreviousState.ToString()); //Сохраняем предыдущее состояение сохранения
+        PlayerPrefs.SetString(string.Format("{0}-{1}-{2}", position.x, position.y, position.z), State.CurrentState.PreviousState.ToString()); //Сохраняем предыдущее состояение сохранения
     }
 
     static public void Load(Vector3 position) //Функция загрузки из слота

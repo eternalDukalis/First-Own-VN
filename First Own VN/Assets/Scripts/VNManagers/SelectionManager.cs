@@ -25,7 +25,7 @@ public class SelectionManager : MonoBehaviour {
         if (texts.Length != targets.Length) //Если размер входных массивов не равен
             return; //Выходим из метода
         ScenarioManager.LockCoroutine(); //Приостанавливаем сценарий
-        SelectObject.SetActive(true); //Делаем родительский объект активным
+        //SelectObject.SetActive(true); //Делаем родительский объект активным
         btns = new GameObject[texts.Length]; //Инициализируем массив кнопок
         PotentialTargets = targets; //Сохраняем источники инструкций
         for (int i = 0; i < texts.Length; i++) //Для всех вариантов
@@ -45,7 +45,7 @@ public class SelectionManager : MonoBehaviour {
         NextTargert = PotentialTargets[num]; //Следующим источником становится выбранный вариант
         for (int i = 0; i < btns.Length; i++)
             Destroy(btns[i]); //удаляем все кнопки
-        SelectObject.SetActive(false); //Делаем родительский объект неактивным
+        //SelectObject.SetActive(false); //Делаем родительский объект неактивным
         if (Settings.StopSkipAfterChoice) //Если нужно останавливать пропуск после выбора
             Skip.SetMode(false); //Останавилваем пропуск
         ScenarioManager.UnlockCoroutine(); //Возобновляем сценарий
