@@ -16,7 +16,7 @@ public class Saves : MonoBehaviour {
 	
 	void Update () 
     {
-	
+        
 	}
 
     static public void Save(Vector3 position) //Функция сохранения в слот
@@ -37,6 +37,24 @@ public class Saves : MonoBehaviour {
     {
         State.CurrentState = new State(AllSaves[position].PreviousState); //Загружаем предыдущее состояние из сохранения
         SceneManager.LoadScene("game"); //Загружаем уровень
+    }
+
+    static public void Continue() //Функция продолжения
+    {
+        Vector3 lastVec = new Vector3(); //Текущий ключ
+        System.DateTime lastTime = new System.DateTime(); //Время
+        bool found = false; //Нашли ли
+        foreach (KeyValuePair<Vector3, System.DateTime> x in SaveFiles) //Для всех записей в словаре ключей
+        {
+            if (x.Value > lastTime) //Если сохранение произошло позже
+            {
+                lastTime = x.Value; //Сохраняем время
+                lastVec = x.Key; //Сохраняем ключ
+                found = true; //Нашли
+            }
+        }
+        if (found) //Если нашли
+            Load(lastVec); //Загружаем
     }
 
     static public void Delete(Vector3 position) //Функция удаления из слота

@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class State {
-
+    
+    [System.Serializable]
     public class CharacterInfo //Информация о персонаже
     {
         public string Name; //Имя
@@ -64,13 +66,12 @@ public class State {
     }
 
     static public State CurrentState; //Текущее состояние
-    static string NewGame = "source:scene1101\nstring:0\ntext:\nauthor:\nbackground:potato_field\ntextform:1\nbottomform:1\nplainscreen:False\nplainscreencolor:\nmusic:\nsound:\nsoundloop:0\nenvironment:\n\nvariables\n\nclothes\n\nactors";
     public string MainText = "\n"; //Текущий текст
     public string Author; //Текущий автор
-    public string Background; //Текущий фон
-    public bool TextFormIsOn; //Включена ли текстовая форма
-    public bool TextFormIsBottom; //Какая из текстовых форм включена
-    public string CurrentSource; //Текущий файл с инструкциями
+    public string Background = "potato_field"; //Текущий фон
+    public bool TextFormIsOn = true; //Включена ли текстовая форма
+    public bool TextFormIsBottom = true; //Какая из текстовых форм включена
+    public string CurrentSource = "scene1101"; //Текущий файл с инструкциями
     public int CurrentInstruction
     {
         get
@@ -83,8 +84,8 @@ public class State {
             _currentInstruction = value;
         }
     }//Текущий номер инструкции
-    public bool PlainScreenOn = false; //Включён ли одноцветный экран
-    public string PlainScreenColor = ""; //Цвет одноцветного экрана
+    public bool PlainScreenOn = true; //Включён ли одноцветный экран
+    public string PlainScreenColor = "white"; //Цвет одноцветного экрана
     public List<CharacterInfo> Chars; //Информация об актёрах на сцене
     public Dictionary<string, string> Clothes; //Одёжки персонажей
     public string Music = ""; //Текущая музыка
@@ -92,13 +93,12 @@ public class State {
     public string Sound = ""; //Текущие звуковые эффекты
     public bool SoundLoop = false; //Зациклены ли звуковые эффекты
     Dictionary<string, int> Variables; //Словарь переменных
-    int _currentInstruction; //Текущий номер инструкции
+    int _currentInstruction = -1; //Текущий номер инструкции
     public State PreviousState; //Предыдущее состояние
     static State()
     {
-        //string stateInfo = "source:scene14\nstring:8\ntext:	 Интересно, получилось ли.\nauthor:\nbackground:belov_day\ntextform:1\nbottomform:1\nplainscreen:False\nplainscreencolor:\nmusic:\nsound:\nsoundloop:0\nenvironment:\n\nvariables\nsonya:2\n\nclothes\nKsenia:Work\n\nactors\n======\nname:Ksenia\nemotion:1normal\nclothes:Work\nposition:1\nhighlighted:1\nattributes\ncatears";
-        //State.CurrentState = new State(stateInfo);
-        CurrentState = new State(NewGame); //Инициализация текущего состояния
+        if (CurrentState == null)
+            CurrentState = new State(); //Инициализация текущего состояния
     }
     public State()
     {

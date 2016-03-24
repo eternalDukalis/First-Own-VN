@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class ScenarioManager : MonoBehaviour {
 
@@ -271,7 +272,7 @@ public class ScenarioManager : MonoBehaviour {
 
     static public void GoToMainMenu() //Функция перехода к главному меню
     {
-        //Здесь должен быть переход к главному меню
+        SceneManager.LoadScene("menu");
     }
 
     static public void LockCoroutine() //Функция приостановки основной сценарной корутины
@@ -308,5 +309,10 @@ public class ScenarioManager : MonoBehaviour {
             res = res.Remove(res.Length - 1); //Удаляем последний символ
         }
         return res; //Возвращаем результат
+    }
+
+    public virtual void Exit()
+    {
+        GoToMainMenu();
     }
 }

@@ -55,6 +55,7 @@ public class Settings : MonoBehaviour {
         StandartWidth = Display.main.systemWidth; //Ширина экрана
         StandartHeight = Display.main.systemHeight; //Высота экрана
         LoadSettings(); //Загружаем настройки
+        ApplyVideoMode();
 	}
 	
 	void Update () 
