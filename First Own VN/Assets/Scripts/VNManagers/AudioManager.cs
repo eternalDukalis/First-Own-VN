@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class AudioManager : MonoBehaviour {
 
     [System.Serializable]
-    public struct AudioStream //Структура звукового потока
+    public class AudioStream //Структура звукового потока
     {
         public string Name; //Навзание потока
         public AudioSource Source; //Компонент AudioSource
@@ -48,7 +48,12 @@ public class AudioManager : MonoBehaviour {
     public virtual void Stop(string channel) //Функция остановки
     {
         AudioStream stream = GetStream(channel); //Находим нужный аудиопоток
-        StartCoroutine(fadeOutAudio(stream.Source)); //Начинаем корутину затухания
+        AudioSource oldsource = stream.Source; //Сохраняем старый источник
+        stream.Source = Instantiate(oldsource); //Размещаем новый
+        stream.Source.gameObject.name = stream.Name; //Меняем имя
+        stream.Source.transform.SetParent(transform); //Помещаем в родительский объект
+        stream.Source.Stop(); //Останавливаем
+        Coroutine cor = StartCoroutine(fadeOutAudio(oldsource)); //Начинаем корутину затухания
     }
 
     public virtual void SetLoop(string channel, bool newLoop) //Функция установки зацикленности
@@ -68,6 +73,7 @@ public class AudioManager : MonoBehaviour {
         }
         source.Pause(); //Ставим на паузу
         fading = false;
+        Destroy(source.gameObject); //Удаляем объект
     }
 
     AudioStream GetStream(string name) //Функция поиска нужного потока
