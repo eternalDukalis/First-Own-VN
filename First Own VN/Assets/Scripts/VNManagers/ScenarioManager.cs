@@ -244,6 +244,9 @@ public class ScenarioManager : MonoBehaviour {
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         ChangeSource(SelectionManager.NextTargert); //Осуществляем переход
                         break;
+                    case "pushcg": //Если нужно добавить фон в галерею
+                        CGGallery.Push(operation[1]); //Пушим
+                        break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
                         TManager.PushText(operation[1], operation[0]); //Сменяем текст в форме с автором
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать

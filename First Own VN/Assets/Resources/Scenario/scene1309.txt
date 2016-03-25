@@ -2,6 +2,7 @@ delactor|Sonya
 hidetf|
 showscr|
 cback|cg_watching_stars
+pushcg|cg_watching_stars
 hidescr|
 showtf|
 music|Dreaming Of Unattainable
