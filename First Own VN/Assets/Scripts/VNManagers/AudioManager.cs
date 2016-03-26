@@ -14,7 +14,7 @@ public class AudioManager : MonoBehaviour {
     }
     public AudioStream[] AudioChannels; //Массив аудипотоков
     public float FadeTime = 1; //Время затухания звука
-    string AudioPath = "Audio/"; //Папки с аудиофайлами
+    static public string AudioPath = "Audio/"; //Папки с аудиофайлами
     bool fading = false;
 	void Start () 
     {
@@ -37,6 +37,8 @@ public class AudioManager : MonoBehaviour {
 
     public virtual void Play(string channel, string source) //Функция проигрывания
     {
+        if ((channel == "Music")) //Если это музыка
+            MusicGallery.Push(source); //То пытаемся добавить в галерею
         SetVolumes(); //Восстанавливаем громкости
         AudioStream stream = GetStream(channel); //Находим нужный аудиопоток
         stream.Source.loop = stream.StandartLoop; //Устанавливаем стандартную зацикленность
