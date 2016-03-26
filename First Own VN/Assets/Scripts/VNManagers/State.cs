@@ -224,6 +224,13 @@ public class State {
         return false; //Иначе ложь
     }
 
+    public int VariableValue(string var) //Функция получения значения переменной
+    {
+        if ((Variables == null) || (!Variables.ContainsKey(var))) //Если словаря нет или в нём нет значения переменной
+            return 0; //Возвращаем 0
+        return Variables[var]; //Возвращаем значение
+    }
+
     public override string ToString()
     {
         string result = "";

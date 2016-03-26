@@ -27,6 +27,7 @@ public class ScenarioManager : MonoBehaviour {
     ScreensManager ScrManager; //Компонент для управления вставками
     CharacterManager CManager; //Компонент для управления спрайтами персонажей
     AudioManager AManager; //Компонент для управления звуком
+    AchManager AchivManager; //Компонент для показа ачивок
     string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
 
     static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
@@ -39,6 +40,7 @@ public class ScenarioManager : MonoBehaviour {
         EManager = GameObject.Find("CommonObject").GetComponent<EffectsManager>(); //Находим компонент на сцене
         ScrManager = GameObject.Find("CommonObject").GetComponent<ScreensManager>(); //Находим компонент на сцене
         CManager = GameObject.Find("CommonObject").GetComponent<CharacterManager>(); //Находим компонент на сцене
+        AchivManager = GameObject.Find("CommonObject").GetComponent<AchManager>(); //Находим компонент на сцене
         AManager = GameObject.Find("Audio").GetComponent<AudioManager>(); //Находим компонент на сцене
         TextAsset newtext = Resources.Load<TextAsset>(ScenarioPath + State.CurrentState.CurrentSource); //Загружаем файл
         ReadInstructions(newtext); //Загружаем инструкции
@@ -246,6 +248,9 @@ public class ScenarioManager : MonoBehaviour {
                         break;
                     case "pushcg": //Если нужно добавить фон в галерею
                         CGGallery.Push(operation[1]); //Пушим
+                        break;
+                    case "ach": //Если ачивка
+                        AchivManager.Push(operation[1], operation[2]); //Пытаемся запушить
                         break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
                         TManager.PushText(operation[1], operation[0]); //Сменяем текст в форме с автором
