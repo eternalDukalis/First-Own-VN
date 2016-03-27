@@ -38,6 +38,19 @@ public class Settings : MonoBehaviour {
             AutoSymbolTime = (1 + AutoTimeMultiplier - AutoTimeMultiplier * _autoSpeed) * AutoSymbolTimeMin;
         }
     } //Скорость автовоспроизведения
+    static public bool HasStarted
+    {
+        get
+        {
+            return _hasStarted;
+        }
+        set
+        {
+            _hasStarted = value;
+            SaveSettings();
+        }
+    } //Была ли начата игра
+    static bool _hasStarted = false; 
     static float _textSpeed = 0.8f; //Скорость текста
     static float _autoSpeed = 0.4f; //Скорость автовоспроизведения
     static float TextSpeedDivider = 10; //Делитель скорость текста
@@ -56,6 +69,8 @@ public class Settings : MonoBehaviour {
         StandartHeight = Display.main.systemHeight; //Высота экрана
         LoadSettings(); //Загружаем настройки
         ApplyVideoMode();
+        foreach (AfterStart x in FindObjectsOfType<AfterStart>())
+            x.SetActive(HasStarted);
 	}
 	
 	void Update () 
@@ -166,7 +181,8 @@ public class Settings : MonoBehaviour {
         result += "AutoSpeed " + AutoSpeed + "\n";
         result += "Fullscreen " + FullScreen + "\n";
         result += "SkipPassedOnly " + SkipPassedOnly + "\n";
-        result += "StopSkipAfterChoice " + StopSkipAfterChoice; //Формируем строку с настройками
+        result += "StopSkipAfterChoice " + StopSkipAfterChoice + "\n";
+        result += "HasStarted " + HasStarted; //Формируем строку с настройками
         PlayerPrefs.SetString(SettingsKey, result); //Сохраняем строку
     }
 
@@ -204,6 +220,9 @@ public class Settings : MonoBehaviour {
                     break;
                 case "StopSkipAfterChoice":
                     StopSkipAfterChoice = bool.Parse(data[1]);
+                    break;
+                case "HasStarted":
+                    HasStarted = bool.Parse(data[1]);
                     break;
             } //Устанавливаем значение в нужное поле
         }

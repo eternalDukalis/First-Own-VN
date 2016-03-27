@@ -19,6 +19,7 @@ public class MenuInteraction : MonoBehaviour {
     {
         State.CurrentState = new State(NewGame);
         State.CurrentState.CurrentInstruction = -1;
+        Settings.HasStarted = true;
         SceneManager.LoadScene("game");
     }
 
