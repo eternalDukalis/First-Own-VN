@@ -28,6 +28,7 @@ public class ScenarioManager : MonoBehaviour {
     CharacterManager CManager; //Компонент для управления спрайтами персонажей
     AudioManager AManager; //Компонент для управления звуком
     AchManager AchivManager; //Компонент для показа ачивок
+    MiniGamesManager MGManager; //Компонент для мини-игр
     string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
 
     static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
@@ -42,6 +43,7 @@ public class ScenarioManager : MonoBehaviour {
         CManager = GameObject.Find("CommonObject").GetComponent<CharacterManager>(); //Находим компонент на сцене
         AchivManager = GameObject.Find("CommonObject").GetComponent<AchManager>(); //Находим компонент на сцене
         AManager = GameObject.Find("Audio").GetComponent<AudioManager>(); //Находим компонент на сцене
+        MGManager = GameObject.Find("CommonObject").GetComponent<MiniGamesManager>(); //Находим компонент на сцене
         TextAsset newtext = Resources.Load<TextAsset>(ScenarioPath + State.CurrentState.CurrentSource); //Загружаем файл
         ReadInstructions(newtext); //Загружаем инструкции
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
@@ -251,6 +253,10 @@ public class ScenarioManager : MonoBehaviour {
                         break;
                     case "ach": //Если ачивка
                         AchivManager.Push(operation[1], operation[2]); //Пытаемся запушить
+                        break;
+                    case "minigame": //Если мини-игра
+                        MGManager.PlayGame(int.Parse(operation[1])); //Запускаем нужную
+                        yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
                         TManager.PushText(operation[1], operation[0]); //Сменяем текст в форме с автором
