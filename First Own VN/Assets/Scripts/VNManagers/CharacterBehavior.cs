@@ -31,6 +31,8 @@ public class CharacterBehavior : MonoBehaviour {
     List<string> CurrentAttributes; //Текущие атрибуты персонажа
     Position SpritePosition = Position.Center; //Текущая позиция персонажа
     bool Highlighted = false; //Выделен ли персонаж
+    IEnumerator movcor;
+    IEnumerator placecor;
 
     float CurrentPosition; //Позиция спрайта
 	void Start () 
@@ -57,7 +59,10 @@ public class CharacterBehavior : MonoBehaviour {
         SetClothes(); //Ставим одежду
         CurrentPosition = GetPosition(position, true); //Вычисляем позицию спрайта
         ApplyPosition(); //Применяем позицию спрайта
-        StartCoroutine(placing(true)); //Начинаем корутину помещения
+        if (placecor != null)
+            StopCoroutine(placecor);
+        placecor = placing(true);
+        StartCoroutine(placecor); //Начинаем корутину помещения
     }
 
     public void SetOnScene(string name, Position from, Position to, string emotion, string clothes) //Функция появления персонажа с движением
@@ -74,19 +79,28 @@ public class CharacterBehavior : MonoBehaviour {
         SetClothes(); //Ставим одежду
         CurrentPosition = GetPosition(from, false); //Вычисляем позицию спрайта
         ParentImage.fillAmount = 1; //Применяем позицию спрайта
-        StartCoroutine(moving(GetPosition(to, true), false)); //Начинаем корутину перемещения
+        if (movcor != null)
+            StopCoroutine(movcor);
+        movcor = moving(GetPosition(to, true), false);
+        StartCoroutine(movcor); //Начинаем корутину перемещения
     }
 
     public void DeleteFromScene() //Удаление персонажа
     {
         State.CurrentState.DeleteCharacter(Name); //Обновляем состояние
-        Coroutine cor = StartCoroutine(placing(false)); //Начинаем корутину скрытия
+        if (placecor != null)
+            StopCoroutine(placecor);
+        placecor = placing(false);
+        StartCoroutine(placecor); //Начинаем корутину скрытия
     }
 
     public void DeleteFromScene(Position to) //Удаление персонажа
     {
         State.CurrentState.DeleteCharacter(Name); //Обновляем состояние
-        Coroutine cor = StartCoroutine(moving(GetPosition(to, false), true)); //Начинаем корутину перемещения
+        if (movcor != null)
+            StopCoroutine(movcor);
+        movcor = moving(GetPosition(to, false), true);
+        StartCoroutine(movcor); //Начинаем корутину перемещения
     }
 
     public void ChangeEmotion(string emotion) //Смена эмоции персонажа
@@ -140,7 +154,10 @@ public class CharacterBehavior : MonoBehaviour {
     {
         SpritePosition = to; //Позиция персонажа
         State.CurrentState.UpdateCharacterPosition(Name, to); //Обновляем состояние
-        StartCoroutine(moving(GetPosition(SpritePosition, true), false)); //Начинаем перемещение персонажа
+        if (movcor != null)
+            StopCoroutine(movcor);
+        movcor = moving(GetPosition(SpritePosition, true), false);
+        StartCoroutine(movcor); //Начинаем перемещение персонажа
     }
 
     IEnumerator placing(bool inc) //Корутина помещения/скрытия
