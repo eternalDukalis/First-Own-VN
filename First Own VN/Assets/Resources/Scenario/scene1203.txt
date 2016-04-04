@@ -127,7 +127,6 @@ add|Проходи, не стесняйся.
 moveactor|Alexander|center
 changeclothes|Egor|Usual
 setactor|Egor|right|right|1normal
-Появление Егор правая сторона справа - стандартное
 Тут из кухни вышел ещё один человек. 
 add|Его лицо показалось мне знакомым.
 changeemo|Egor|1normal2
