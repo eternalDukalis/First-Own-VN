@@ -203,6 +203,9 @@ changeemo|Yulia|1smile
 add|Это Сонька пекла!
 Брависсимо! 
 Пожалуй, эта девчонка и правда мастерица.
+hidetf|
+minigame|3
+showtf|
 Игорь|Это она у Вас научилась?
 changeemo|Yulia|1normal
 Юлия|Да о чём ты говоришь? 
