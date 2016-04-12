@@ -34,6 +34,17 @@ public class MusicGallery : MonoBehaviour {
         return false; //Иначе ложь
     }
 
+    static public string GetData() //Функция получения данных о музыкальной галерее
+    {
+        return PlayerPrefs.GetString(Key); //Возвращаем результат
+    }
+
+    static public void SetData(string data) //Функция установки данных о музыкальной галерее
+    {
+        PlayerPrefs.SetString(Key, data); //ЗАписываем данные
+        Load(); //Загружаем данные
+    }
+
     static void Save() //Функция сохранения данных
     {
         string res = ""; //Текущая строка

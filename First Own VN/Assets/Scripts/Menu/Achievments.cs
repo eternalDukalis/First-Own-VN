@@ -35,6 +35,17 @@ public class Achievments : MonoBehaviour {
         return AchList[title]; //Возвращаем описание
     }
 
+    static public string GetData() //Функция получения данных о достижениях
+    {
+        return PlayerPrefs.GetString(Key); //Возвращаем результат
+    }
+
+    static public void SetData(string data) //Функция установки данных о достижениях
+    {
+        PlayerPrefs.SetString(Key, data);//Записываем данные
+        Load(); //Загружаем данные
+    }
+
     static bool CheckConditions(string title) //Проверка достижения
     {
         if (title == CheckingAch[0]) //Если достижение "Женоненавистник"

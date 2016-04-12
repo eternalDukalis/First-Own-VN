@@ -8,6 +8,8 @@ public class Saves : MonoBehaviour {
     static Dictionary<Vector3, System.DateTime> SaveFiles; //Словарь с ключами сохранений и временем сохранения
     static Dictionary<Vector3, State> AllSaves; //Словарь с сохранениями
     static string SaveFilesKey = "SaveFiles"; //Ключ для сохранения словаря сохранения
+    static string[] PairSeparator = { "\n[prev]\n" }; //РАзделитель для пары текущее сохранение - предыдущее сохраненее
+    static string[] SavesSeparator = { "\n[nextsave]\n" }; //РАзделитель для сохранений
     void Start () 
     {
         LoadFilesList(); //Загружаем ключи сохранений
@@ -80,6 +82,41 @@ public class Saves : MonoBehaviour {
         return AllSaves[position]; //возвращаем состояние
     }
 
+    static public string GetSavesData() //Функция получения всех данных о сохранениях
+    {
+        if (AllSaves == null) //Если словарь не инициализирован
+            return ""; //Возваращаем пустую строку
+        string res = ""; //Строка с результатом
+        foreach (KeyValuePair<Vector3, State> x in AllSaves) //Для каждой записи в словаре
+        {
+            res += string.Format("{0} {1} {2}", x.Key.x, x.Key.y, x.Key.z) + PairSeparator[0]; //Добавляем данные о ключе
+            res += PlayerPrefs.GetString(string.Format("{0} {1} {2}", x.Key.x, x.Key.y, x.Key.z)) + PairSeparator[0]; //Добавляем данные о текущем состоянии
+            res += PlayerPrefs.GetString(string.Format("{0}-{1}-{2}", x.Key.x, x.Key.y, x.Key.z)) + SavesSeparator[0]; //ДОбавляем данные о предыдущем состоянии
+        }
+        return res; //Возвращаем результат
+    }
+
+    static public string GetSavesListData() //Функция получения данных о списке сохранений
+    {
+        return PlayerPrefs.GetString(SaveFilesKey); //Возвращаем результат
+    }
+
+    static public void SetSavesData(string list, string saves) //Функция установки сохранений
+    {
+        PlayerPrefs.SetString(SaveFilesKey, list); //Записываем данные о ключах
+        LoadFilesList(); //ЗАгружаем ключи
+        string[] pairs = saves.Split(SavesSeparator, System.StringSplitOptions.RemoveEmptyEntries); //Определяем пары данных о сохранениях
+        foreach (string x in pairs) //Для каждой такой пары
+        {
+            string[] savesdata = x.Split(PairSeparator, System.StringSplitOptions.RemoveEmptyEntries); //Разделяем данные
+            string[] vecd = savesdata[0].Split(' '); //Находим ключ-вектор
+            Vector3 vec = new Vector3(int.Parse(vecd[0]), int.Parse(vecd[1]), int.Parse(vecd[2])); //Создаём ключ-вектор
+            PlayerPrefs.SetString(string.Format("{0} {1} {2}", vec.x, vec.y, vec.z), savesdata[1]); //Записываем данные о текущем состоянии
+            PlayerPrefs.SetString(string.Format("{0}-{1}-{2}", vec.x, vec.y, vec.z), savesdata[2]); //Записываем данные о предыдущем состоянии
+        }
+        LoadSaves(); //Загружаем данные о сохранениях
+    }
+
     static void SaveFilesList() //Функция сохранения словаря ключей
     {
         string val = ""; //Промежуточная строка
@@ -90,7 +127,7 @@ public class Saves : MonoBehaviour {
         PlayerPrefs.SetString(SaveFilesKey, val); //Сохраняем строку
     }
 
-    void LoadFilesList() //Функция загружки словаря ключей
+    static void LoadFilesList() //Функция загружки словаря ключей
     {
         SaveFiles = new Dictionary<Vector3, System.DateTime>(); //Инициализируем словарь
         if (!PlayerPrefs.HasKey(SaveFilesKey)) //Если ключа нет
@@ -106,7 +143,7 @@ public class Saves : MonoBehaviour {
         }
     }
 
-    void LoadSaves() //Загрузка сохранений
+    static void LoadSaves() //Загрузка сохранений
     {
         AllSaves = new Dictionary<Vector3, State>(); //Инициализируем словарь
         foreach (KeyValuePair<Vector3, System.DateTime> x in SaveFiles) //Для каждого ключа в словаре ключей

@@ -46,6 +46,17 @@ public class Skip : MonoBehaviour {
         }
 	}
 
+    static public string GetData() //Функция получения данных о пройденных учатсках
+    {
+        return PlayerPrefs.GetString(PassedKey); //Возвращаем результат
+    }
+
+    static public void SetData(string data) //Функция уустановки данных о пройденных участках
+    {
+        PlayerPrefs.SetString(PassedKey, data); //ЗАписываем данные
+        LoadPassed(); //Загружаем данные
+    }
+
     public virtual void Switch() //Функция переключения режима
     {
         _isSkipping = !_isSkipping; //Переключаем режим

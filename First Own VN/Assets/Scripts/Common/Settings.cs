@@ -171,6 +171,17 @@ public class Settings : MonoBehaviour {
             SaveSettings(); //Сохраняем настройки
     }
 
+    static public string GetData() //Функция получения данных о настройках
+    {
+        return PlayerPrefs.GetString(SettingsKey); //Возвращаем результат
+    }
+
+    static public void SetData(string data) //Функция установки настроек
+    {
+        PlayerPrefs.SetString(SettingsKey, data); //Записываем данные
+        LoadSettings(); //Загружаем данные
+    }
+
     static void SaveSettings() //Функция сохранения настроек
     {
         string result = "";
