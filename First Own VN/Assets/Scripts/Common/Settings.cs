@@ -63,13 +63,15 @@ public class Settings : MonoBehaviour {
     static int WindowedHeight = 600; //Высота экрана в оконном режиме
     static string SettingsKey = "Settings"; //Ключ для сохранения настроек
     static bool Loaded = false; //Были ли загружены настройки
+    static AfterStart[] afs;
 	void Start () 
     {
         StandartWidth = Display.main.systemWidth; //Ширина экрана
         StandartHeight = Display.main.systemHeight; //Высота экрана
         LoadSettings(); //Загружаем настройки
         ApplyVideoMode();
-        foreach (AfterStart x in FindObjectsOfType<AfterStart>())
+        afs = FindObjectsOfType<AfterStart>();
+        foreach (AfterStart x in afs)
             x.SetActive(HasStarted);
 	}
 	
@@ -180,6 +182,8 @@ public class Settings : MonoBehaviour {
     {
         PlayerPrefs.SetString(SettingsKey, data); //Записываем данные
         LoadSettings(); //Загружаем данные
+        foreach (AfterStart x in afs)
+            x.SetActive(HasStarted);
     }
 
     static void SaveSettings() //Функция сохранения настроек
