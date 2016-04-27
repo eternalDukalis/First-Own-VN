@@ -178,7 +178,7 @@ add|Не ты ли Крыловых сын?
 changeclothes|Alexander|Usual
 setactor|Alexander|1normal
 Я обернулся.
-music|When The Last Star Disappears
+music|Like The Old Days
 Игорь|А, это вы, дед Саш. 
 add|Здравствуйте!
 highlight|Alexander

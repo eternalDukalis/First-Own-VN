@@ -165,7 +165,7 @@ public class CharacterBehavior : MonoBehaviour {
         ParentImage.fillOrigin = (FillOrigin == inc.GetHashCode()).GetHashCode(); //Определяем метод заполнения
         while (((ParentImage.fillAmount < 1) && (inc)) || ((ParentImage.fillAmount > 0) && (!inc))) //Пока полностью не покажем/скроем
         {
-            if ((Skip.isSkipping)) //Если пропуск
+            if ((Skip.isSkipping) || (CharacterManager.isLoading)) //Если пропуск или идёт загрузка
             {
                 yield return new WaitForSeconds(Settings.SkipInterval); //Новый кадр
                 ParentImage.fillAmount = inc.GetHashCode(); //Заканчиваем действие
@@ -207,7 +207,7 @@ public class CharacterBehavior : MonoBehaviour {
         ScenarioManager.LockCoroutine(); //Приостанавливаем сценарий
         for (int i = 0; i < ScalingStepsNum; i++) //Выполняем определённое количество шагов
         {
-            if (Skip.isSkipping) //Если пропуск
+            if ((Skip.isSkipping) || (CharacterManager.isLoading)) //Если пропуск или загрузка
             {
                 yield return new WaitForSeconds(Settings.SkipInterval); //Новый кадр
                 break; //Прерываение цикла

@@ -6,11 +6,13 @@ public class MusicItem : MonoBehaviour {
 
     public string Title; //Название трека
     public Text TargetText; //Текст
+    public string Author; //Исполнитель
+    string LabelFormal = "<b>{0}</b> - {1}"; //Формат текста
     bool Available; //Доступность
-    Button button; //Кнопка
+    Toggle toggle; //Кнопка
 	void Start ()
     {
-        button = GetComponent<Button>(); //Находим кнопку
+        toggle = GetComponent<Toggle>(); //Находим кнопку
         Init(); //Инициализируем
 	}
 	
@@ -26,12 +28,13 @@ public class MusicItem : MonoBehaviour {
         if (Available) //Если доступно
         {
             TargetText.gameObject.SetActive(true); //Делаем текст видимым
-            button.interactable = true; //Делаем кнопку кликабельной
+            TargetText.text = string.Format(LabelFormal, Author, Title); //Применяем текст
+            toggle.interactable = true; //Делаем кнопку кликабельной
         }
         else //Иначе
         {
             TargetText.gameObject.SetActive(false); //Делаем текст невидимым
-            button.interactable = false; //Делаем кнопку некликабельной
+            toggle.interactable = false; //Делаем кнопку некликабельной
         }
     }
 }

@@ -17,7 +17,7 @@ sound|car_brake
 Игорь|Ах!..
 hidetf|
 hidescr|
-music|Green & Blue
+music|Green+Blue
 cback|nature1|3
 cback|nature2|3
 cback|nature3|3

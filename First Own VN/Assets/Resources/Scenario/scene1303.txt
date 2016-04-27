@@ -85,7 +85,7 @@ changeemo|Sonya|1normal
 delactor|Sonya
 env|day
 cback|village_streets_day
-music|256 Shades Of Sonya
+music|Such Foolish
 В целом этот груз не доставляет мне каких-либо серьёзных неудобств. 
 Разве только ручки немного натирают ладонь. 
 Плюс сегодня явно не самый жаркий день лета, так что я ещё и потом не обливаюсь. 

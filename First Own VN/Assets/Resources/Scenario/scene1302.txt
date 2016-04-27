@@ -45,7 +45,7 @@ showscr|
 cback|krylovy_backyard_day|0
 hidescr|
 showtf|
-music|Evening Stroll
+music|Breeze
 sound|gas
 *Вжу-у-у-у-у-у-х* 
 add|Раз полоска. 

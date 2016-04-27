@@ -127,6 +127,7 @@ public class State {
         Chars = new List<CharacterInfo>();
         for (int i = 0; i < state.Chars.Count; i++)
             Chars.Add(new CharacterInfo(state.Chars.ToArray()[i]));
+        //PreviousState = new State(state.PreviousState);
     }
 
     public State(string state) //Конструктор с загрузкой из строки

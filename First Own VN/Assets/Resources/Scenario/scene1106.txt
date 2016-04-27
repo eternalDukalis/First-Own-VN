@@ -4,7 +4,7 @@ incvar|sonya
 cback|krylovy_forecourt_evening
 env|evening
 Накинув на себя лёгкую куртку (прохладные вечера тут не редкость) и предупредив родителей о своём уходе, я вышел из дома.
-music|Evening Stroll
+music|Breeze
 cback|village_streets_evening
 Я остановился, выйдя на середину дороги. 
 Раньше, пожалуй, я знал каждый уголок здесь. 

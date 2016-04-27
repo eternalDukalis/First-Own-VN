@@ -121,7 +121,7 @@ setactor|Egor|1normal
 Игорь|Тогда нам по пути.
 delactor|Egor
 cback|village_streets_evening
-music|Evening Stroll
+music|Breeze
 Первое время мы шли молча. 
 add|Такое меня, если честно, слегка угнетает, так что я решил завязать разговор.
 Игорь|Егорка, а почему ты маленького роста?

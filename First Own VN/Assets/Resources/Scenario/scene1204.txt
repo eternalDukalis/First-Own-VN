@@ -17,7 +17,7 @@ changeemo|Sonya|1normal
 changeemo|Egor|1normal
 Егор|…
 Игорь|…
-music|256 Shades Of Sonya
+music|Such Foolish
 changeemo|Sonya|1laugh
 changeemo|Egor|1laugh
 changeemo|Alexander|1laugh

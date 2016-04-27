@@ -20,7 +20,7 @@ showscr|
 cback|village_outskirts_day|0
 hidescr|
 showtf|
-music|Green & Blue
+music|Green+Blue
 *Щёлк-щёлк*. 
 switchtextform|
 И вот уже на экране смартфона отобразилось зелёно-голубое изображение. 

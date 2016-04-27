@@ -31,6 +31,7 @@ public class Saves : MonoBehaviour {
         SaveFiles.Add(position, System.DateTime.Now); //Добавляем ключ
         SaveFilesList(); //Сохраняем изменения
         AllSaves.Add(position, new State(State.CurrentState)); //Добавляем сохранение
+        AllSaves[position].PreviousState = State.CurrentState.PreviousState; //Добавляем информацию о предыдущем состоянии
         PlayerPrefs.SetString(string.Format("{0} {1} {2}", position.x, position.y, position.z), AllSaves[position].ToString()); //Сохраняем сохранение
         PlayerPrefs.SetString(string.Format("{0}-{1}-{2}", position.x, position.y, position.z), State.CurrentState.PreviousState.ToString()); //Сохраняем предыдущее состояение сохранения
     }

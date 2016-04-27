@@ -7,11 +7,13 @@ public class CharacterManager : MonoBehaviour {
     public GameObject CharacterObject; //Объект персонажа
     public GameObject ParentForActors; //Объект с персонажами
     List<GameObject> Actors; //Список с объектами персонажей на сцене
+    static public bool isLoading = false; //Идёт загрузка
 	void Start () 
     {
         Actors = new List<GameObject>(); //Инициализируем список
         State.CharacterInfo[] cinf = State.CurrentState.Chars.ToArray(); //Сохраняем данные
         State.CurrentState.Chars = new List<State.CharacterInfo>(); //Очищаем список
+        isLoading = true; //Начинает загрузка
         foreach (State.CharacterInfo cur in cinf) //Для каждой записи информации о персонаже
         {
             SetActor(cur.Name, PositionToString(cur.SpritePosition), cur.CurrentEmotion); //Добавляем объект
@@ -20,6 +22,7 @@ public class CharacterManager : MonoBehaviour {
             if (cur.Highlighted) //Если выделен
                 Highlight(cur.Name); //То выделяем
         }
+        isLoading = false; //Заканчивается загрузка
     }
 	
 	void Update () 
