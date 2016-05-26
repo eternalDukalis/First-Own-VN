@@ -5,6 +5,7 @@ public class MusicPlayer : MonoBehaviour {
 
     public GameObject MusicScreen; //Экран музыкальной галереи
     public AudioClip DefaultMusic; //Основная музыка главного меню
+    MusicItem lastItem;
     AudioSource source; //Источник музыки
     string CurrentMusic = ""; //Текущая музыка
     const string MusicPath = "Music/"; //Путь к музыке
@@ -26,6 +27,9 @@ public class MusicPlayer : MonoBehaviour {
             {
                 source.clip = DefaultMusic; //Возвращаем дефолтную музыку
                 source.Play(); //Проигрываем
+                if (lastItem != null)
+                    lastItem.Turn(false);
+                CurrentMusic = "";
             }
         }
 	}
@@ -34,6 +38,7 @@ public class MusicPlayer : MonoBehaviour {
     {
         if (CurrentMusic == item.Title) //Если это та же самая музыка
             return; //Выход
+        lastItem = item;
         source.clip = Resources.Load<AudioClip>(AudioManager.AudioPath + MusicPath + item.Title); //Загружаем музыку
         source.Play(); //Проигрываем
         Resources.UnloadUnusedAssets(); //Выгружаем неиспользуемые ресурсы

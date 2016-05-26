@@ -37,4 +37,9 @@ public class MusicItem : MonoBehaviour {
             toggle.interactable = false; //Делаем кнопку некликабельной
         }
     }
+
+    public void Turn(bool isOn)
+    {
+        toggle.isOn = isOn;
+    }
 }

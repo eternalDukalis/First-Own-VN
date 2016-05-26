@@ -63,6 +63,11 @@ public class Sync : MonoBehaviour {
     {
         PlayerPrefs.DeleteAll(); //Удаляем все сохранённые данные
         string[] blocks = s.Split(DataSeparator, System.StringSplitOptions.None); //Разделяем блоки данных
+        if (blocks.Length < 7)
+        {
+            Debug.LogWarning("Ошибка полученных данных, игровые параметры сброшены");
+            return;
+        }
         Saves.SetSavesData(blocks[0], blocks[1]); //Устанавливаем данные о сохранениях
         Settings.SetData(blocks[2]); //Устанавливаем данные о настройках
         Skip.SetData(blocks[3]); //Устанавливаем данные о пройденных участках
