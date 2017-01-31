@@ -19,7 +19,7 @@ public class ScenarioManager : MonoBehaviour {
     }
     static bool CanDoNext = true; //Сверяемая булева переменная для приостановки/возобновления основной сценарной корутины 
     static public bool PlayingMode = true; //Находимся в режиме проигрывания
-    int finalCode = 13; //Код конечного символа
+    static int finalCode = 13; //Код конечного символа
     TextManager TManager; //Компонент для управления текстовой формой
     BackgroundManager BManager; //Компонент для управления задним фоном
     SelectionManager SManager; //Компонент для управления выбором
@@ -29,7 +29,7 @@ public class ScenarioManager : MonoBehaviour {
     AudioManager AManager; //Компонент для управления звуком
     AchManager AchivManager; //Компонент для показа ачивок
     MiniGamesManager MGManager; //Компонент для мини-игр
-    string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
+    public static string ScenarioPath = "Scenario/"; //Директория, где лежит сценарий
 
     static Coroutine CoroutineManager = null; //Переменная для управления основной сценарной корутиной
     static IEnumerator staticCoroutine; //Статическая ссылка на основную сценарную корутину
@@ -50,6 +50,7 @@ public class ScenarioManager : MonoBehaviour {
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
         PlayingMode = true; //Обнуляем переменную
         CanDoNext = true; //Обнуляем переменную
+        //Debug.Log(ScriptAnalizer.AllSprites(StartText));
 	}
 	
 	void Update () 
@@ -77,6 +78,7 @@ public class ScenarioManager : MonoBehaviour {
             string[] operation = Instructions[CurrentInstruction].Split('|'); //Разделяем команду по символу "|"
             if (operation.Length == 1) //Если получилась одна часть команды
             {
+                IndicatorManager.Instance.SetIndicatorType(ScriptAnalizer.GetIndicator(Instructions, CurrentInstruction));
                 TManager.PushText(operation[0]); //Сменяем текст в форме
                 yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
             }
@@ -85,6 +87,7 @@ public class ScenarioManager : MonoBehaviour {
                 switch (operation[0]) //Смотрим на первый элемент массива (в нём указана команда)
                 {
                     case "add": //Если это добавление текста
+                        IndicatorManager.Instance.SetIndicatorType(ScriptAnalizer.GetIndicator(Instructions, CurrentInstruction));
                         TManager.AddText(operation[operation.Length - 1]); //Добавляем указанный текст
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
@@ -259,6 +262,7 @@ public class ScenarioManager : MonoBehaviour {
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
                     default: //Если команда не распознана, то первый элемент расценивается, как обозначение автора текста. Тогда
+                        IndicatorManager.Instance.SetIndicatorType(ScriptAnalizer.GetIndicator(Instructions, CurrentInstruction));
                         TManager.PushText(operation[1], operation[0]); //Сменяем текст в форме с автором
                         yield return StartCoroutine(WaitNext()); //Ждём, пока можно будет продолжать
                         break;
@@ -315,7 +319,7 @@ public class ScenarioManager : MonoBehaviour {
         CoroutineManager = GameObject.FindObjectOfType<ScenarioManager>().StartCoroutine(staticCoroutine); //Стартуем корутину
     }
 
-    string DeleteSpacesAtTheEnd(string source) //Функция удаления конечного символа в конце строки
+    public static string DeleteSpacesAtTheEnd(string source) //Функция удаления конечного символа в конце строки
     {
         string res = source; //Создаём промежуточную переменную
         while (((int)res[res.Length - 1] == finalCode) || (res[res.Length - 1] == ' ')) //До тех пор, пока в конце есть пробелы

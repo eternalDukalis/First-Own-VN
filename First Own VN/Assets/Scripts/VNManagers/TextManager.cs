@@ -138,8 +138,10 @@ public class TextManager : MonoBehaviour {
             }
             yield return null; //Смена кадра
         }
+        IndicatorManager.Instance.SetIndicator();
         while ((!ScenarioManager.PlayingMode) || (((!ControlManager.Next()) && (!Skip.isSkipping)) && (!AutoGoing.Continue()))) //Ожидание нажатия клавиши продолжения или пока не будет режим пропуска
             yield return null; //Смена кадра
+        IndicatorManager.Instance.DeleteIndicator();
         ScenarioManager.UnlockCoroutine(); //Возобновляем основную сценарную корутину
     }
 
