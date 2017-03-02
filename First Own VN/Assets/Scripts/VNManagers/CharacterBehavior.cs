@@ -8,11 +8,7 @@ public class CharacterBehavior : MonoBehaviour {
     public enum Position { Left, Center, Right } //Перечислимый тип позиции
 
     static public string SpritesPath = "Graphics/Sprites/"; //Путь к спрайтами персонажей
-    static public string BodiesPath = "/Bodies/"; //Путь к телам персонажа
-    static public string ClothesPath = "/Clothes/"; //Путь к одежде персонажа
-    static public string AttributesPath = "/Attributes/"; //Путь к атрибутам персонажа
-    static int FillOrigin = 1; //Стандартный метод заполнения спрайта
-    static float PlacingTime = 1; //Время заполнения спрайта
+    static float PlacingTime = 0.5f; //Время заполнения спрайта
     static float SpriteWidth = 0.5f; //Стандартная ширина спрайта
     static float MovingStep = 0.015f; //Длина шага при перемещении спрайта
     static RectTransform GraphicsTransform; //Родительский объект для элементов графики
@@ -21,14 +17,12 @@ public class CharacterBehavior : MonoBehaviour {
     static int ScalingStepsNum = 20; //Количество шагов при выделении
 
     public Image BodySprite; //Тело персонажа
-    public Image ClothesSprite; //Одежда персонажа
-    Dictionary<string, GameObject> AttributeSprite; //Список атрибутов персонажа
     Image ParentImage; //Родительский объект персонажа
 
     public string Name = ""; //Имя персонажа
     string CurrentEmotion = ""; //Текущая эмоция персонажа
     string CurrentClothes = ""; //Текущая одежда персонажа
-    List<string> CurrentAttributes; //Текущие атрибуты персонажа
+    SortedList<string, int> CurrentAttributes; //Текущие атрибуты персонажа
     Position SpritePosition = Position.Center; //Текущая позиция персонажа
     bool Highlighted = false; //Выделен ли персонаж
     IEnumerator movcor;
@@ -50,13 +44,14 @@ public class CharacterBehavior : MonoBehaviour {
         Init(); //Производим инициализацию
         if (ParentImage == null) //Если компонент Image ещё не найден
             ParentImage = GetComponent<Image>(); //То находим его
-        State.CurrentState.AddCharacter(name, emotion, clothes, CurrentAttributes, position, Highlighted); //Обновляем состояние
+        State.CurrentState.AddCharacter(name, emotion, clothes, new List<string>(CurrentAttributes.Keys), position, Highlighted); //Обновляем состояние
         Name = name; //Записываем имя
         SpritePosition = position; //Записываем позицию
         CurrentClothes = clothes; //Записываем одежду
         CurrentEmotion = emotion; //Записываем эмоцию
-        SetEmotion(); //Ставим эмоцию
-        SetClothes(); //Ставим одежду
+        //SetEmotion(); //Ставим эмоцию
+        //SetClothes(); //Ставим одежду
+        SetSprite();
         CurrentPosition = GetPosition(position, true); //Вычисляем позицию спрайта
         ApplyPosition(); //Применяем позицию спрайта
         if (placecor != null)
@@ -70,13 +65,14 @@ public class CharacterBehavior : MonoBehaviour {
         Init(); //Производим инициализацию
         if (ParentImage == null)//Если компонент Image ещё не найден
             ParentImage = GetComponent<Image>(); //То находим его
-        State.CurrentState.AddCharacter(name, emotion, clothes, CurrentAttributes, to, Highlighted); //Обновляем состояние
+        State.CurrentState.AddCharacter(name, emotion, clothes, new List<string>(CurrentAttributes.Keys), to, Highlighted); //Обновляем состояние
         Name = name; //Записываем имя
         SpritePosition = to; //Записываем позицию
         CurrentClothes = clothes; //Записываем одежду
         CurrentEmotion = emotion; //Записываем эмоцию
-        SetEmotion(); //Ставим эмоцию
-        SetClothes(); //Ставим одежду
+        //SetEmotion(); //Ставим эмоцию
+        //SetClothes(); //Ставим одежду
+        SetSprite();
         CurrentPosition = GetPosition(from, false); //Вычисляем позицию спрайта
         ParentImage.fillAmount = 1; //Применяем позицию спрайта
         if (movcor != null)
@@ -107,8 +103,9 @@ public class CharacterBehavior : MonoBehaviour {
     {
         CurrentEmotion = emotion; //Эмоция
         State.CurrentState.UpdateCharacterEmotion(Name, CurrentEmotion); //Обновляем состояние
-        SetEmotion(); //Загружаем тело
-        SetClothes(); //Загружаем одежду
+        //SetEmotion(); //Ставим эмоцию
+        //SetClothes(); //Ставим одежду
+        SetSprite();
         Resources.UnloadUnusedAssets(); //Выгружаем неиспользуемые ресурсы
     }
 
@@ -128,26 +125,14 @@ public class CharacterBehavior : MonoBehaviour {
 
     public void SetAttribute(string attribute) //Установка атрибута
     {
-        CurrentAttributes.Add(attribute); //Записываем атрибут в список атрибутов
-        State.CurrentState.UpdateCharacterAttributes(Name, CurrentAttributes); //Обновляем состояние
-
-        GameObject attr = Instantiate(ClothesSprite.gameObject); //Создаём объект
-        attr.transform.SetParent(ParentImage.transform, false); //Помещяем его в родительский
-        attr.transform.SetAsLastSibling(); //Выводим его на передний план
-        Texture2D textattr = Resources.Load<Texture2D>(SpritesPath + Name + AttributesPath + attribute); //Загружаем текстуру атрибута
-        attr.GetComponent<Image>().sprite = Sprite.Create(textattr, new Rect(0, 0, textattr.width, textattr.height), new Vector2(0, 0)); //Вставляем спрайт
-        AttributeSprite.Add(attribute, attr); //Добавляем объект в словарь атрибутов
+        CurrentAttributes.Add(attribute, 1); //Записываем атрибут в список атрибутов
+        State.CurrentState.UpdateCharacterAttributes(Name, new List<string>(CurrentAttributes.Keys)); //Обновляем состояние
     }
 
     public void RemoveAttribute(string attribute) //Удаление атрибута
     {
         CurrentAttributes.Remove(attribute); //Удаляем атрибут из списка атрибутов
-        State.CurrentState.UpdateCharacterAttributes(Name, CurrentAttributes); //Обновляем состояние
-
-        GameObject attr = AttributeSprite[attribute]; //Получаем объект с атрибутом
-        AttributeSprite.Remove(attribute); //Удаляем объект из словаря атрибутов
-        Destroy(attr); //Удаляем объект
-        Resources.UnloadUnusedAssets(); //Выгружаем неиспользуемые ресурсы
+        State.CurrentState.UpdateCharacterAttributes(Name, new List<string>(CurrentAttributes.Keys)); //Обновляем состояние
     }
 
     public void MoveActor(Position to) //Перемещение персонажа
@@ -162,16 +147,16 @@ public class CharacterBehavior : MonoBehaviour {
 
     IEnumerator placing(bool inc) //Корутина помещения/скрытия
     {
-        ParentImage.fillOrigin = (FillOrigin == inc.GetHashCode()).GetHashCode(); //Определяем метод заполнения
-        while (((ParentImage.fillAmount < 1) && (inc)) || ((ParentImage.fillAmount > 0) && (!inc))) //Пока полностью не покажем/скроем
+        BodySprite.color = new Color(BodySprite.color.r, BodySprite.color.g, BodySprite.color.b, (!inc).GetHashCode());
+        while (((BodySprite.color.a < 1) && (inc)) || ((BodySprite.color.a > 0) && (!inc))) //Пока полностью не покажем/скроем
         {
             if ((Skip.isSkipping) || (CharacterManager.isLoading)) //Если пропуск или идёт загрузка
             {
                 yield return new WaitForSeconds(Settings.SkipInterval); //Новый кадр
-                ParentImage.fillAmount = inc.GetHashCode(); //Заканчиваем действие
+                BodySprite.color = new Color(BodySprite.color.r, BodySprite.color.g, BodySprite.color.b, inc.GetHashCode()); //Заканчиваем действие
                 break; //Прерываем цикл
             }
-            ParentImage.fillAmount += (2 * inc.GetHashCode() - 1) * Time.deltaTime / PlacingTime; //Добавляем/убавляем заполнение
+            BodySprite.color = new Color(BodySprite.color.r, BodySprite.color.g, BodySprite.color.b, BodySprite.color.a + (2 * inc.GetHashCode() - 1) * Time.deltaTime / PlacingTime); //Добавляем/убавляем заполнение
             yield return null; //Новый кадр
         }
         if (!inc) //Если это было скрытие
@@ -239,7 +224,20 @@ public class CharacterBehavior : MonoBehaviour {
         ParentImage.rectTransform.anchorMax = new Vector2(CurrentPosition + SpriteWidth / 2, ParentImage.rectTransform.anchorMax.y); //Рассчитываем и применяем правую границу
     }
 
-    void SetEmotion() //Установка эмоции
+    void SetSprite()
+    {
+        string path = SpritesPath + Name + "/" + CurrentClothes + "/" + CurrentEmotion;
+        foreach (KeyValuePair<string, int> x in CurrentAttributes)
+        {
+            path += "_" + x.Key;
+        }
+        Texture2D body = Resources.Load<Texture2D>(path);
+        if (body == null)
+            Debug.Log("peedor");
+        BodySprite.sprite = Sprite.Create(body, new Rect(0, 0, body.width, body.height), new Vector2(0, 0));
+    }
+
+    /*void SetEmotion() //Установка эмоции
     {
         Texture2D body = Resources.Load<Texture2D>(SpritesPath + Name + BodiesPath + CurrentEmotion);//Загружаем тело
         BodySprite.sprite = Sprite.Create(body, new Rect(0, 0, body.width, body.height), new Vector2(0, 0)); //Применяем тело
@@ -249,12 +247,11 @@ public class CharacterBehavior : MonoBehaviour {
     {
         Texture2D sclothes = Resources.Load<Texture2D>(SpritesPath + Name + ClothesPath + CurrentClothes + "/" + CurrentEmotion[0]); //Загружаем одежду
         ClothesSprite.sprite = Sprite.Create(sclothes, new Rect(0, 0, sclothes.width, sclothes.height), new Vector2(0, 0)); //Применяем одежду
-    }
+    }*/
 
     void Init() //Инициализация параметров
     {
-        AttributeSprite = new Dictionary<string, GameObject>(); //Инициализация списка атрибутов
-        CurrentAttributes = new List<string>(); //Инициализация списка названий атрибутов
+        CurrentAttributes = new SortedList<string, int>(); //Инициализация списка названий атрибутов
         ParentImage = GetComponent<Image>(); //Поиск компонента Image
         GraphicsTransform = GameObject.Find("Graphics").GetComponent<RectTransform>(); //Находим компонент на сцене
         XHighlightVectors = new Dictionary<Position, Vector2>(); //Инициализируем словарь

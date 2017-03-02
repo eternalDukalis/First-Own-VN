@@ -39,6 +39,10 @@ public class ScriptAnalizer : MonoBehaviour {
             if (Attributes.ContainsKey(attr))
                 Attributes.Remove(attr);
         }
+        public void DeleteAllAttributes()
+        {
+            Attributes.Clear();
+        }
         public override string ToString()
         {
             string s = Clothes + "/" + Emotion;
@@ -47,6 +51,10 @@ public class ScriptAnalizer : MonoBehaviour {
             foreach (KeyValuePair<string, int> x in Attributes)
                 s += "_" + x.Key;
             return s;
+        }
+        public string GetEmotion()
+        {
+            return Emotion;
         }
     }
     static Dictionary<string, CurrentState> States;
@@ -64,13 +72,14 @@ public class ScriptAnalizer : MonoBehaviour {
         Commands = new List<string>(com);
     }
 
-    public static string AllSprites(string startPoint)
+    public static string AllSprites(string startPoint, bool lacking)
     {
         string s = "";
         SortedList<string, int> lst = new SortedList<string, int>(SpritesList(startPoint));
         foreach (KeyValuePair<string, int> x in lst)
         {
-            s += x.Key + " - " + x.Value.ToString() + ";\n";
+            if ((!lacking) || (Resources.Load("Graphics/Sprites/" + x.Key) == null))
+                s += x.Key + " - " + x.Value.ToString() + ";\n";
         }
         return s;
     }
@@ -99,6 +108,7 @@ public class ScriptAnalizer : MonoBehaviour {
                         break;
                     default:
                         string name = "", cl = "", em = "", attr = "";
+                        bool delall = false;
                         switch (op[0])
                         {
                             case "setactor":
@@ -116,6 +126,10 @@ public class ScriptAnalizer : MonoBehaviour {
                             case "delattribute":
                                 name = op[1];
                                 attr = "-" + op[2];
+                                break;
+                            case "delactor":
+                                name = op[1];
+                                delall = true;
                                 break;
                             case "changeclothes":
                                 name = op[1];
@@ -143,6 +157,12 @@ public class ScriptAnalizer : MonoBehaviour {
                             else
                                 States[name].DeleteAttribute(attr.Substring(1));
                         }
+                        if (delall)
+                        {
+                            States[name].DeleteAllAttributes();
+                        }
+                        if (States[name].GetEmotion() == "")
+                            break;
                         string key = name + "/" + States[name].ToString();
                         if (s.ContainsKey(key))
                             s[key]++;

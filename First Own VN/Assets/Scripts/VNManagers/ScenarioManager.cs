@@ -50,7 +50,7 @@ public class ScenarioManager : MonoBehaviour {
         CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
         PlayingMode = true; //Обнуляем переменную
         CanDoNext = true; //Обнуляем переменную
-        //Debug.Log(ScriptAnalizer.AllSprites(StartText));
+        //Debug.Log(ScriptAnalizer.AllSprites(StartText, true));
 	}
 	
 	void Update () 

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class SaveSlot : MonoBehaviour {
@@ -69,7 +69,20 @@ public class SaveSlot : MonoBehaviour {
                 continue; //Переходим на следующую итерацию
             }
             Actors[i].gameObject.SetActive(true); //Делаем спрайт персонажа активным
-            Texture2D body = Resources.Load<Texture2D>(CharacterBehavior.SpritesPath + cInfo.Name + CharacterBehavior.BodiesPath + cInfo.CurrentEmotion); //Загружаем тело персонажа
+            string path = CharacterBehavior.SpritesPath + cInfo.Name + "/" + cInfo.CurrentClothes + "/" + cInfo.CurrentEmotion;
+            SortedList<string, int> attr = new SortedList<string, int>();
+            foreach (string x in cInfo.CurrentAttributes)
+                attr.Add(x, 1);
+            foreach (KeyValuePair<string, int> x in attr)
+                path += "_" + x.Key;
+            Texture2D body = Resources.Load<Texture2D>(path);
+            Actors[i].sprite = Sprite.Create(body, new Rect(0, 0, body.width, body.height), new Vector2(0, 0));
+            List<GameObject> objs = new List<GameObject>();
+            for (int j = 0; j < Actors[i].transform.childCount; j++)
+                objs.Add(Actors[i].transform.GetChild(j).gameObject);
+            foreach (GameObject x in objs)
+                Destroy(x);
+            /*Texture2D body = Resources.Load<Texture2D>(CharacterBehavior.SpritesPath + cInfo.Name + CharacterBehavior.BodiesPath + cInfo.CurrentEmotion); //Загружаем тело персонажа
             Actors[i].sprite = Sprite.Create(body, new Rect(0, 0, body.width, body.height), new Vector2(0, 0)); //Вставляем тело персонажа
             Image clothesImage = Actors[i].transform.GetChild(0).GetComponent<Image>(); //Находим объект одежды персонажа
             Texture2D clothes = Resources.Load<Texture2D>(CharacterBehavior.SpritesPath + cInfo.Name + CharacterBehavior.ClothesPath + cInfo.CurrentClothes + "/" + cInfo.CurrentEmotion[0]); //Загружаем одежду персонажа
@@ -88,7 +101,7 @@ public class SaveSlot : MonoBehaviour {
                 obj.transform.SetAsLastSibling(); //Помещаем сверху
                 Texture2D attr = Resources.Load<Texture2D>(CharacterBehavior.SpritesPath + cInfo.Name + CharacterBehavior.AttributesPath + x); //Загружаем атрибут
                 obj.GetComponent<Image>().sprite = Sprite.Create(attr, new Rect(0, 0, attr.width, attr.height), new Vector2(0, 0)); //Вставляем атрибут
-            }
+            }*/
         }
         if (SaveData.PlainScreenOn) //Если есть одноцветный экран
         {
