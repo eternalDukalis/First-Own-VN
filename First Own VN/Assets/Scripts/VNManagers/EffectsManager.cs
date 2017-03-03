@@ -49,7 +49,24 @@ public class EffectsManager : MonoBehaviour {
         if (inc) //Если экран появляется
             PlainObject.SetActive(true); //То делаяем объект активным
         Image img = PlainObject.GetComponent<Image>(); //Находим компонент Image
-        if (inc) //Если экран должен появиться
+        float val = 0;
+        Color begin = img.color;
+        Color end = StringToColor(State.CurrentState.PlainScreenColor);
+        end = new Color(end.r, end.g, end.b, inc.GetHashCode());
+        while (val < 1)
+        {
+            if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата кнопка продолжения
+            {
+                yield return new WaitForSeconds(Settings.SkipInterval); //Новый кадр
+                img.color = end; //Окончательно показываем или убираем экран
+                break; //Прерываем цикл
+            }
+            val += Time.deltaTime / TimeToFade;
+            img.color = begin + (end - begin) * val;
+            yield return null;
+        }
+        img.color = end;
+        /*if (inc) //Если экран должен появиться
         {
             img.color = StringToColor(State.CurrentState.PlainScreenColor); //Красим экран
             img.color -= new Color(0, 0, 0, 1); //То делаем его прозрачным
@@ -64,7 +81,7 @@ public class EffectsManager : MonoBehaviour {
             }
             img.color += new Color(0, 0, 0, (2 * inc.GetHashCode() - 1) * Time.deltaTime / TimeToFade); //Добавляем/уменьшаем альфу
             yield return null; //Переход на другой кадр
-        }
+        }*/
         yield return null; //Переход на новый кадр
         if (!inc) //Если экран убирался
             PlainObject.SetActive(false); //То делаем объект неактивным

@@ -17,6 +17,12 @@ public class ScriptAnalizer : MonoBehaviour {
             Emotion = "";
             Attributes = new SortedList<string, int>();
         }
+        public CurrentState(CurrentState prev)
+        {
+            Name = prev.Name;
+            Clothes = prev.Clothes;
+            Emotion = prev.Emotion;
+        }
         public void SetClothes(string clothes)
         {
             Clothes = clothes;
@@ -41,7 +47,8 @@ public class ScriptAnalizer : MonoBehaviour {
         }
         public void DeleteAllAttributes()
         {
-            Attributes.Clear();
+            if (Attributes != null)
+                Attributes.Clear();
         }
         public override string ToString()
         {
@@ -101,10 +108,16 @@ public class ScriptAnalizer : MonoBehaviour {
                         break;
                     case "select":
                         for (int k = 2; k < op.Length; k += 2)
+                        {
+                            Dictionary<string, CurrentState> res = ReplaceStates(States);
                             s = DictAssociation(s, SpritesList(op[k]));
+                            States = ReplaceStates(res);
+                        }
                         break;
                     case "ifgoto":
+                        Dictionary<string, CurrentState> res1 = ReplaceStates(States);
                         s = DictAssociation(s, SpritesList(op[3]));
+                        States = ReplaceStates(res1);
                         break;
                     default:
                         string name = "", cl = "", em = "", attr = "";
@@ -201,5 +214,13 @@ public class ScriptAnalizer : MonoBehaviour {
                 s.Add(x.Key, x.Value);
         }
         return s;
+    }
+
+    static Dictionary<string, CurrentState> ReplaceStates(Dictionary<string, CurrentState> a)
+    {
+        Dictionary<string, CurrentState> cur = new Dictionary<string, CurrentState>();
+        foreach (KeyValuePair<string, CurrentState> x in a)
+            cur.Add(x.Key, new CurrentState(x.Value));
+        return cur;
     }
 }

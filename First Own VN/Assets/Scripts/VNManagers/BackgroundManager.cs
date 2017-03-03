@@ -36,6 +36,7 @@ public class BackgroundManager : MonoBehaviour {
         OldBackground.transform.SetParent(this.transform, false); //Родительским объектом назначаем текущий объект
         Image oldimg = OldBackground.GetComponent<Image>(); //Компонент Image старого фона
         img.sprite = Sprite.Create(newtext, new Rect(0, 0, newtext.width, newtext.height), new Vector2(0, 0)); //Сменяем спрайт на новый
+        yield return null;
         while (oldimg.color.a > 0) //Пока старый фон не станет прозрачным
         {
             if ((ControlManager.Next()) || (Skip.isSkipping)) //Если нажата кнопка продолжения

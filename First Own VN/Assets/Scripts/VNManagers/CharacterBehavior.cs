@@ -14,7 +14,7 @@ public class CharacterBehavior : MonoBehaviour {
     static RectTransform GraphicsTransform; //Родительский объект для элементов графики
     static Dictionary<Position, Vector2> XHighlightVectors; //Векторы выделения по х
     static Vector2 YHighlightVector; //Вектор выделения по y
-    static int ScalingStepsNum = 20; //Количество шагов при выделении
+    static int ScalingStepsNum = 40; //Количество шагов при выделении
 
     public Image BodySprite; //Тело персонажа
     Image ParentImage; //Родительский объект персонажа
@@ -190,6 +190,7 @@ public class CharacterBehavior : MonoBehaviour {
         Vector2 beginMin = GraphicsTransform.anchorMin; //Запоминаем изначальный anchorMin
         Vector2 beginMax = GraphicsTransform.anchorMax; //Запоминаем изначальный anchorMax
         ScenarioManager.LockCoroutine(); //Приостанавливаем сценарий
+        float val = 0;
         for (int i = 0; i < ScalingStepsNum; i++) //Выполняем определённое количество шагов
         {
             if ((Skip.isSkipping) || (CharacterManager.isLoading)) //Если пропуск или загрузка
@@ -197,8 +198,9 @@ public class CharacterBehavior : MonoBehaviour {
                 yield return new WaitForSeconds(Settings.SkipInterval); //Новый кадр
                 break; //Прерываение цикла
             }
-            GraphicsTransform.anchorMin += (targetMin - beginMin) / ScalingStepsNum; //изменяеи anchorMin
-            GraphicsTransform.anchorMax += (targetMax - beginMax) / ScalingStepsNum; //Изменяем anchorMax
+            val += 1 / (float)ScalingStepsNum;
+            GraphicsTransform.anchorMin = beginMin + (targetMin - beginMin) * Mathf.Sin(Mathf.PI * val / 2); //изменяеи anchorMin
+            GraphicsTransform.anchorMax = beginMax + (targetMax - beginMax) * Mathf.Sin(Mathf.PI * val / 2); //Изменяем anchorMax
             yield return null; //Новый кадр
         }
         GraphicsTransform.anchorMin = targetMin; //Ставим конечный anchorMin
@@ -233,7 +235,7 @@ public class CharacterBehavior : MonoBehaviour {
         }
         Texture2D body = Resources.Load<Texture2D>(path);
         if (body == null)
-            Debug.Log("peedor");
+            Debug.Log(CurrentEmotion);
         BodySprite.sprite = Sprite.Create(body, new Rect(0, 0, body.width, body.height), new Vector2(0, 0));
     }
 

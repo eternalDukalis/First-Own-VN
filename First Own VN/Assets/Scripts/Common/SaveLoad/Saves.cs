@@ -39,7 +39,7 @@ public class Saves : MonoBehaviour {
     static public void Load(Vector3 position) //Функция загрузки из слота
     {
         State.CurrentState = new State(AllSaves[position].PreviousState); //Загружаем предыдущее состояние из сохранения
-        SceneManager.LoadScene("game"); //Загружаем уровень
+        MenuInteraction.LoadGame(); //Загружаем уровень
     }
 
     static public void Continue() //Функция продолжения
