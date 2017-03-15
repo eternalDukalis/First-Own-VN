@@ -41,6 +41,7 @@ public class ControlManager : MonoBehaviour {
         if (next) //Если переменная равна true
         {
             next = false; //То присваеваем переменной false
+            Skip.SetMode(false);
             return true; //Возвращаем true
         }
         return false; //Иначе возвращаем false

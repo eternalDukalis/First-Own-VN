@@ -23,6 +23,9 @@ public class SkipButton : MonoBehaviour {
             isOn = Skip.isSkipping; //меняем значение переменной
             SetIndicator(); //изменяем цвет кнопки
         }
+        if (button.interactable != Skip.canSkip)
+            button.interactable = Skip.canSkip;
+        //button.colors.
 	}
 
     void SetIndicator() //функция изменения цвета кнопки

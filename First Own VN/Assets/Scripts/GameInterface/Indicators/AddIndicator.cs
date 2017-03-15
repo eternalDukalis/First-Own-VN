@@ -6,10 +6,12 @@ public class AddIndicator : MonoBehaviour {
     [SerializeField]
     float TurnTime = 1;
     int HalfCircle = 360;
-	void Start ()
+	void OnEnable ()
     {
         StartCoroutine(turning());
 	}
+
+    //void 
 
     IEnumerator turning()
     {

@@ -35,6 +35,7 @@ public class ScenarioManager : MonoBehaviour {
     static IEnumerator staticCoroutine; //Статическая ссылка на основную сценарную корутину
 	void Start () 
     {
+        //PlayerPrefs.DeleteAll();
         TManager = GameObject.Find("TEXTMANAGER").GetComponent<TextManager>(); //Находим компонент на сцене
         BManager = GameObject.Find("BACKGROUND").GetComponent<BackgroundManager>(); //Находим компонент на сцене
         SManager = GameObject.Find("CommonObject").GetComponent<SelectionManager>(); //Находим компонент на сцене

@@ -9,8 +9,15 @@ public class Skip : MonoBehaviour {
     {
         get
         {
-            bool res = _isSkipping && (isPassed(State.CurrentState.CurrentSource, State.CurrentState.CurrentInstruction) || !Settings.SkipPassedOnly);
+            bool res = _isSkipping/* && canSkip*/;
             return res;
+        }
+    }
+    static public bool canSkip //Можно ли пропускать
+    {
+        get
+        {
+            return isPassed(State.CurrentState.CurrentSource, State.CurrentState.CurrentInstruction) || !Settings.SkipPassedOnly;
         }
     }
     static bool _isSkipping;
