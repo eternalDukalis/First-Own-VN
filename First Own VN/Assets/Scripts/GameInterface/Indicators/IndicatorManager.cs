@@ -35,6 +35,7 @@ public class IndicatorManager : MonoBehaviour {
 
     public void SetIndicator()
     {
+        DeleteAllIndicators();
         GameObject obj = AddIndicator;
         switch (CurrentIndicator)
         {
@@ -59,5 +60,18 @@ public class IndicatorManager : MonoBehaviour {
     public void DeleteIndicator()
     {
         Destroy(CurObj);
+    }
+
+    public void DeleteAllIndicators()
+    {
+        PushIndicator[] pi = FindObjectsOfType<PushIndicator>();
+        foreach (PushIndicator x in pi)
+            Destroy(x.gameObject);
+        AddIndicator[] ai = FindObjectsOfType<AddIndicator>();
+        foreach (AddIndicator x in ai)
+            Destroy(x.gameObject);
+        PageIndicator[] pai = FindObjectsOfType<PageIndicator>();
+        foreach (PageIndicator x in pai)
+            Destroy(x.gameObject);
     }
 }

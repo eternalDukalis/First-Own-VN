@@ -127,12 +127,14 @@ public class CharacterBehavior : MonoBehaviour {
     {
         CurrentAttributes.Add(attribute, 1); //Записываем атрибут в список атрибутов
         State.CurrentState.UpdateCharacterAttributes(Name, new List<string>(CurrentAttributes.Keys)); //Обновляем состояние
+        SetSprite();
     }
 
     public void RemoveAttribute(string attribute) //Удаление атрибута
     {
         CurrentAttributes.Remove(attribute); //Удаляем атрибут из списка атрибутов
         State.CurrentState.UpdateCharacterAttributes(Name, new List<string>(CurrentAttributes.Keys)); //Обновляем состояние
+        SetSprite();
     }
 
     public void MoveActor(Position to) //Перемещение персонажа

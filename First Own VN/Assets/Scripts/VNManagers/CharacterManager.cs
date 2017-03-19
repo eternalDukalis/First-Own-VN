@@ -18,7 +18,10 @@ public class CharacterManager : MonoBehaviour {
         {
             SetActor(cur.Name, PositionToString(cur.SpritePosition), cur.CurrentEmotion); //Добавляем объект
             for (int i = 0; i < cur.CurrentAttributes.Count; i++)
+            {
                 SetAttribute(cur.Name, cur.CurrentAttributes.ToArray()[i]); //Добавляем все атрибуты
+            }
+            ChangeEmotion(cur.Name, cur.CurrentEmotion);
             if (cur.Highlighted) //Если выделен
                 Highlight(cur.Name); //То выделяем
         }

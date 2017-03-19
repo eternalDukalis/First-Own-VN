@@ -106,9 +106,9 @@ add|Тогда беру на себя вон ту девчонку (похоже
 changeclothes|Yulia|Work
 changeclothes|Pavel|Work
 changeclothes|Sonya|Work
-setactor|Ksenia|right|right|1smile
-setactor|Yulia|left|left|1smile
-setactor|Pavel|left|center|1normal
+setactor|Ksenia|right|1smile
+setactor|Yulia|left|1smile
+setactor|Pavel|center|1normal
 music|Woman With Blond Hair
 Ксения|О, Юлька, привет!
 highlight|Yulia

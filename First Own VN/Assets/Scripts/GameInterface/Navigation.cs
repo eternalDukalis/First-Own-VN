@@ -40,7 +40,12 @@ public class Navigation : MonoBehaviour {
         if (CurrentScreen == PlayingInterface) //Если текущий экран - игровой
             GoTo(MenuObject); //То переходим на меню
         else //Иначе
-            GoTo(PreviousScreen); //Перехождим на предыдущий экран
+        {
+            if (CurrentScreen == MenuObject) //Если текущий экран - меню
+                GoTo(PlayingInterface); //То переходим на игровой экран
+            else //Иначе
+                GoTo(PreviousScreen); //Перехождим на предыдущий экран
+        }
     }
 
     IEnumerator goTo(GameObject newObj) //Корутина перехода

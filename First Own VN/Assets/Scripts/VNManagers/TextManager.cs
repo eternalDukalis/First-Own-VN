@@ -99,6 +99,10 @@ public class TextManager : MonoBehaviour {
     {
         MainText = "\t"; //Обнуляем текст
         FullTextComponent.text = "\t"; //Обнуляем текст
+
+        //TEST
+        TextComponent.text = ""; //Обнуляем текст
+        AManager.DeleteAuthor(); //Обнуляем автора
     }
 
     public void TakeOffTextForm() //Функция скрытия текстовой формы

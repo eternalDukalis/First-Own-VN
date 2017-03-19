@@ -80,9 +80,9 @@ add|Есть одна история.
 delactor|Alexander
 delactor|Egor
 Мы с Егором устроились поудобнее.
-music|Sinking In The Dark
 showscr|
 switchtextform|
+music|Sinking In The Dark
 Александр|У одного мальчика однажды пропали родители. 
 add|Он и в милицию, и куда только не обращался. 
 add|Никто не мог их найти. 
