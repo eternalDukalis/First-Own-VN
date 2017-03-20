@@ -29,6 +29,10 @@ showscr|
 Я разделся, выключил свет и залез под одеяло (хорошо, что я кровать не заправляю). 
 Вскоре я уснул.
 hidetf|
+showscr|white
+showscr|red
+showscr|white
+showscr|black
 showtf|
 cback|abandoned_library|0
 music|Sinking In The Dark

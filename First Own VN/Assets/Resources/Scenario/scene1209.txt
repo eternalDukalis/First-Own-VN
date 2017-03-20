@@ -38,6 +38,10 @@ showscr|
 Только спустя час я отрубился.
 hidetf|
 cback|abandoned_library
+showscr|white
+showscr|red
+showscr|white
+showscr|black
 hidescr|
 showtf|
 music|Sinking In The Dark

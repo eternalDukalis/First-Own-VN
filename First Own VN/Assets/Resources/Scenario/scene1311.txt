@@ -107,6 +107,10 @@ showscr|
 Через пару минут я уже спал.
 hidetf|
 cback|near_forest_night
+showscr|white
+showscr|red
+showscr|white
+showscr|black
 hidescr|
 switchtextform|
 showtf|
