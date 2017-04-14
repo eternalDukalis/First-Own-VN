@@ -34,6 +34,8 @@ public class SavesBack : MonoBehaviour {
         {
             float delta = (targetpos - oldpos) * Time.deltaTime / MoveTime; //рассчитываем длину шага
             xpos += delta; //прибавляем к текущей позиции
+            if (right == (targetpos - xpos < delta))
+                break;
             SetPosition(); //применяем изменения
             yield return null; //новый кадр
         }

@@ -1,0 +1,9 @@
+А-а-а, быстрее домой, быстрее домой!
+hidetf|
+envoff|
+showscr|
+cback|krylovy_hallway_night
+hidescr|
+showtf|
+Ну вот, пришлось переодеваться. Спать ещё рано, нужно чем-нибудь заняться.
+goto|scene1209

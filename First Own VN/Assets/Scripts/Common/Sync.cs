@@ -22,10 +22,10 @@ public class Sync : MonoBehaviour {
     bool _auth = false;
     string Key = "SyncData"; //Ключ для сохранения
     string[] Separator = { "\n[syncsep]\n" }; //Разделитель
-    static string RegistrationUrl = "http://dukalisgds.xyz/registration.php";
-    static string AuthFormat = "http://dukalisgds.xyz/authorization.php?username={0}&password={1}";
-    static string DownloadFormat = "http://dukalisgds.xyz/load.php?username={0}&password={1}";
-    static string UploadUrl = "http://dukalisgds.xyz/upload.php";
+    static string RegistrationUrl = "http://dukalisgames.ru/registration.php";
+    static string AuthFormat = "http://dukalisgames.ru/authorization.php?username={0}&password={1}";
+    static string DownloadFormat = "http://dukalisgames.ru/load.php?username={0}&password={1}";
+    static string UploadUrl = "http://dukalisgames.ru/upload.php";
     static string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     static int MinLength = 5;
     static int MaxLength = 20;

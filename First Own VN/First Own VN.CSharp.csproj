@@ -144,6 +144,8 @@
     <None Include="Assets\Resources\Scenario\scene1206.txt" />
     <None Include="Assets\Resources\Scenario\scene1207.txt" />
     <None Include="Assets\Resources\Scenario\scene1208.txt" />
+    <None Include="Assets\Resources\Scenario\scene12081.txt" />
+    <None Include="Assets\Resources\Scenario\scene12082.txt" />
     <None Include="Assets\Resources\Scenario\scene1209.txt" />
     <None Include="Assets\Resources\Scenario\scene1301.txt" />
     <None Include="Assets\Resources\Scenario\scene1302.txt" />
@@ -153,6 +155,8 @@
     <None Include="Assets\Resources\Scenario\scene1306.txt" />
     <None Include="Assets\Resources\Scenario\scene1307.txt" />
     <None Include="Assets\Resources\Scenario\scene1308.txt" />
+    <None Include="Assets\Resources\Scenario\scene13081.txt" />
+    <None Include="Assets\Resources\Scenario\scene13082.txt" />
     <None Include="Assets\Resources\Scenario\scene1309.txt" />
     <None Include="Assets\Resources\Scenario\scene1310.txt" />
     <None Include="Assets\Resources\Scenario\scene1311.txt" />

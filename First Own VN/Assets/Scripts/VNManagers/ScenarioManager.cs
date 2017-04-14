@@ -48,9 +48,9 @@ public class ScenarioManager : MonoBehaviour {
         TextAsset newtext = Resources.Load<TextAsset>(ScenarioPath + State.CurrentState.CurrentSource); //Загружаем файл
         ReadInstructions(newtext); //Загружаем инструкции
         staticCoroutine = MainScenarioCoroutine(); //Привязываем корутину к переменной
-        CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
         PlayingMode = true; //Обнуляем переменную
         CanDoNext = true; //Обнуляем переменную
+        CoroutineManager = StartCoroutine(staticCoroutine); //Старт основной сценарной корутины
         //Debug.Log(ScriptAnalizer.AllSprites(StartText, true));
 	}
 	
@@ -286,7 +286,9 @@ public class ScenarioManager : MonoBehaviour {
     IEnumerator WaitNext() //Корутина ожидания возобновления основной сценарной корутины
     {
         while ((!CanDoNext) || (!PlayingMode)) //Пока сверяемая булева переменная равна false
+        {
             yield return null; //Ждём
+        }
     }
 
     static public void GoToMainMenu() //Функция перехода к главному меню
